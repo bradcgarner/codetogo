@@ -1,0 +1,346 @@
+/* https://it.labelpartners.com/pantone_coated_table.html */
+$brown1 : #DDBCB0;
+$brown2 : #CA9A8E;
+$brown3 : #BC8A7E;
+$brown4 : #A37F74;
+$brown5 : #866761;
+$brown6 : #6B4C4C;
+$brown7 : #583D3E;
+$brown8 : darken($brown7, 20%);
+$blue1 : #BFCED6;
+$blue2 : #B7C9D3;
+$blue3 : #A6BBC8;
+$blue4 : #7A99AC;
+$blue5 : #5B7F95;
+$blue6 : #4F758B;
+$blue7 : #081F2C;
+
+/* @@@@@@@@@@@@@@ VARIABLES @@@@@@@@@@@@@@@@@@@@ */
+
+$header-height: 50px;
+
+/* @@@@@@@@@@@@@@ RESET @@@@@@@@@@@@@@@@@@@@ */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+  font-size: 16px; /* was 100% */
+  font-family: 'Oxygen', sans-serif; /* Brad added */ 
+  /*font: inherit;*/
+  color: $brown8; /* Brad added */
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul, li {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+* {
+  box-sizing: border-box; /* Brad added */
+}
+/* @@@@@@@@@@@@@@@@ END RESET @@@@@@@@@@@@@@@ */
+
+/* @@@@@@@@@@@@@@ GENERAL @@@@@@@@@@@@ */
+
+h1, h2, h3, h4, h5, h6 {
+  text-align: center;
+}
+
+body {
+  background-color: white;
+}
+
+.App {
+  width: 100%; /* phone, change later */
+  height: 100%;
+  min-height: 100vh;
+  margin: 0 auto;
+  background-color: $brown1;
+  overflow: none;
+}
+
+.about, .login, .profile, .dashboard, .quizlist {
+  margin: 20px 10px 10px 10px;
+}
+
+.question, .results {
+  margin: 0px 10px 10px 10px;
+}
+
+/* @@@@@@@@@@@@@@@@ ICONS @@@@@@@@@@@@@@ */
+
+.fa {
+  background-color: transparent;
+  color: $brown7;
+  font-size: 24px;
+  display: inline-block;
+  margin: 5px;
+}
+
+.homeIcon {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.settingsIcon {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.faText {
+  font-size: 11px; 
+  font-family: 'Oxygen', sans-serif;
+  margin: 0 5px;
+}
+
+.fa-list-ul, .fa-hand-o-right {}
+
+.smallIcon {
+  font-size: 80%;
+  margin-right: 5px;
+}
+
+/* @@@@@@@@@@@@@@@@ HEADER @@@@@@@@@@@@@@ */
+
+.header {
+  padding: 15px 5px;
+  height: $header-height;
+  background-color: $blue4;
+}
+
+header {
+  position: relative;
+  width: 100%;
+  h1 {
+    font-size: 24px;
+    color: $blue6;
+    width: 100%;
+  }
+}
+
+.landing, .login, .profile {
+  text-align: center;  
+}
+
+/* @@@@@@@@@@@@@@ STATUS BAR @@@@@@@@@@@@ */
+
+.statusBarContainer {
+  position: relative;
+  text-align: center;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  height: 20px;  
+}
+
+.statusIconContainer {
+  position: relative;
+  text-align: center;
+  width: 40px;
+  height: 15px;
+  display: inline-block;
+}
+
+.statusBar {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+}
+
+.statusBarCorrect {
+  background-color: green;
+  z-index: 9;  
+  right: 0;
+}
+.statusBarCompleted {
+  background-color: red;
+  z-index: 8;
+  left: 0;
+}
+.statusBarCurrentIndex {
+  background-color: yellow;
+  z-index: 7;
+  left: 0;  
+}
+.statusBarCurrent {
+  background-color: black;
+  z-index: 6;
+  left: 0;  
+}
+.statusBarTotal {
+  background-color: gray;
+  z-index: 5;  
+  left: 0;  
+}
+.statusBarCompletedContainer {
+  position: absolute;
+  left: 0;
+}
+
+/* @@@@@@@@@@@@@@ BUTTONS @@@@@@@@@@@@ */
+
+.loginButton, .submitButton {
+  font-size: 35px;
+}
+
+.aboutButton, .createAccountButton, .gotoQuizListButton, 
+.checkAccuracyButton, .takeAnotherQuizButton {
+  font-size: 20px;
+}
+
+.loginButton, .aboutButton, .createAccountButton, .gotoQuizListButton,
+.checkAccuracyButton, .takeAnotherQuizButton, .submitButton {
+  background-color: $blue3;
+  display: inline-block;  
+  color: $brown7;  
+  margin: 15px;
+}
+
+/* @@@@@@@@@@@@@@ LANDING @@@@@@@@@@@@ */
+
+.landingCover {
+  padding: 50px 10px;
+  text-align: center;
+}
+
+.landingLogoTop {
+  font-size: 75px;
+  color: darken($blue4, 5%);
+}
+
+.landingLogoMid {
+  margin-top: 10px;
+  font-size: 40px;
+  color: $blue4;
+}
+
+.landingLogoBot {
+  font-size: 70px;
+  color: lighten($blue4, 7%);
+  margin-bottom: 30px;
+}
+
+.landingTitle {
+  font-size: 45px;
+  color: $brown3;
+  font-family: 'Archivo Black', sans-serif;
+  margin: 15px 0;
+}
+/* @@@@@@@@@@@@@@ QUIZ LISTS  @@@@@@@@@@@@ */
+
+.quizLi, .quizLiName, .quizLiCategory, .quizLiDifficulty {
+  display: inline-block;
+}
+.quizLi {
+  margin: 15px 0;
+}
+.quizLiName {
+  width: 120px;
+}
+.quizLiCategory {
+  width: 50px;
+}
+.quizLiDifficulty {
+  width: 30px;
+}
+.dashboardQuizListHeader {
+  margin: 20px 0;
+}
+
+.statusBox {
+  display: inline-block;
+}
+/* @@@@@@@@@@@@@@ FORMS  @@@@@@@@@@@@ */
+
+.profileInput {
+  font-size: 18px;
+  padding: 8px;
+  margin: 5px;
+  display: inline-block;
+  text-align: left;
+}
+.inputLabel {
+  margin-bottom: 20px;
+  margin-top: 5px;
+  display: block;
+  text-align: center;
+  width: 100%;
+} 
+
+.questionAsked {
+  margin-bottom: 20px;
+  border-bottom: 1px solid $brown2;
+  padding-bottom: 20px;
+  width: 100%;
+}
+
+.questionOptions {
+  margin-bottom: 10px;
+}
+
+.questionForm {
+  margin-bottom: 40px;
+  border-bottom: 1px solid $brown2;
+  padding-bottom: 20px;
+}
+/* @@@@@@@@@@@@@@ GENERAL OVERRIDES @@@@@@@@@@@@ */
+
+// .clearfix:before,
+// .clearfix:after {
+//   content: "";
+//   display: table;
+// } 
+// .clearfix:after {
+//   clear: both;
+// }
+
+.center { text-align: center; }
+.left   { text-align: left; }
+.right  { text-align: right; }
+
+.code {
+  font-family: 'Inconsolata', monospace;
+  color: $blue6;
+}
+
+.codeBox {
+  background-color: $brown2;
+}
+
+.inactive {
+  color: $brown4;
+}
