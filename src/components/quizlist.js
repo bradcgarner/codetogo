@@ -12,7 +12,8 @@ export function QuizList(props) {
   
     return (
       <div className="quizlist">
-        <ul>
+        <h3 className="quizListHeader">Select A Quiz</h3>
+        <ul className="quizUl">
           {quizLi}
         </ul>
       </div>

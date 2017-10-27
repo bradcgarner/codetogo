@@ -12,6 +12,12 @@ export const questions = (questions) => ({
   questions
 });
 
+export const TOGGLE_FORM_STATUS = 'TOGGLE_FORM_STATUS';
+export const toggleFormStatus = (status) => ({
+  type: TOGGLE_FORM_STATUS,
+  formIsEmpty: status,    
+})
+
 // this is the single current quiz
 export const UPDATE_QUIZ_STORE = 'UPDATE_QUIZ_STORE';
 export const updateQuizStore = (quiz) => ({
@@ -27,6 +33,7 @@ export const updateQuizStore = (quiz) => ({
   completed: quiz.completed,
   correct: quiz.correct,
   total: quiz.questions.length,
+  formIsEmpty: true,  
 });
 
 // this is the single current quiz
@@ -36,13 +43,15 @@ export const incrementQuizStore = (quiz) => ({
   currentIndex: quiz.nextIndex,
   completed: quiz.completed,
   correct: quiz.correct,
+  formIsEmpty: true,  
 });
 
 // only used for skipping, not when submitting choices
 export const UPDATE_CURRENT_QUESTION = 'UPDATE_CURRENT_QUESTION';
 export const updateCurrentQuestion = (nextIndex) => ({
   type: UPDATE_CURRENT_QUESTION,
-  currentIndex: nextIndex
+  currentIndex: nextIndex,
+  formIsEmpty: true,  
 });
 
 // update current quiz with score for 1 question
@@ -95,7 +104,7 @@ export const takeQuiz = (quiz, user, option) => dispatch => {
   const authToken = user.authToken;
   const quizId = quiz.id;  
   let thisQuiz = deepAssign({},quiz);
-  thisQuiz.attempt = 0;
+  thisQuiz.attempt = 0; // default value
   let fetchedQuestions = [];
   let filterQuestions = false;
   let originalLength;
@@ -128,15 +137,17 @@ export const takeQuiz = (quiz, user, option) => dispatch => {
   // ADD QUIZ TO UPDATED USER IF NEEDED
   updatedUser.quizzes.forEach(exQuiz=>{
     if (exQuiz.id === quizId) {
+      exQuiz.id = thisQuiz.attempt; // increment attempt of quiz
       quizIsListed = true;
       console.log('quizisListed, quizId', quizIsListed, quizId);
+      console.log('quizisListed, exQuiz', exQuiz, quizId);
     }
   });
   console.log('updatedUser b4, quizId',quizId, updatedUser);
   console.log('quizislisted',quizIsListed);
   if (quizIsListed) {
     updatedQuizList = [...updatedUser.quizzes];
-    console.log('NOT ADDING QUIZ !!')
+    console.log('NOT ADDING QUIZ !!',updatedQuizList)
   } else {
     updatedQuizList= [...updatedUser.quizzes, thisQuiz];
     console.log('updatedUser with quiz ADDED', updatedUser);
@@ -151,6 +162,7 @@ export const takeQuiz = (quiz, user, option) => dispatch => {
 
   // IF ONLY ADD, UPDATE USER STORE, AND END
   if ( option === 'add' ) {
+    console.log('adding quiz, updatedUser', updatedUser);
     return dispatch(actionsUser.updateUserData(updatedUser, authToken));    
   }
 
@@ -173,21 +185,24 @@ export const takeQuiz = (quiz, user, option) => dispatch => {
       console.log('originalLength',originalLength);
       if (filterQuestions  === true) {
         const choiceObject = {};
+        console.log('attempt to fetch', thisQuiz.attempt);
         return fetch(`${REACT_APP_BASE_URL}/api/choices/quizzes/${quizId}/users/${user.id}/${thisQuiz.attempt}`)
           .then(res => {
-            console.log('choices fetched to use for filter',res);
             if (!res.ok) {
               return Promise.reject(res.statusText);
             }
             return res.json();
           })
           .then(choices=>{
+            console.log('choices fetched to use for filter',choices);
             choices.forEach(choice=>{
               choiceObject[choice.questionId] = true;
             });
             console.log('choiceObject', choiceObject);
             console.log('questions still available?', questions);
             fetchedQuestions = questions.filter(question=>choiceObject[question.id] !== true);
+            console.log('fetchedQuestions', fetchedQuestions);
+            
           })
       } else {
         fetchedQuestions = questions;
@@ -199,6 +214,7 @@ export const takeQuiz = (quiz, user, option) => dispatch => {
 
     // UPDATE SINGLE QUIZ FOR THE STORE
     .then(()=>{
+      console.log('fetchedQuestions inside then', fetchedQuestions);
       updatedQuiz = deepAssign({}, thisQuiz, {
         questions: fetchedQuestions,
         currentIndex: 0,  // always start at 0, which might be start of a filtered array
@@ -224,41 +240,3 @@ export const takeQuiz = (quiz, user, option) => dispatch => {
       console.log(error);
     });
   };
-
-
-  // export const  scoreQuiz = (quizId, user, attempt=0) => dispatch => {
-  //   console.log("score quiz");
-  //   return fetch(`${REACT_APP_BASE_URL}/api/choices/quizzes/${quizId}/users/${user.id}/${attempt}`)
-  //      .then(res => {
-  //         console.log('choices fetched to score',res);
-  //           if (!res.ok) {
-  //               return Promise.reject(res.statusText);
-  //           }
-  //           return res.json();
-  //       })
-  //       .then(choices => {
-  //         console.log('choices fetched to score',choices);
-  //         const choicesCorrect = choices.filter(choice => choice.correct === true );
-  //         const totalCorrect = choicesCorrect.length;
-  //         const totalCompleted = choices.length;
-  //         dispatch(actionsUser.updateUserQuizScore(quizId, totalCorrect, totalCompleted));
-          
-          
-          
-  //         const userQuizzes = [...user.quizzes];
-  //         console.log('userQuizzes', userQuizzes);
-  //         const indexToUpdate = userQuizzes.findIndex(quiz=>quiz.id === quizId);
-  //         console.log('indexToUpdate', indexToUpdate);
-  //         userQuizzes[indexToUpdate].correct = totalCorrect;
-  //         userQuizzes[indexToUpdate].completed = totalCompleted;
-  //         console.log('userQuizzes after update', userQuizzes);
-  //         const updatedUser = deepAssign({}, user, {quizzes: userQuizzes});
-  //         console.log('updatedUser', updatedUser);
-  //         dispatch(actionsUser.updateUserData(updatedUser, user.authToken));
-  //       })
-  //       .catch(error => {
-  //        // dispatch(fetchError(error));
-  //         console.log(error);
-  //       });
-  // };
-

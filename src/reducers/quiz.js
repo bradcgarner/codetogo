@@ -6,6 +6,10 @@ export const reducer = ( state = initialQuiz, action ) => {
     return Object.assign({}, state, {
       questions: action.questions
     })
+  } else if ( action.type === actions.TOGGLE_FORM_STATUS ) {
+    return Object.assign({}, state, {
+      formIsEmpty: action.formIsEmpty
+    })
   } else if ( action.type === actions.UPDATE_QUIZ_MENU ) {
     return Object.assign({}, state, {
       menuOfAllQuizzes: action.menuOfAllQuizzes
@@ -24,6 +28,7 @@ export const reducer = ( state = initialQuiz, action ) => {
       completed: action.completed,
       correct: action.correct,  
       total: action.total,  
+      formIsEmpty: action.formIsEmpty
     }) 
   } else if ( action.type === actions.INCREMENT_QUIZ_STORE ) {
     console.log(action);
@@ -31,10 +36,12 @@ export const reducer = ( state = initialQuiz, action ) => {
       currentIndex: action.currentIndex || 0,
       completed: action.completed,
       correct: action.correct,  
+      formIsEmpty: action.formIsEmpty      
     }) 
   } else if ( action.type === actions.UPDATE_CURRENT_QUESTION ) {
       return Object.assign({}, state, {
-        currentIndex: action.currentIndex
+        currentIndex: action.currentIndex,
+        formIsEmpty: action.formIsEmpty        
       })    
       
   // this updates the CURRENT quiz
@@ -47,7 +54,7 @@ export const reducer = ( state = initialQuiz, action ) => {
     questions[questionIndex].correct = action.correct;
     questions[questionIndex].choices = action.choices;
     console.log('questions after scoring', questions)
-    return Object.assign({}, state, { questions });
+    return Object.assign({}, state, { formIsEmpty: true }, { questions });
   } else { 
     return state;
   }

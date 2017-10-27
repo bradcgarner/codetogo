@@ -2,10 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 export function Recent(props) {
-
+ // Recent activity can include unfinished quizzes, etc.
     return (
       <div>
-        <p className="temp">Recent Activity includes unfinished quizzes</p>
       </div>
     );
 }

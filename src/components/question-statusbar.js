@@ -6,16 +6,18 @@ export function StatusBar(props) {
   const containerClass = props.mode === 'question' ? 'statusBarContainer' : 'statusIconContainer' ;
 
   const total = props.total;
-  const current = props.currentIndex + 1;
-  const currentIndex = props.currentIndex;
-  const completed = props.completed;
+  const originalLength = props.originalLength || total;
+  const priorCompleted = originalLength - total;
+  const current = props.currentIndex + priorCompleted + 1;
+  const currentIndex = props.currentIndex + priorCompleted;
+  const completed = props.completed + priorCompleted;
   const correct = props.correct;
   console.log('total',total,'current',current,'currentIndex',currentIndex,'completed',completed,'correct',correct);
   
   const totalPct = 100;
-  const currentPct = (current/total)*100 || 0;
-  const currentIndexPct = (currentIndex/total)*100 || 0;
-  const completedPct = (completed/total)*100 || 0;
+  const currentPct = (current/originalLength)*100 || 0;
+  const currentIndexPct = (currentIndex/originalLength)*100 || 0;
+  const completedPct = (completed/originalLength)*100 || 0;
   const correctPct = (correct/completed)*100 || 0;
   console.log('total',totalPct,'current',currentPct,'currentIndex',currentIndexPct,'completed',completedPct,'correct',correctPct);
   

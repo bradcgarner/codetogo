@@ -1,5 +1,6 @@
 import * as actions from '../actions/users';
 import { initialUser } from './initialState';
+const deepAssign = require('deep-assign');
 
 
 export const reducer = ( state = initialUser, action ) => {
@@ -20,7 +21,7 @@ export const reducer = ( state = initialUser, action ) => {
     return Object.assign({}, state, {
       quizzes: action.quizzes
     })
-
+    
   } else {
     return state;
   }

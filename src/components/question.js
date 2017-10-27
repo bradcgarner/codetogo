@@ -42,7 +42,10 @@ export class Question extends React.Component {
       this.props.reset();    
       this.props.dispatch(actionsMode.gotoResults())
     }
+  }
 
+  handleInputChange() {
+    this.props.dispatch(actionsQuiz.toggleFormStatus(false)); // improve this to read from form
   }
   
   render() {
@@ -63,6 +66,7 @@ export class Question extends React.Component {
             component='input'
             type={inputType}
             value={answer.id}
+            onChange={()=>this.handleInputChange()}
           />
           <label htmlFor={answer.id}>{answer.option}</label>
         </div>
@@ -73,8 +77,8 @@ export class Question extends React.Component {
       'fa fa-hand-o-left smallIcon'  : 'fa fa-hand-o-left smallIcon inactive' ;
     const nextQuestionClass = this.props.quiz.questions.length > ( this.props.quiz.currentIndex + 1 ) ?
       'fa fa-hand-o-right smallIcon'  : 'fa fa-hand-o-right smallIcon inactive' ;
-    const submitButtonClass = 'formisEmpty'==='empty' ?  'submitButton'  : 'submitButton inactive' ;
-
+    const submitButtonClass = this.props.quiz.formIsEmpty===true ?  'submitButton inactive'  : 'submitButton' ;
+    console.log('this.props.quiz.formIsEmpty',this.props.quiz.formIsEmpty);
     return (
     <div className="question">
       <StatusBar 
@@ -86,7 +90,7 @@ export class Question extends React.Component {
         correct = {this.props.quiz.correct}
       />
 
-      <p className="questionAsked">{currQuestion.question}</p>
+      <p className="questionAsked">{this.props.quiz.currentIndex + 1}. {currQuestion.question}</p>
       
       <form className="questionForm" onSubmit={this.props.handleSubmit(values =>
         this.handleSubmitButton(values, currentIndex)
@@ -96,32 +100,26 @@ export class Question extends React.Component {
           {options}
         </ul>
 
-        {/* previous button  */}
-        <i className={prevQuestionClass} 
-          onClick={()=>this.handleGotoQuestionButton(-1)}
-          aria-hidden="true">
-        < span className="faText">Previous</span>
-        </i>
+        <div className="questionButtons">
+          {/* previous  */}
+          <i className={prevQuestionClass} 
+            onClick={()=>this.handleGotoQuestionButton(-1)}
+            aria-hidden="true">
+          < span className="faText">Previous</span>
+          </i>
 
-        {/* submit button  */}
-        <button className={submitButtonClass} type="submit">Submit</button>
+          {/* submit */}
+          <button className={submitButtonClass} type="submit">Submit</button>
 
-        {/* next button */}
-        <i className={nextQuestionClass} 
-          onClick={()=>this.handleGotoQuestionButton(1)}
-          aria-hidden="true">
-          <span className="faText">Skip</span>
-        </i>
+          {/* next */}
+          <i className={nextQuestionClass} 
+            onClick={()=>this.handleGotoQuestionButton(1)}
+            aria-hidden="true">
+            <span className="faText">Skip</span>
+          </i>
+        </div>
 
       </form>
-
-    <p>Answers: Skip for now, same as questions, but add in: 
-        User's choice, 
-        Correct answer (optional), 
-        Links to resources, 
-        Commenting, 
-        No submit button, 
-        If viewing answers, record that so user cannot re-take for credit</p>
   
     </div>
   );

@@ -1,21 +1,53 @@
-/* https://it.labelpartners.com/pantone_coated_table.html */
-$brown1 : #DDBCB0;
-$brown2 : #CA9A8E;
-$brown3 : #BC8A7E;
-$brown4 : #A37F74;
-$brown5 : #866761;
-$brown6 : #6B4C4C;
-$brown7 : #583D3E;
-$brown8 : darken($brown7, 20%);
-$blue1 : #BFCED6;
-$blue2 : #B7C9D3;
-$blue3 : #A6BBC8;
-$blue4 : #7A99AC;
-$blue5 : #5B7F95;
-$blue6 : #4F758B;
-$blue7 : #081F2C;
+$white: white;
+// http://colorhunt.co/c/80102
+$gray1: #e9e9e5;
+$gray2: #d4d6c8;
+$gray3: #9a9b94;
+$gray4: #52524e;
 
-/* @@@@@@@@@@@@@@ VARIABLES @@@@@@@@@@@@@@@@@@@@ */
+// http://colorhunt.co/c/84735
+$green1: #f2f9f1;
+$green2: #ddeedf;
+$green3: #8bc34a; // correct
+$green4: #388e3c;
+
+// http://colorhunt.co/c/92530
+$yellow1: #f4e557; // skipped
+$orange1: #f5a855;
+$red1: #dc4444; // incorrect
+$red2: #97124b;
+
+$red3: #7e3c48;
+
+$backgroundColor: $gray1;
+$headerColor: $gray3;
+$buttonBackgroundColor: $gray2;
+
+$fontColorLogo: $red3;
+$fontColorLanding: $gray4;
+$fontColorMain: $gray4;
+$fontColorLabel: lighten($gray4, 30%);
+$fontColorIconHeader: darken($gray4, 25%);
+$fontColorAccent: $red3;
+$fontColorHeader: $red3;
+$fontColorButton: $red3;
+$formInsetColor: $white;
+$fontColorInactive: $gray3;
+$fontColorCheck: $green4;
+
+$statusCurrentColor: $gray4;
+
+$diff1Color: lighten($yellow1, 20%);
+$diff2Color: $yellow1;
+$diff3Color: darken($yellow1, 15%);
+$diff4Color: $orange1;
+$diff5Color: darken($orange1, 17%);
+
+$lines: $gray4;
+$linesLight: #ccc;
+$shadow: #999;
+
+/* @@@@@@@@@@@@@@  END VARIABLES @@@@@@@@@@@@@@@@@@@@ */
 
 $header-height: 50px;
 
@@ -40,13 +72,13 @@ time, mark, audio, video {
   font-size: 16px; /* was 100% */
   font-family: 'Oxygen', sans-serif; /* Brad added */ 
   /*font: inherit;*/
-  color: $brown8; /* Brad added */
+  color: $fontColorMain; /* Brad added */
 	vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
-	display: block;
+	display: flex; // was block
 }
 body {
 	line-height: 1;
@@ -86,25 +118,33 @@ body {
   height: 100%;
   min-height: 100vh;
   margin: 0 auto;
-  background-color: $brown1;
+  background-color: $backgroundColor;
   overflow: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+main {
+  min-width: 300px;
+  max-width: 768px;
 }
 
 .about, .login, .profile, .dashboard, .quizlist {
   margin: 20px 10px 10px 10px;
-}
-
-.question, .results {
-  margin: 0px 10px 10px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* @@@@@@@@@@@@@@@@ ICONS @@@@@@@@@@@@@@ */
 
 .fa {
   background-color: transparent;
-  color: $brown7;
+  color: $fontColorMain;
   font-size: 24px;
-  display: inline-block;
+  display: flex;
   margin: 5px;
 }
 
@@ -126,11 +166,38 @@ body {
   margin: 0 5px;
 }
 
-.fa-list-ul, .fa-hand-o-right {}
+.fa-list-ul {}
 
+.fa-hand-o-right {
+  display: flex;
+  justify-content: flex-end;
+  text-align: right;
+  .faText {
+    margin-right: 0;
+  }
+}
+
+.fa-hand-o-left {
+  display: flex;
+  justify-content: flex-start;
+  text-align: left;
+  .faText {
+    margin-left: 0;
+  }
+}
+
+.fa-check {
+  color: $fontColorCheck;
+}
 .smallIcon {
   font-size: 80%;
   margin-right: 5px;
+}
+
+header {
+  .fa {
+    color: $fontColorIconHeader;
+  }
 }
 
 /* @@@@@@@@@@@@@@@@ HEADER @@@@@@@@@@@@@@ */
@@ -138,7 +205,7 @@ body {
 .header {
   padding: 15px 5px;
   height: $header-height;
-  background-color: $blue4;
+  background-color: $headerColor;
 }
 
 header {
@@ -146,32 +213,41 @@ header {
   width: 100%;
   h1 {
     font-size: 24px;
-    color: $blue6;
+    color: $fontColorHeader;
     width: 100%;
   }
 }
 
-.landing, .login, .profile {
-  text-align: center;  
+.landing, .login, .profile { // immediate parent is main
+  text-align: center; 
+  width: 100%; 
 }
 
 /* @@@@@@@@@@@@@@ STATUS BAR @@@@@@@@@@@@ */
 
-.statusBarContainer {
+.statusBarContainer { // immediate parent is .question
   position: relative;
   text-align: center;
   width: 100%;
   margin-top: 10px;
   margin-bottom: 30px;
   height: 20px;  
+  -moz-box-shadow: 10px 10px 10px -8px $shadow;
+  -webkit-box-shadow: 10px 10px 10px -8px $shadow;
+  box-shadow: 10px 10px 10px -8px $shadow;
 }
 
 .statusIconContainer {
   position: relative;
   text-align: center;
-  width: 40px;
+  width: 50px;
   height: 15px;
-  display: inline-block;
+  display: flex;
+  margin: 0 5px;
+  overflow: none;
+  -moz-box-shadow: 5px 5px 5px -4px $shadow;
+  -webkit-box-shadow: 5px 5px 5px -4px $shadow;
+  box-shadow: 5px 5px 5px -4px $shadow;
 }
 
 .statusBar {
@@ -180,41 +256,57 @@ header {
   position: absolute;
   top: 0;
 }
-
-.statusBarCorrect {
-  background-color: green;
-  z-index: 9;  
-  right: 0;
-}
-.statusBarCompleted {
-  background-color: red;
-  z-index: 8;
-  left: 0;
-}
-.statusBarCurrentIndex {
-  background-color: yellow;
-  z-index: 7;
-  left: 0;  
-}
-.statusBarCurrent {
-  background-color: black;
-  z-index: 6;
-  left: 0;  
-}
-.statusBarTotal {
-  background-color: gray;
-  z-index: 5;  
-  left: 0;  
-}
-.statusBarCompletedContainer {
+.statusBarCompletedContainer { // immediate parent is either statusBarContainer or statusIconContainer
   position: absolute;
   left: 0;
+  background-color: transparent; // immediate children are .statusBarCorrect and .statusBarCompleted
+}
+.statusBarCorrect {
+  background-color: $green3;
+  z-index: 9;  
+  right: 0;
+  border-right: 1px solid $linesLight;
+}
+.statusBarCompleted {
+  background-color: $red1;
+  z-index: 8;
+  left: 0;
+  border-right: 1px solid $linesLight;
+}
+.statusBarCurrentIndex {
+  background-color: $yellow1;
+  z-index: 7;
+  left: 0;  
+  border-right: 1px solid $linesLight;
+}
+.statusBarCurrent {
+  background-color: $statusCurrentColor;
+  z-index: 6;
+  left: 0;  
+  border-right: 1px solid $linesLight;
+}
+.statusBarTotal {
+  background-color: transparent;
+  border: 1px solid $lines;
+  z-index: 99;  
+  left: 0;  
 }
 
 /* @@@@@@@@@@@@@@ BUTTONS @@@@@@@@@@@@ */
 
-.loginButton, .submitButton {
+button {
+  color: $fontColorButton;  
+  background-color: $buttonBackgroundColor;
+  display: flex;  
+  text-align: center;
+  justify-content: center;
+  margin: 15px;
+}
+.enterButton, .loginButton, .submitButton {
   font-size: 35px;
+}
+.submitButton {
+  margin-bottom: 0;
 }
 
 .aboutButton, .createAccountButton, .gotoQuizListButton, 
@@ -222,12 +314,21 @@ header {
   font-size: 20px;
 }
 
-.loginButton, .aboutButton, .createAccountButton, .gotoQuizListButton,
+.gotoQuizListButton {
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+ .gotoQuizListButton,
 .checkAccuracyButton, .takeAnotherQuizButton, .submitButton {
-  background-color: $blue3;
-  display: inline-block;  
-  color: $brown7;  
-  margin: 15px;
+  min-width: 100px;
+  max-width: 200px;
+}
+
+.enterButton, .aboutButton, .loginButton, .createAccountButton {
+  min-width: 200px;
+  max-width: 250px;
 }
 
 /* @@@@@@@@@@@@@@ LANDING @@@@@@@@@@@@ */
@@ -235,98 +336,183 @@ header {
 .landingCover {
   padding: 50px 10px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .landingLogoTop {
   font-size: 75px;
-  color: darken($blue4, 5%);
+  color: darken($fontColorLogo, 5%);
 }
 
 .landingLogoMid {
   margin-top: 10px;
   font-size: 40px;
-  color: $blue4;
+  color: $fontColorLogo;
 }
 
 .landingLogoBot {
   font-size: 70px;
-  color: lighten($blue4, 7%);
+  color: lighten($fontColorLogo, 7%);
   margin-bottom: 30px;
 }
 
 .landingTitle {
   font-size: 45px;
-  color: $brown3;
+  color: $fontColorLanding;
   font-family: 'Archivo Black', sans-serif;
   margin: 15px 0;
 }
+
+.landingButtons, .loginButtons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+/* @@@@@@@@@@@@@@ LOGIN  @@@@@@@@@@@@ */
+
+.login { // immediate parent is main
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+}
 /* @@@@@@@@@@@@@@ QUIZ LISTS  @@@@@@@@@@@@ */
 
+.quizUl {
+  display: flex;
+  flex-direction: column;
+}
+
 .quizLi, .quizLiName, .quizLiCategory, .quizLiDifficulty {
-  display: inline-block;
+  display: flex;
 }
 .quizLi {
-  margin: 15px 0;
+  align-items: center;  
+}
+.quizLi-Li {
+  display: flex;
+  align-items: center;
+  padding-bottom: 5px;
+  border-bottom: 1px solid $linesLight;
+  margin-bottom: 5px;
+  .smallIcon {
+    width: 50px;
+  }
 }
 .quizLiName {
-  width: 120px;
+  width: 150px;
 }
 .quizLiCategory {
   width: 50px;
 }
 .quizLiDifficulty {
-  width: 30px;
+  width: 25px;
+  height: 25px;
+  margin-left: 5px;
+  margin-right: 5px;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 1px solid $linesLight;
+  -moz-box-shadow: 5px 5px 5px -4px $shadow;
+  -webkit-box-shadow: 5px 5px 5px -4px $shadow;
+  box-shadow: 5px 5px 5px -4px $shadow;
 }
-.dashboardQuizListHeader {
+.diff1{
+  background-color: $diff1Color;
+}
+.diff2{
+  background-color: $diff2Color;
+}
+.diff3{
+  background-color: $diff3Color;
+}
+.diff4{
+  background-color: $diff4Color;
+}
+.diff5{
+  background-color: $diff5Color;
+}
+.dashboardQuizListHeader, .quizListHeader {
   margin: 20px 0;
 }
 
 .statusBox {
-  display: inline-block;
+  display: flex;
 }
+
 /* @@@@@@@@@@@@@@ FORMS  @@@@@@@@@@@@ */
 
 .profileInput {
   font-size: 18px;
   padding: 8px;
   margin: 5px;
-  display: inline-block;
+  display: flex;
   text-align: left;
+  width: 250px;
 }
 .inputLabel {
   margin-bottom: 20px;
-  margin-top: 5px;
-  display: block;
-  text-align: center;
-  width: 100%;
+  margin-top: 0;
+  margin-left: 5px; // same as .profileInput
+  margin-right: 5px; // same as .profileInput
+  display: flex;
+  width: 250px;
+  color: $fontColorLabel;
 } 
 
-.questionAsked {
-  margin-bottom: 20px;
-  border-bottom: 1px solid $brown2;
-  padding-bottom: 20px;
+.question { // immediate parent is main
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 90vh;
   width: 100%;
+}
+
+.questionAsked, .questionOptions {
+  margin-bottom: 20px;
+  padding: 10px;
+  width: 100%;
+  min-height: 30vh;
+  background-color: $formInsetColor;
+  border: 1px solid $linesLight;
+  -moz-box-shadow: inset 5px 5px 5px -4px $shadow;
+  -webkit-box-shadow: inset 5px 5px 5px -4px $shadow;
+  box-shadow: inset 5px 5px 5px -4px $shadow;
+}
+.questionAsked {
+  flex: 1;
 }
 
 .questionOptions {
-  margin-bottom: 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .questionForm {
-  margin-bottom: 40px;
-  border-bottom: 1px solid $brown2;
-  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.questionButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  .smallIcon {
+    width: 65px;
+  }
 }
 /* @@@@@@@@@@@@@@ GENERAL OVERRIDES @@@@@@@@@@@@ */
-
-// .clearfix:before,
-// .clearfix:after {
-//   content: "";
-//   display: table;
-// } 
-// .clearfix:after {
-//   clear: both;
-// }
 
 .center { text-align: center; }
 .left   { text-align: left; }
@@ -334,13 +520,13 @@ header {
 
 .code {
   font-family: 'Inconsolata', monospace;
-  color: $blue6;
+  color: $red2;
 }
 
 .codeBox {
-  background-color: $brown2;
+  background-color: $white;
 }
 
 .inactive {
-  color: $brown4;
+  color: $fontColorInactive;
 }

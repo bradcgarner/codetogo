@@ -7,31 +7,37 @@ import * as actionsMode from '../actions/mode';
 import * as actionsQuiz from '../actions/quiz';
 const deepAssign = require('deep-assign');
 
-export function Dashboard(props) {
+export class Dashboard extends React.Component {
 
-  const handleQuizlistButton = () => {
-    if ( props.quiz.menuOfAllQuizzes.length > 1) {
-      props.dispatch(actionsMode.gotoQuizlist());
+ handleQuizlistButton(){
+    if ( this.props.quiz.menuOfAllQuizzes.length > 1) {
+      this.props.dispatch(actionsMode.gotoQuizlist());
     } else {
-      props.dispatch(actionsQuiz.fetchQuizzes());      
+      this.props.dispatch(actionsQuiz.fetchQuizzes());      
     }
   }
-  const listHeader = props.user.quizzes ? 'My Quizzes' : '' ;
-  console.log('props.user.quizzes',props.user.quizzes)
-  const quizLi = props.user.quizzes.map((quiz, index)=>{
-    return <QuizLi key={index} li={deepAssign({},quiz)} />
-  })
-  const addButtonLabel = props.user.quizzes.length ? 'Add Another Quiz' : 'Add a Quiz';
+
+  render() {
+    const listHeader = this.props.user.quizzes ? 'My Quizzes' : '' ;
+    console.log('this.props.user.quizzes',this.props.user.quizzes)
+    const quizLi = this.props.user.quizzes.map((quiz, index)=>{
+      return <QuizLi key={index} li={deepAssign({},quiz)} />
+    })
+    const addButtonLabel = this.props.user.quizzes.length ? 'Add Another Quiz' : 'Add a Quiz';
 
     return (
       <div className="dashboard">
         <Badges />
-        <Recent recent={props.user.recent}/>
+        <Recent recent={this.props.user.recent}/>
         <h3 className="dashboardQuizListHeader">{listHeader}</h3>
-        {quizLi}            
-        <button className="gotoQuizListButton"onClick={()=>handleQuizlistButton()}>{addButtonLabel}</button>
+        <ul className="quizUl">
+          {quizLi}
+        </ul>            
+        <button className="gotoQuizListButton"onClick={()=>this.handleQuizlistButton()}>{addButtonLabel}</button>
       </div>
     );
+  }
+
 }
 
 const mapStateToProps = state => ({

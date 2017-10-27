@@ -12,7 +12,8 @@ export function QuizLi(props) {
   const id = thisQuiz.id;
   const attempt = thisQuiz.attempt;
   const category= thisQuiz.category || 'cat';
-  const difficulty= thisQuiz.difficulty || 'dif';
+  const difficulty= thisQuiz.difficulty || 1;
+  const diffClass = `quizLiDifficulty diff${difficulty}`
   const name= thisQuiz.name || 'name';
   const user = deepAssign({}, props.user);
   console.log('deep assign of props.user @ quizli load', user);
@@ -29,7 +30,7 @@ export function QuizLi(props) {
   const theQuiz = <div className="quizLi">
     <div className="quizLiName">{name}</div>
     <div className="quizLiCategory">{category}</div>
-    <div className="quizLiDifficulty">{difficulty}</div>
+    <div className={diffClass}>{difficulty}</div>
   </div>;
 
   const statusBox = <StatusBar 
@@ -48,7 +49,7 @@ export function QuizLi(props) {
   if ( isListed && props.mode.view === 'dashboard' ) {
     statusBoxOrAddButton = statusBox ;
   } else if ( isListed ) {
-    statusBoxOrAddButton = <i class="fa fa-check smallIcon" aria-hidden="true"></i>
+    statusBoxOrAddButton = <i className="fa fa-check smallIcon" aria-hidden="true"></i>
   }
 
   const takeButton = <i className="fa fa-hand-o-right smallIcon" aria-hidden="true" onClick={()=>handleTakeQuizButton('take')}>
@@ -56,7 +57,7 @@ export function QuizLi(props) {
   </i>;
   
   return (
-      <li>{theQuiz}{statusBoxOrAddButton}{takeButton}</li>
+      <li className="quizLi-Li">{theQuiz}{statusBoxOrAddButton}{takeButton}</li>
   );
 }
 

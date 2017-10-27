@@ -2,10 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 export function Badges(props) {
-
+// badges can be earned based on category (e.g. HTML, React), accuracy, difficulty, and score
     return (
       <div>
-        <p className="temp">Badges</p>
       </div>
     );
 }

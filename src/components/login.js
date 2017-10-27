@@ -36,7 +36,7 @@ export class Login extends React.Component {
             type="text" 
             placeholder="username" 
             required
-          /><br />
+          />
           <label className="inputLabel center" htmlFor="username">Username</label>
           <Field 
             className="profileInput"
@@ -46,12 +46,14 @@ export class Login extends React.Component {
             type="text" 
             placeholder="password" 
             required
-          /><br />
+          />
           <label className="inputLabel center" htmlFor="password">Password</label>
-          <button type="submit" className="loginButton clearfix">Login</button>
+          <div className="loginButtons">
+            <button type="submit" className="loginButton clearfix">Login</button>
+            <button className="createAccountButton" onClick={e=>this.handleCreateAccountButton()}>Create Account</button>
+          </div>
         </form>
 
-        <button className="createAccountButton" onClick={e=>this.handleCreateAccountButton()}>Create Account</button>
       </div>
     );
   }

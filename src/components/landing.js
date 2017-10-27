@@ -18,11 +18,12 @@ export function Landing(props) {
           <p className="landingLogo landingLogoTop">{`{()=>{}}`}</p>
           <p className="landingLogo landingLogoMid">{`~~:~~`}</p>
           <p className="landingLogo landingLogoBot">{`==`}</p>
-          <h1 className="landingTitle">ama afk</h1>
+          <h1 className="landingTitle">codeToGo.io</h1>
         </div>
-        <button className="loginButton clearfix" onClick={()=>handleLoginButton()}>Enter</button>
-        <br />
-        <button className="aboutButton clearfix"onClick={()=>handleAboutButton()}>About</button>
+        <div className="landingButtons">
+          <button className="enterButton" onClick={()=>handleLoginButton()}>Enter</button>
+          <button className="aboutButton"onClick={()=>handleAboutButton()}>About</button>
+        </div>
       </div>
 
     );

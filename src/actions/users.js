@@ -114,7 +114,12 @@ export const updateUserProfile = (credentials, authToken) => dispatch => { //cre
 // update user non-profile data (quizzes taken, badges, etc.)
 export const updateUserData = (userData, authToken) => dispatch => { 
   const url = `${REACT_APP_BASE_URL}/api/users/${userData.id}/data`;
-  const headers = { "Content-Type": "application/json", "Authorization": "Bearer " + authToken};
+  console.log('userData.id',userData.id)
+  const headers = { 
+    "Content-Type": "application/json", 
+    "Authorization": "Bearer " + authToken,
+    'Accept': 'application/json'
+  };
   const init = { 
     method: 'PUT',
     headers,
@@ -125,7 +130,8 @@ export const updateUserData = (userData, authToken) => dispatch => {
   .then(res=>{          //response=user.apiRepr() with archived quizzes filtered out
     console.log(res);
     if (!res.ok) { 
-      return Promise.reject(res.statusText);
+      // return Promise.reject(res.statusText);
+      return console.log('error', res);
     }
     return res.json();
   }) 
@@ -182,6 +188,7 @@ export const submitChoices = (choices, user, nextIndex) => dispatch => { // next
   let completed;
   let correct;
   const quizIndexToUpdate = user.quizzes.findIndex(quiz=>quiz.id === choices.quizId);
+  console.log('user.quizzes quizIndexToUpdate', quizIndexToUpdate, user.quizzes);
   console.log('quizIndexToUpdate', quizIndexToUpdate);
   console.log('quiz to update', user.quizzes[quizIndexToUpdate]);
   let quizForStore;
