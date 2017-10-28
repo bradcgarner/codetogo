@@ -14,34 +14,40 @@ export const reducer = ( state = initialQuiz, action ) => {
     return Object.assign({}, state, {
       menuOfAllQuizzes: action.menuOfAllQuizzes
     })
-  } else if ( action.type === actions.UPDATE_QUIZ_STORE ) {
+  } else if ( action.type === actions.LOAD_QUIZ ) {
     console.log(action);
     return Object.assign({}, state, {
       id: action.id,    
       name: action.name,
       category: action.category,
       difficulty: action.difficulty,
-      questions: action.questions || state.questions,
-      originalLength: action.originalLength || state.questions.length,
+      questions: action.questions,
+      originalLength: action.originalLength,
       attempt: action.attempt,    
       currentIndex: action.currentIndex || 0,
       completed: action.completed,
       correct: action.correct,  
-      total: action.total,  
-      formIsEmpty: action.formIsEmpty
+      total: action.questions.length,  
+      formIsEmpty: true
     }) 
-  } else if ( action.type === actions.INCREMENT_QUIZ_STORE ) {
+  } else if ( action.type === actions.NEXT_QUESTION ) {
     console.log(action);
     return Object.assign({}, state, {
-      currentIndex: action.currentIndex || 0,
+      currentIndex: action.currentIndex,
       completed: action.completed,
       correct: action.correct,  
-      formIsEmpty: action.formIsEmpty      
+      formIsEmpty: true      
     }) 
+  // } else if ( action.type === actions.SKIP_QUESTION ) {
+  //   console.log(action);
+  //   return Object.assign({}, state, {
+  //     currentIndex: action.currentIndex,
+  //     formIsEmpty: true      
+  //   }) 
   } else if ( action.type === actions.UPDATE_CURRENT_QUESTION ) {
       return Object.assign({}, state, {
         currentIndex: action.currentIndex,
-        formIsEmpty: action.formIsEmpty        
+        formIsEmpty: true        
       })    
       
   // this updates the CURRENT quiz

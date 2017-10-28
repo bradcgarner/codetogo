@@ -9,15 +9,34 @@ export const updateUserStore = user => {
   return deepAssign({}, user, {  type: UPDATE_USER_STORE } )
 }
 
-// export const UPDATE_USER_QUIZ_SCORE = 'UPDATE_USER_QUIZ_SCORE';
-// export const updateUserQuizScore = (quizId, totalCorrect, totalCompleted) => ({
-//   type: UPDATE_USER_QUIZ_SCORE,
-//   quizId,
-//   totalCorrect,
-//   totalCompleted
-// });
 
 // @@@@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@@@@@@
+
+//get user by Id  - used at login
+// export const getUser = (id) => dispatch => { 
+//   console.log('id',id)
+//   const url = `${REACT_APP_BASE_URL}/api/users/${id}/`;
+//   console.log('url', url);
+//   const init = { 
+//     method: 'GET'
+//   };
+//   return fetch(url, init)
+//   .then(res=>{//response user api repr  
+//     console.log(res);
+//     if (!res.ok) { 
+//       return Promise.reject(res.statusText);
+//     }
+//     return res.json();
+//   }) 
+//   .then(user => { 
+//     console.log('user found', user); 
+//     return dispatch(updateUserStore(user));
+//   })
+//   .catch(error => {
+//   // dispatch(loginError(error));
+//     console.log(error);
+//   });
+// }
 
 export const login = (credentials) => dispatch => {
   const url = `${REACT_APP_BASE_URL}/api/auth/login`;
@@ -27,6 +46,7 @@ export const login = (credentials) => dispatch => {
     method: 'POST',
     headers
   };
+  let fetchedUser;
   console.log('init', init);
   return fetch(url, init)
   .then(res=>{
@@ -35,14 +55,21 @@ export const login = (credentials) => dispatch => {
       return Promise.reject(res.statusText);
     }
     return res.json();
-  }) 
-  .then(user => { 
-    console.log('user from db', user);
-    dispatch(updateUserStore(user));
-    if (user.quizzes.length > 0 ) {
+  })
+  .then(user=>{
+    console.log('user returned at login', fetchedUser);    
+    return fetchedUser = user;    
+  })
+  .then(()=>{
+    return dispatch(actionsQuiz.fetchQuizzes());     
+  })
+  .then(() => { 
+    dispatch(updateUserStore(fetchedUser));
+    console.log('END LOGIN. USER STORE IS UPDATED WITH:', fetchedUser);
+    if (fetchedUser.quizzes.length > 0 ) {
       return dispatch(actionsMode.gotoDashboard());      
     } else {
-    return dispatch(actionsQuiz.fetchQuizzes()); 
+      return dispatch(actionsMode.gotoQuizlist());
     }
   })
   .catch(error => {
@@ -145,38 +172,30 @@ export const updateUserData = (userData, authToken) => dispatch => {
     console.log(error);
   });
 }
-  
-//get user by Id  - used at login
-export const getUser = (id) => dispatch => { 
-  console.log('id',id)
-  const url = `${REACT_APP_BASE_URL}/api/users/${id}/`;
-  console.log('url', url);
-  const init = { 
-    method: 'GET'
-  };
-  return fetch(url, init)
-  .then(res=>{//response user api repr  
-    console.log(res);
-    if (!res.ok) { 
-      return Promise.reject(res.statusText);
-    }
-    return res.json();
-  }) 
-  .then(user => { 
-    console.log('user found', user); 
-    return dispatch(updateUserStore(user));
-  })
-  .catch(error => {
-  // dispatch(loginError(error));
-    console.log(error);
-  });
+
+// ~~~~~~~~~~~~~~ HELPERS FOR SUBMIT CHOICES ~~~~~~~~~~~~~~
+
+export const calcCompletedAndCorrect = (choices) => {
+  console.log('all Quiz Choices ', choices); 
+  const completed = choices.length;
+  console.log('completed',completed); 
+  const choicesCorrect = choices.filter(choice => choice.correct === true );
+  console.log('choicesCorrect',choicesCorrect); 
+  const correct = choicesCorrect.length;
+  console.log('correct',correct); 
+  return { correct, completed };
 }
 
 export const submitChoices = (choices, user, nextIndex) => dispatch => { // nextIndex === 999 if score
-  console.log('choice as received by submitChoices',choices)
-  console.log('nextIndex as received by submitChoices',nextIndex)
+  const updatedUser = deepAssign({}, user );
+  let quizForStore;
+  console.log('nextIndex, choice as received by submitChoices',nextIndex, choices)
+  const quizIndexToUpdate = user.quizzes.findIndex(quiz=>quiz.id === choices.quizId);
+  console.log('user.quizzes quizIndexToUpdate', quizIndexToUpdate, user.quizzes);
+  console.log('quiz to update', user.quizzes[quizIndexToUpdate]);
+  if (quizIndexToUpdate < 0 ) {return console.log('cannot updated quiz index of ', quizIndexToUpdate);}
+
   const url = `${REACT_APP_BASE_URL}/api/choices/`;
-  console.log('url for submitChoices', url);
   const headers = { "Content-Type": "application/json", "Authorization": "Bearer " + user.authToken};
   const init = { 
     method: 'POST',
@@ -184,14 +203,6 @@ export const submitChoices = (choices, user, nextIndex) => dispatch => { // next
     body: JSON.stringify(choices),
   };
   console.log('init for submitChoices', init);
-  const updatedUser = deepAssign({}, user );
-  let completed;
-  let correct;
-  const quizIndexToUpdate = user.quizzes.findIndex(quiz=>quiz.id === choices.quizId);
-  console.log('user.quizzes quizIndexToUpdate', quizIndexToUpdate, user.quizzes);
-  console.log('quizIndexToUpdate', quizIndexToUpdate);
-  console.log('quiz to update', user.quizzes[quizIndexToUpdate]);
-  let quizForStore;
 
   // POST CHOICE: SCORES, SAVES IN DB, RETURNS ALL CHOICES THIS QUIZ, THIS ATTEMPT
   return fetch(url, init)
@@ -203,46 +214,34 @@ export const submitChoices = (choices, user, nextIndex) => dispatch => { // next
     return res.json();
   })
 
-  // UPDATE COMPLETED & CORRECT
+  // UPDATE COMPLETED & CORRECT THIS QUIZ
   .then(allQuizChoices => { // this is to update state.user.quizzes[].completed
-    console.log('allQuizChoices ', allQuizChoices); 
-    completed = allQuizChoices.length;
-    console.log('completed',completed); 
-
-    const choicesCorrect = allQuizChoices.filter(choice => choice.correct === true );
-    console.log('choicesCorrect',choicesCorrect); 
-    correct = choicesCorrect.length;
-    console.log('correct',correct); 
+    const score = calcCompletedAndCorrect(allQuizChoices);
+    updatedUser.quizzes[quizIndexToUpdate].completed = score.completed;
+    updatedUser.quizzes[quizIndexToUpdate].correct = score.correct;
     
-    updatedUser.quizzes[quizIndexToUpdate].completed = completed;
-    updatedUser.quizzes[quizIndexToUpdate].correct = correct;
     console.log('updatedUser after updating completed & correct',updatedUser);
-    console.log('quizIndexToUpdate',quizIndexToUpdate);
-    console.log('updatedUser.quizzes[quizIndexToUpdate]',updatedUser.quizzes[quizIndexToUpdate]);
-    
-    // UPDATE QUIZ STORE
+    console.log('updatedUser.quizzes[quizIndexToUpdate]',quizIndexToUpdate, updatedUser.quizzes[quizIndexToUpdate]);
+
+    // UPDATE USER IN DB (ASYNC) AND IN STORE    
+    return dispatch(updateUserData(updatedUser, user.authToken));
+  })
+
+  // UPDATE QUIZ STORE
+  .then(()=>{
     quizForStore = deepAssign({}, updatedUser.quizzes[quizIndexToUpdate]);
     if (nextIndex !== 999 ) { quizForStore.nextIndex = nextIndex }
     console.log('quizForStore',quizForStore);
-    
-    // UPDATE USER IN DB (ASYNC) AND IN STORE
-    return dispatch(updateUserData(updatedUser, user.authToken));
-  
-    // dispatch(actionsUser.updateUserQuizScore(quizId, totalCorrect, totalCompleted));
-
+    return dispatch(actionsQuiz.nextQuestion(quizForStore));
   })
 
-  // ADVANCE QUIZ
+  // ADVANCE TO SCORE IF AT END
   .then(()=> {
     console.log('quizForStore',quizForStore);
     if ( nextIndex === 999 ) { /// 999 === score
       console.log('choices.quizId', choices.quizId, 'user', user, 'attempt', choices.attempt);
-      dispatch(actionsMode.gotoResults());
-      return dispatch(actionsQuiz.incrementQuizStore(quizForStore));
-      // return dispatch(actionsQuiz.scoreQuiz(choices.quizId, user, choices.attempt));
-    } else {
-      dispatch(actionsQuiz.incrementQuizStore(quizForStore));      
-    }
+      return dispatch(actionsMode.gotoResults());
+    } 
   })
   .catch(error => {
    // dispatch(loginError(error));

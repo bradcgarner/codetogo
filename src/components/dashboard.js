@@ -9,12 +9,8 @@ const deepAssign = require('deep-assign');
 
 export class Dashboard extends React.Component {
 
- handleQuizlistButton(){
-    if ( this.props.quiz.menuOfAllQuizzes.length > 1) {
-      this.props.dispatch(actionsMode.gotoQuizlist());
-    } else {
-      this.props.dispatch(actionsQuiz.fetchQuizzes());      
-    }
+  handleQuizlistButton(){
+    this.props.dispatch(actionsMode.gotoQuizlist());
   }
 
   render() {

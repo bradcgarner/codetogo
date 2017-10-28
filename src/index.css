@@ -71,11 +71,14 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center; }
+  align-items: center;
+  background-image: -moz-linear-gradient(135deg, #ebf5ff 0%, #e6f2ff 30%, white 50%, #e6f2ff 80%, #ebf5ff 100%);
+  background-image: -webkit-linear-gradient(135deg, #ebf5ff 0%, #e6f2ff 30%, white 50%, #e6f2ff 80%, #ebf5ff 100%);
+  background-image: -o-linear-gradient(135deg, #ebf5ff 0%, #e6f2ff 30%, white 50%, #e6f2ff 80%, #ebf5ff 100%);
+  background-image: linear-gradient(135deg, #ebf5ff 0%, #e6f2ff 30%, white 50%, #e6f2ff 80%, #ebf5ff 100%); }
 
 main {
-  min-width: 300px;
-  max-width: 768px; }
+  width: 320px; }
 
 .about, .login, .profile, .dashboard, .quizlist {
   margin: 20px 10px 10px 10px;
@@ -109,19 +112,23 @@ main {
 .fa-hand-o-right {
   display: flex;
   justify-content: flex-end;
-  text-align: right; }
+  text-align: right;
+  flex-direction: column; }
   .fa-hand-o-right .faText {
-    margin-right: 0; }
+    margin-right: 0;
+    margin-top: 3px; }
 
 .fa-hand-o-left {
   display: flex;
   justify-content: flex-start;
-  text-align: left; }
+  text-align: left;
+  flex-direction: column; }
   .fa-hand-o-left .faText {
-    margin-left: 0; }
+    margin-left: 0;
+    margin-top: 3px; }
 
 .fa-check {
-  color: #388e3c; }
+  color: #11b7a9; }
 
 .smallIcon {
   font-size: 80%;
@@ -134,14 +141,24 @@ header .fa {
 .header {
   padding: 15px 5px;
   height: 50px;
-  background-color: #9a9b94; }
-
-header {
+  background: #5d5aa0;
+  /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(60deg, #5d5aa0, #37365e);
+  /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(60deg, #5d5aa0, #37365e);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(60deg, #5d5aa0, #37365e);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(60deg, #5d5aa0, #37365e);
+  /* Standard syntax (must be last) */
+  -moz-box-shadow: 0px 4px 4px #999;
+  -webkit-box-shadow: 0px 4px 4px #999;
+  box-shadow: 0px 4px 4px #999;
   position: relative;
   width: 100%; }
-  header h1 {
+  .header h1 {
     font-size: 24px;
-    color: #7e3c48;
+    color: #fafcff;
     width: 100%; }
 
 .landing, .login, .profile {
@@ -149,9 +166,19 @@ header {
   width: 100%; }
 
 /* @@@@@@@@@@@@@@ STATUS BAR @@@@@@@@@@@@ */
-.statusBarContainer {
+.statusBarContainer, .statusIconContainer {
   position: relative;
-  text-align: center;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  height: 20px;
+  display: flex;
+  justify-content: flex-start;
+  overflow: none;
+  border: 1px solid #52524e;
+  z-index: 99; }
+
+.statusBarContainer {
   width: 100%;
   margin-top: 10px;
   margin-bottom: 30px;
@@ -161,62 +188,82 @@ header {
   box-shadow: 10px 10px 10px -8px #999; }
 
 .statusIconContainer {
-  position: relative;
-  text-align: center;
   width: 50px;
   height: 15px;
-  display: flex;
   margin: 0 5px;
-  overflow: none;
   -moz-box-shadow: 5px 5px 5px -4px #999;
   -webkit-box-shadow: 5px 5px 5px -4px #999;
   box-shadow: 5px 5px 5px -4px #999; }
 
+.statusBarAttempt {
+  display: flex;
+  width: 20px;
+  font-size: 90%;
+  color: #797973; }
+
 .statusBar {
   width: 100%;
   height: 100%;
-  position: absolute;
-  top: 0; }
+  display: flex;
+  top: 0;
+  -webkit-transition: width 2s, -webkit-transform 2s;
+  transition: width 2s, transform 2s; }
 
-.statusBarCompletedContainer {
-  position: absolute;
-  left: 0;
-  background-color: transparent; }
+.statusBarSkipped {
+  background: #ffe496;
+  /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(90deg, #ffe496, #ffca30);
+  /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(90deg, #ffe496, #ffca30);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(90deg, #ffe496, #ffca30);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(90deg, #ffe496, #ffca30);
+  /* Standard syntax (must be last) */ }
+
+.statusBarIncorrect {
+  background: #bc6da0;
+  /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(90deg, #bc6da0, #863d6c);
+  /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(90deg, #bc6da0, #863d6c);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(90deg, #bc6da0, #863d6c);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(90deg, #bc6da0, #863d6c);
+  /* Standard syntax (must be last) */ }
 
 .statusBarCorrect {
-  background-color: #8bc34a;
-  z-index: 9;
-  right: 0;
-  border-right: 1px solid #ccc; }
+  background: #15e6d4;
+  /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(90deg, #15e6d4, #0d887e);
+  /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(90deg, #15e6d4, #0d887e);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(90deg, #15e6d4, #0d887e);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(90deg, #15e6d4, #0d887e);
+  /* Standard syntax (must be last) */ }
 
-.statusBarCompleted {
-  background-color: #dc4444;
-  z-index: 8;
-  left: 0;
-  border-right: 1px solid #ccc; }
-
-.statusBarCurrentIndex {
-  background-color: #f4e557;
-  z-index: 7;
-  left: 0;
-  border-right: 1px solid #ccc; }
+.statusBarJustOne {
+  background: #6c6c67;
+  /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(90deg, #6c6c67, #383835);
+  /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(90deg, #6c6c67, #383835);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(90deg, #6c6c67, #383835);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(90deg, #6c6c67, #383835);
+  /* Standard syntax (must be last) */ }
 
 .statusBarCurrent {
-  background-color: #52524e;
-  z-index: 6;
-  left: 0;
-  border-right: 1px solid #ccc; }
-
-.statusBarTotal {
-  background-color: transparent;
-  border: 1px solid #52524e;
-  z-index: 99;
-  left: 0; }
+  background-color: #52524e; }
 
 /* @@@@@@@@@@@@@@ BUTTONS @@@@@@@@@@@@ */
 button {
-  color: #7e3c48;
-  background-color: #d4d6c8;
+  color: #53452f;
+  background-color: #cdddf9;
   display: flex;
   text-align: center;
   justify-content: center;
@@ -256,16 +303,16 @@ button {
 
 .landingLogoTop {
   font-size: 75px;
-  color: #6d343e; }
+  color: #746042; }
 
 .landingLogoMid {
   margin-top: 10px;
   font-size: 40px;
-  color: #7e3c48; }
+  color: #9b8058; }
 
 .landingLogoBot {
   font-size: 70px;
-  color: #964856;
+  color: #746042;
   margin-bottom: 30px; }
 
 .landingTitle {
@@ -303,7 +350,7 @@ button {
   display: flex;
   align-items: center;
   padding-bottom: 5px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #4a487f;
   margin-bottom: 5px; }
   .quizLi-Li .smallIcon {
     width: 50px; }
@@ -312,7 +359,10 @@ button {
   width: 150px; }
 
 .quizLiCategory {
-  width: 50px; }
+  width: 55px;
+  padding-left: 5px;
+  font-size: 90%;
+  color: #797973; }
 
 .quizLiDifficulty {
   width: 25px;
@@ -324,25 +374,25 @@ button {
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  border: 1px solid #ccc;
+  border: 1px solid #4a487f;
   -moz-box-shadow: 5px 5px 5px -4px #999;
   -webkit-box-shadow: 5px 5px 5px -4px #999;
   box-shadow: 5px 5px 5px -4px #999; }
 
 .diff1 {
-  background-color: #faf4b7; }
+  background-color: #fff8e3; }
 
 .diff2 {
-  background-color: #f4e557; }
+  background-color: #ffebb0; }
 
 .diff3 {
-  background-color: #efda10; }
+  background-color: #ffd763; }
 
 .diff4 {
-  background-color: #f5a855; }
+  background-color: #ffc317; }
 
 .diff5 {
-  background-color: #e67e0e; }
+  background-color: #b08300; }
 
 .dashboardQuizListHeader, .quizListHeader {
   margin: 20px 0; }
@@ -380,11 +430,11 @@ button {
   padding: 10px;
   width: 100%;
   min-height: 30vh;
-  background-color: white;
-  border: 1px solid #ccc;
-  -moz-box-shadow: inset 5px 5px 5px -4px #999;
-  -webkit-box-shadow: inset 5px 5px 5px -4px #999;
-  box-shadow: inset 5px 5px 5px -4px #999; }
+  background-color: #fafcff;
+  border: 1px solid #4a487f;
+  -moz-box-shadow: inset 5px 5px 5px -4px #9c9ac6;
+  -webkit-box-shadow: inset 5px 5px 5px -4px #9c9ac6;
+  box-shadow: inset 5px 5px 5px -4px #9c9ac6; }
 
 .questionAsked {
   flex: 1; }
@@ -420,12 +470,12 @@ button {
 
 .code {
   font-family: 'Inconsolata', monospace;
-  color: #97124b; }
+  color: #a94d88; }
 
 .codeBox {
   background-color: white; }
 
 .inactive {
-  color: #9a9b94; }
+  color: #bfac8f; }
 
 /*# sourceMappingURL=index.css.map */

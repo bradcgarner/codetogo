@@ -2,34 +2,41 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 export function StatusBar(props) {
-  
+  console.log('props in statusbar', props);
   const containerClass = props.mode === 'question' ? 'statusBarContainer' : 'statusIconContainer' ;
 
-  const total = props.total;
-  const originalLength = props.originalLength || total;
-  const priorCompleted = originalLength - total;
-  const current = props.currentIndex + priorCompleted + 1;
-  const currentIndex = props.currentIndex + priorCompleted;
-  const completed = props.completed + priorCompleted;
-  const correct = props.correct;
-  console.log('total',total,'current',current,'currentIndex',currentIndex,'completed',completed,'correct',correct);
+  const currentLength = props.total;
+  const totalLength = props.originalLength || currentLength;
+
+  const totalCompleted = props.completed; // reads directly from quiz, which updates as we go, includes
+  const currentCompleted = totalCompleted - priorCompleted;
+  const priorCompleted = totalLength - currentLength;
   
-  const totalPct = 100;
-  const currentPct = (current/originalLength)*100 || 0;
-  const currentIndexPct = (currentIndex/originalLength)*100 || 0;
-  const completedPct = (completed/originalLength)*100 || 0;
-  const correctPct = (correct/completed)*100 || 0;
-  console.log('total',totalPct,'current',currentPct,'currentIndex',currentIndexPct,'completed',completedPct,'correct',correctPct);
+  const totalIndex = props.mode === 'question' ? props.currentIndex + priorCompleted + 1 : 0 ;
+  const currentIndex = props.mode === 'question' ? props.currentIndex + 1 : 0 ;
+  
+  const currentSkipped = props.mode === 'question' ? currentIndex - currentCompleted : 0 ;
+  const totalCorrect = props.correct || 0;
+  const totalIncorrect = totalCompleted - totalCorrect;
+  const justOne = props.mode === 'question' ? 1 : 0 ;
+  
+  const attempt = props.attempt; // || 0;
+  
+  // const currentLengthPct = 100;
+  // const totalIndexPct = (totalIndex/totalLength)*100 || 0;
+  // const completedPct = (completed/totalLength)*100 || 0;
+  const currentSkippedPct = (currentSkipped/totalLength)*100 || 0;
+  const totalIncorrectPct = (totalIncorrect/totalLength)* 100 || 0;
+  const totalCorrectPct = (totalCorrect/totalLength)*100 || 0;
+  const justOnePct = (justOne/totalLength)*100;
+  console.log(props.name,'attempt', attempt, 'currentLength',currentLength,'totalLength',totalLength,'currentCompleted',currentCompleted,'priorCompleted',priorCompleted,'totalIndex',totalIndex,'currentIndex',currentIndex,'currentSkipped',currentSkipped,'currentSkippedPct', currentSkippedPct,'totalIncorrect',totalIncorrect, 'totalIncorrectPct', totalIncorrectPct, 'totalCorrect', totalCorrect, 'totalCorrectPct', totalCorrectPct, 'justOne', justOne, 'justOnePct', justOnePct);
   
   return (
-    <div className={containerClass}>
-      <div className="statusBarTotal statusBar" style={{width: totalPct + '%'}}></div>
-      <div className="statusBarCurrent statusBar" style={{width: currentPct + '%'}}></div>
-      <div className="statusBarCurrentIndex statusBar" style={{width: currentIndexPct + '%'}}></div>
-      <div className="statusBarCompletedContainer statusBar" style={{width: completedPct + '%'}}>
-        <div className="statusBarCompleted statusBar" style={{width: 100 + '%'}}></div>
-        <div className="statusBarCorrect statusBar" style={{width: correctPct + '%'}}></div>
-      </div>
+    <div className={containerClass}> {/* statusBarContainer statusIconContainer */}
+      <div className="statusBarSkipped statusBar" style={{width: currentSkippedPct + '%'}}></div>
+      <div className="statusBarIncorrect statusBar" style={{width: totalIncorrectPct + '%'}}></div>
+      <div className="statusBarCorrect statusBar" style={{width: totalCorrectPct + '%'}}></div>
+      <div className="statusBarJustOne statusBar" style={{width: justOnePct + '%'}}></div>
     </div>
   );
 }

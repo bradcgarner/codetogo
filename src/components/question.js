@@ -8,29 +8,35 @@ import Comments  from './question-comments';
 import * as actionsUser from '../actions/users';
 import * as actionsMode from '../actions/mode';
 import * as actionsQuiz from '../actions/quiz';
+const deepAssign = require('deep-assign');
 
 export class Question extends React.Component {
 
-  handleSubmitButton(choice, currentIndex) {
+  formatChoiceObject(choice, currentIndex){
     let formattedChoices = [];
     for ( let prop in choice ) {
       formattedChoices.push(prop);
     }
-    const formattedChoiceObject = {
+    return {
       userId: this.props.user.id, // user must be logged in
       quizId: this.props.quiz.id,
       attempt: this.props.quiz.attempt,
       questionId: this.props.quiz.questions[currentIndex].id,
       choices : formattedChoices
     };
+  }
+
+  handleSubmitButton(choice, currentIndex) {
+    const formattedChoiceObject = this.formatChoiceObject(choice, currentIndex);
     const nextIndex = this.props.quiz.currentIndex === (this.props.quiz.questions.length - 1) ?
       999 : this.props.quiz.currentIndex + 1 ;
-      console.log('nextIndex', nextIndex);
-      this.props.reset();   
-      this.props.dispatch(actionsUser.submitChoices(formattedChoiceObject, this.props.user, nextIndex));
+    console.log('nextIndex', nextIndex);
+    const user = deepAssign({}, this.props.user);
+    this.props.reset();   
+    this.props.dispatch(actionsUser.submitChoices(formattedChoiceObject, user, nextIndex));
   }  // refer to actions/users.js for format of values
 
-  handleGotoQuestionButton(index) { // index = 1 or -1
+  handleGotoQuestionButton(index) { // for skipping; index = 1 or -1
     console.log('indices at go to question',index, this.props.quiz.currentIndex);
     console.log('this.props.quiz.total', this.props.quiz.total);
     if ( ( index === -1 && this.props.quiz.currentIndex > 0 ) || 
@@ -50,8 +56,7 @@ export class Question extends React.Component {
   
   render() {
 
-    // FIX THIS !!!!!! IS TRYING TO RENDER INDEX 999 !!!!!
-    const currentIndex = this.props.quiz.currentIndex || 0;
+    const currentIndex = this.props.quiz.currentIndex === 999 ? this.props.quiz.questions.length - 1 : this.props.quiz.currentIndex || 0;
     console.log('this.props.quiz',this.props.quiz);
     const currQuestion = this.props.quiz.questions[currentIndex];
     const inputType = currQuestion.inputType; 
@@ -83,11 +88,13 @@ export class Question extends React.Component {
     <div className="question">
       <StatusBar 
         mode={'question'}
+        name = {this.props.quiz.name} // only included for debugging of the status bar on the QuizList
         total = {this.props.quiz.total}
         current = {this.props.quiz.currentIndex + 1}
         currentIndex = {this.props.quiz.currentIndex}
         completed = {this.props.quiz.completed}
         correct = {this.props.quiz.correct}
+        attempt = {this.props.quiz.attempt}
       />
 
       <p className="questionAsked">{this.props.quiz.currentIndex + 1}. {currQuestion.question}</p>

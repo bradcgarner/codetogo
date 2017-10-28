@@ -8,6 +8,8 @@ const deepAssign = require('deep-assign');
 
 export function QuizLi(props) {
 
+  console.log('quiz in li',props.li);
+  
   const thisQuiz = deepAssign({}, props.li);
   const id = thisQuiz.id;
   const attempt = thisQuiz.attempt;
@@ -16,7 +18,7 @@ export function QuizLi(props) {
   const diffClass = `quizLiDifficulty diff${difficulty}`
   const name= thisQuiz.name || 'name';
   const user = deepAssign({}, props.user);
-  console.log('deep assign of props.user @ quizli load', user);
+  const mode = props.mode.view;
 
   let isListed = false;
   props.user.quizzes.forEach(quiz=>{
@@ -24,27 +26,34 @@ export function QuizLi(props) {
   });
   
   const handleTakeQuizButton = (option) => {
-    props.dispatch(actionsQuiz.takeQuiz(thisQuiz, user, option))
+    props.dispatch(actionsQuiz.takeQuiz(thisQuiz, user, option, mode))
   }
 
   const theQuiz = <div className="quizLi">
     <div className="quizLiName">{name}</div>
-    <div className="quizLiCategory">{category}</div>
     <div className={diffClass}>{difficulty}</div>
+    <div className="quizLiCategory">{category}</div>
   </div>;
 
   const statusBox = <StatusBar 
+        name = {thisQuiz.name} // only included for debugging of the status bar on the QuizList
         mode={'quizlist'}
         total = {thisQuiz.total}
         completed = {thisQuiz.completed}
         correct = {thisQuiz.correct}
+        current = {0}
+        currentIndex = {0}
+        attempt = {thisQuiz.attempt}
       />;
-
+      
   const addButton =
   <i className="fa fa-list-ul smallIcon" aria-hidden="true"onClick={()=>handleTakeQuizButton('add')}>
     <span className="faText">Add</span>
   </i> ;
-  // condition below needs to change to ===='dashboard' || the quiz is included in props.user.quizzes...
+
+  let attemptInner = attempt >= 0 ? '#' + (attempt + 1) : '' ;
+  let attemptNumber =  <div className="statusBarAttempt">{attemptInner}</div>
+
   let statusBoxOrAddButton = addButton;
   if ( isListed && props.mode.view === 'dashboard' ) {
     statusBoxOrAddButton = statusBox ;
@@ -57,7 +66,7 @@ export function QuizLi(props) {
   </i>;
   
   return (
-      <li className="quizLi-Li">{theQuiz}{statusBoxOrAddButton}{takeButton}</li>
+      <li className="quizLi-Li">{theQuiz}{attemptNumber}{statusBoxOrAddButton}{takeButton}</li>
   );
 }
 

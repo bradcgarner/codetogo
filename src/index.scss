@@ -5,47 +5,77 @@ $gray2: #d4d6c8;
 $gray3: #9a9b94;
 $gray4: #52524e;
 
-// http://colorhunt.co/c/84735
-$green1: #f2f9f1;
-$green2: #ddeedf;
-$green3: #8bc34a; // correct
-$green4: #388e3c;
+// exotel
+$blue1: #7f8de8;
+$blue2: #6172da;
+$blue3: #0098ff;
 
-// http://colorhunt.co/c/92530
-$yellow1: #f4e557; // skipped
-$orange1: #f5a855;
-$red1: #dc4444; // incorrect
-$red2: #97124b;
+$lightblue1: #ebf5ff;
+$lightblue2: #e6f2ff;
+$lightblue3: #ddedff;
 
-$red3: #7e3c48;
+$coolwhite: #fafcff;
+
+$coolgray1: #cdddf9;
+$coolgray2: #77749f;
+$coolgray3: #4a487f;
+
+$pink1: #ff91a4;
+$pink2: #fd8e87;
+$pink2: #ffd1e8;
+
+$brown1: #c0637d;
+$brown2: #bd7781;
+$brown3: #a94d88;
+$brown4: #bc6a80;
+$brown4: #5c4a42;
+$brown4: #715c46;
+$brown4: #846d4b;
+
+$green1: #11b7a9;
+$yellow1: #ffd763;
+$black1: #1f1637;
 
 $backgroundColor: $gray1;
-$headerColor: $gray3;
-$buttonBackgroundColor: $gray2;
+$headerColor: $coolgray3;
+$buttonBackgroundColor: $coolgray1;
 
-$fontColorLogo: $red3;
+$fontColorLogo: $brown4;
 $fontColorLanding: $gray4;
 $fontColorMain: $gray4;
 $fontColorLabel: lighten($gray4, 30%);
 $fontColorIconHeader: darken($gray4, 25%);
-$fontColorAccent: $red3;
-$fontColorHeader: $red3;
-$fontColorButton: $red3;
-$formInsetColor: $white;
-$fontColorInactive: $gray3;
-$fontColorCheck: $green4;
+$fontColorCode: $brown3;
+$fontColorHeader: $coolwhite;
+$fontColorButton: darken($brown4, 15%);
+$formInsetColor: $coolwhite;
+$fontColorInactive: lighten($brown4, 25%);
+$fontColorCheck: $green1;
 
-$statusCurrentColor: $gray4;
+$statusColorSkipped: $yellow1;
+$statusColorCorrect: $green1;
+$statusColorIncorrect: $brown3;
+$statusColorCurrent: $gray4;
 
-$diff1Color: lighten($yellow1, 20%);
-$diff2Color: $yellow1;
-$diff3Color: darken($yellow1, 15%);
-$diff4Color: $orange1;
-$diff5Color: darken($orange1, 17%);
+$diff1Color: lighten($yellow1, 25%);
+$diff2Color: lighten($yellow1, 15%);
+$diff3Color: $yellow1;
+$diff4Color: darken($yellow1, 15%);
+$diff5Color: darken($yellow1, 35%);
 
 $lines: $gray4;
-$linesLight: #ccc;
+$linesLight: $coolgray3;
 $shadow: #999;
+$insetShadow: lighten($coolgray3, 30%);
+
+@mixin linear-gradient($deg,$start, $end) {
+  background: $start; /* For browsers that do not support gradients */        
+  background: -webkit-linear-gradient($deg,$start,$end); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient($deg, $start, $end); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient($deg, $start, $end); /* For Firefox 3.6 to 15 */
+  background: linear-gradient($deg, $start, $end); /* Standard syntax (must be last) */
+}
+
 
 /* @@@@@@@@@@@@@@  END VARIABLES @@@@@@@@@@@@@@@@@@@@ */
 
@@ -124,11 +154,20 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  background-image: -moz-linear-gradient(
+    135deg, $lightblue1 0%, $lightblue2 30%, white 50%, $lightblue2 80%, $lightblue1 100%);
+  background-image: -webkit-linear-gradient(
+    135deg, $lightblue1 0%, $lightblue2 30%, white 50%, $lightblue2 80%, $lightblue1 100%);
+  background-image: -o-linear-gradient(
+    135deg, $lightblue1 0%, $lightblue2 30%, white 50%, $lightblue2 80%, $lightblue1 100%);
+  background-image: linear-gradient(
+    135deg, $lightblue1 0%, $lightblue2 30%, white 50%, $lightblue2 80%, $lightblue1 100%);
 }
 
 main {
-  min-width: 300px;
-  max-width: 768px;
+  width: 320px;
+  // min-width: 300px;
+  // max-width: 768px;
 }
 
 .about, .login, .profile, .dashboard, .quizlist {
@@ -172,8 +211,10 @@ main {
   display: flex;
   justify-content: flex-end;
   text-align: right;
+  flex-direction: column;
   .faText {
     margin-right: 0;
+    margin-top: 3px;
   }
 }
 
@@ -181,8 +222,10 @@ main {
   display: flex;
   justify-content: flex-start;
   text-align: left;
+  flex-direction: column;  
   .faText {
     margin-left: 0;
+    margin-top: 3px;    
   }
 }
 
@@ -205,10 +248,10 @@ header {
 .header {
   padding: 15px 5px;
   height: $header-height;
-  background-color: $headerColor;
-}
-
-header {
+  @include linear-gradient(60deg, lighten($headerColor, 10%), darken($headerColor, 10%));
+  -moz-box-shadow: 0px 4px 4px $shadow;
+  -webkit-box-shadow: 0px 4px 4px $shadow;
+  box-shadow: 0px 4px 4px $shadow;
   position: relative;
   width: 100%;
   h1 {
@@ -225,9 +268,20 @@ header {
 
 /* @@@@@@@@@@@@@@ STATUS BAR @@@@@@@@@@@@ */
 
-.statusBarContainer { // immediate parent is .question
+.statusBarContainer, .statusIconContainer { 
   position: relative;
-  text-align: center;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  height: 20px;  
+  display: flex;
+  justify-content: flex-start;
+  overflow: none;  
+  border: 1px solid $lines;
+  z-index: 99; 
+}
+
+.statusBarContainer { // immediate parent is .question
   width: 100%;
   margin-top: 10px;
   margin-bottom: 30px;
@@ -238,58 +292,49 @@ header {
 }
 
 .statusIconContainer {
-  position: relative;
-  text-align: center;
   width: 50px;
   height: 15px;
-  display: flex;
   margin: 0 5px;
-  overflow: none;
   -moz-box-shadow: 5px 5px 5px -4px $shadow;
   -webkit-box-shadow: 5px 5px 5px -4px $shadow;
   box-shadow: 5px 5px 5px -4px $shadow;
 }
 
-.statusBar {
+.statusBarAttempt { // quizLi only
+  display: flex;
+  width: 20px;
+  font-size: 90%;
+  color: lighten($fontColorMain, 15%);
+}
+
+.statusBar { // each individual segment
   width: 100%;
   height: 100%;
-  position: absolute;
+  display: flex;  
   top: 0;
+  //border-right: 1px solid $linesLight;  
+  -webkit-transition: width 2s, -webkit-transform 2s;
+  transition: width 2s, transform 2s;
 }
-.statusBarCompletedContainer { // immediate parent is either statusBarContainer or statusIconContainer
-  position: absolute;
-  left: 0;
-  background-color: transparent; // immediate children are .statusBarCorrect and .statusBarCompleted
+.statusBarSkipped {
+  // background-color: $yellow1;
+  @include linear-gradient(90deg, lighten($statusColorSkipped, 10%), darken($statusColorSkipped, 10%));
+}
+.statusBarIncorrect {
+  // background-color: $red1;
+  @include linear-gradient(90deg, lighten($statusColorIncorrect, 10%), darken($statusColorIncorrect, 10%));
 }
 .statusBarCorrect {
-  background-color: $green3;
-  z-index: 9;  
-  right: 0;
-  border-right: 1px solid $linesLight;
+  // background-color: $green3;
+  @include linear-gradient(90deg, lighten($statusColorCorrect, 10%), darken($statusColorCorrect, 10%));  
 }
-.statusBarCompleted {
-  background-color: $red1;
-  z-index: 8;
-  left: 0;
-  border-right: 1px solid $linesLight;
+.statusBarJustOne {
+  @include linear-gradient(90deg, lighten($statusColorCurrent, 10%), darken($statusColorCurrent, 10%));
+  // background-color: $statusCurrentColor;
 }
-.statusBarCurrentIndex {
-  background-color: $yellow1;
-  z-index: 7;
-  left: 0;  
-  border-right: 1px solid $linesLight;
-}
+
 .statusBarCurrent {
-  background-color: $statusCurrentColor;
-  z-index: 6;
-  left: 0;  
-  border-right: 1px solid $linesLight;
-}
-.statusBarTotal {
-  background-color: transparent;
-  border: 1px solid $lines;
-  z-index: 99;  
-  left: 0;  
+  background-color: $statusColorCurrent;
 }
 
 /* @@@@@@@@@@@@@@ BUTTONS @@@@@@@@@@@@ */
@@ -349,12 +394,12 @@ button {
 .landingLogoMid {
   margin-top: 10px;
   font-size: 40px;
-  color: $fontColorLogo;
+  color: lighten($fontColorLogo, 7%);
 }
 
 .landingLogoBot {
   font-size: 70px;
-  color: lighten($fontColorLogo, 7%);
+  color: darken($fontColorLogo, 5%);
   margin-bottom: 30px;
 }
 
@@ -407,7 +452,10 @@ button {
   width: 150px;
 }
 .quizLiCategory {
-  width: 50px;
+  width: 55px;
+  padding-left: 5px;
+  font-size: 90%;
+  color: lighten($fontColorMain, 15%);
 }
 .quizLiDifficulty {
   width: 25px;
@@ -482,9 +530,9 @@ button {
   min-height: 30vh;
   background-color: $formInsetColor;
   border: 1px solid $linesLight;
-  -moz-box-shadow: inset 5px 5px 5px -4px $shadow;
-  -webkit-box-shadow: inset 5px 5px 5px -4px $shadow;
-  box-shadow: inset 5px 5px 5px -4px $shadow;
+  -moz-box-shadow: inset 5px 5px 5px -4px $insetShadow;
+  -webkit-box-shadow: inset 5px 5px 5px -4px $insetShadow;
+  box-shadow: inset 5px 5px 5px -4px $insetShadow;
 }
 .questionAsked {
   flex: 1;
@@ -520,7 +568,7 @@ button {
 
 .code {
   font-family: 'Inconsolata', monospace;
-  color: $red2;
+  color: $fontColorCode;
 }
 
 .codeBox {
