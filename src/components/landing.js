@@ -16,8 +16,8 @@ export function Landing(props) {
       <div className="landing">
         <div className="landingCover">
           <p className="landingLogo landingLogoTop">{`{()=>{}}`}</p>
-          <p className="landingLogo landingLogoMid">{`~~:~~`}</p>
-          <p className="landingLogo landingLogoBot">{`==`}</p>
+          <p className="landingLogo landingLogoMid">{`</>`}</p>
+          <p className="landingLogo landingLogoBot">{`~~~`}</p>
           <h1 className="landingTitle">codeToGo.io</h1>
         </div>
         <div className="landingButtons">
