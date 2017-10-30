@@ -1,6 +1,7 @@
 import { REACT_APP_BASE_URL } from '../config';
 import * as actionsMode from './mode';
 import * as actionsUser from './users';
+import 'whatwg-fetch';
 const deepAssign = require('deep-assign');
 
 // NOTE: Quiz is for quizzes and questions. CHOICES GO IN USERS.

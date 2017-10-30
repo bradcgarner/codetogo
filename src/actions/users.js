@@ -1,6 +1,7 @@
 import { REACT_APP_BASE_URL } from '../config';
 import * as actionsMode from './mode';
 import * as actionsQuiz from './quiz';
+import 'whatwg-fetch';
 const deepAssign = require('deep-assign');
 
 

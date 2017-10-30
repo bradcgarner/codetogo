@@ -6,6 +6,7 @@
   "dependencies": {
     "assert": "^1.4.1",
     "deep-assign": "^2.0.0",
+    "promise-polyfill": "6.0.2",
     "qs": "^6.5.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
@@ -13,7 +14,8 @@
     "react-scripts": "1.0.14",
     "redux": "^3.7.2",
     "redux-form": "^7.1.1",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "whatwg-fetch": "^2.0.3"
   },
   "scripts": {
     "start": "react-scripts start",
