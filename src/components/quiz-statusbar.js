@@ -19,7 +19,7 @@ export class StatusBar extends React.Component {
     const currentLength = this.props.total;
     const totalLength = this.props.originalLength || currentLength; // this.props.originalLength is available in question mode only
   
-    const totalCompleted = this.props.completed; // reads directly from quiz, which updates as we go, includes
+    const totalCompleted = this.props.completed || 0; // reads directly from quiz, which updates as we go, includes
     const priorCompleted = totalLength - currentLength;
     const currentCompleted = totalCompleted - priorCompleted;
     

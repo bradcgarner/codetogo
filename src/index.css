@@ -97,7 +97,8 @@ main {
   width: 100%; }
 
 .landing, .login, .profile {
-  text-align: center; }
+  text-align: center;
+  max-height: 63vh; }
 
 /* @@@@@@@@@@@@@@@@ ICONS @@@@@@@@@@@@@@ */
 .fa {
@@ -460,22 +461,38 @@ button {
   background-color: #52524e; }
 
 /* @@@@@@@@@@@@@@ FORMS  @@@@@@@@@@@@ */
+.profileForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start; }
+
 .profileInput {
   font-size: 18px;
-  padding: 8px;
+  padding: 6px;
   margin: 5px;
   display: flex;
   text-align: left;
   width: 250px; }
 
 .inputLabel {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   margin-top: 0;
   margin-left: 5px;
   margin-right: 5px;
+  font-size: 12px;
+  padding-left: 6px;
   display: flex;
   width: 250px;
   color: #9f9f9a; }
+
+.createAccountButton {
+  padding: 8px;
+  margin: 5px;
+  display: flex;
+  margin-top: 0;
+  margin-bottom: 0;
+  width: 250px; }
 
 .statusBarContainer {
   width: 100%;

@@ -21,7 +21,7 @@ export class Profile extends React.Component {
     const buttonText = this.props.user.id ? 'Save Changes' : 'Create Account';
       return (
         <div className="profile">
-          <form onSubmit={this.props.handleSubmit(values => 
+          <form className="profileForm" onSubmit={this.props.handleSubmit(values => 
             this.handleSubmitButton(values)
           )}>
 
@@ -33,7 +33,7 @@ export class Profile extends React.Component {
             type="text" 
             placeholder="first name"
             required
-          /><br />
+          />
 
           <label className="inputLabel center" htmlFor="firstname">First Name</label>
           <Field 
@@ -44,7 +44,7 @@ export class Profile extends React.Component {
             type="text" 
             placeholder="last name" 
             required
-          /><br />
+          />
           <label className="inputLabel center" htmlFor="lastname">Last Name</label>
 
           <Field
@@ -55,7 +55,7 @@ export class Profile extends React.Component {
             type="text" 
             placeholder="username" 
             required
-          /><br />
+          />
           <label className="inputLabel center" htmlFor="username">Username</label>
           
           <Field 
@@ -66,7 +66,7 @@ export class Profile extends React.Component {
             type={pwType} 
             placeholder="password" 
             required
-          /><br />
+          />
           <label className="inputLabel center" htmlFor="password">Password</label>
           
           <Field 
