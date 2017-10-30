@@ -37,13 +37,7 @@ export const reducer = ( state = initialQuiz, action ) => {
       completed: action.completed,
       correct: action.correct,  
       formIsEmpty: true      
-    }) 
-  // } else if ( action.type === actions.SKIP_QUESTION ) {
-  //   console.log(action);
-  //   return Object.assign({}, state, {
-  //     currentIndex: action.currentIndex,
-  //     formIsEmpty: true      
-  //   }) 
+    })
   } else if ( action.type === actions.UPDATE_CURRENT_QUESTION ) {
       return Object.assign({}, state, {
         currentIndex: action.currentIndex,

@@ -1,5 +1,4 @@
-/* @@@@@@@@@@@@@@  END VARIABLES @@@@@@@@@@@@@@@@@@@@ */
-/* @@@@@@@@@@@@@@ RESET @@@@@@@@@@@@@@@@@@@@ */
+/* @@@@@@@@@@@@@@  END VARIABLES - START RESET @@@@@@@@@@@@@@@@@@@@ */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -52,39 +51,53 @@ table {
   box-sizing: border-box;
   /* Brad added */ }
 
-/* @@@@@@@@@@@@@@@@ END RESET @@@@@@@@@@@@@@@ */
-/* @@@@@@@@@@@@@@ GENERAL @@@@@@@@@@@@ */
+/* @@@@@@@@@@@@@@@@ END RESET - START GENERAL @@@@@@@@@@@@ */
 h1, h2, h3, h4, h5, h6 {
   text-align: center; }
 
 body {
-  background-color: white; }
-
-.App {
-  width: 100%;
-  /* phone, change later */
-  height: 100%;
-  min-height: 100vh;
-  margin: 0 auto;
-  background-color: #e9e9e5;
-  overflow: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
   background-image: -moz-linear-gradient(135deg, #ebf5ff 0%, #e6f2ff 30%, white 50%, #e6f2ff 80%, #ebf5ff 100%);
   background-image: -webkit-linear-gradient(135deg, #ebf5ff 0%, #e6f2ff 30%, white 50%, #e6f2ff 80%, #ebf5ff 100%);
   background-image: -o-linear-gradient(135deg, #ebf5ff 0%, #e6f2ff 30%, white 50%, #e6f2ff 80%, #ebf5ff 100%);
   background-image: linear-gradient(135deg, #ebf5ff 0%, #e6f2ff 30%, white 50%, #e6f2ff 80%, #ebf5ff 100%); }
 
-main {
-  width: 320px; }
-
-.about, .login, .profile, .dashboard, .quizlist {
-  margin: 20px 10px 10px 10px;
+.App {
+  width: 100vw;
+  min-height: 100vh;
+  overflow: none;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   align-items: center; }
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  min-width: 320px; }
+  @media screen and (min-width: 576px) {
+    main {
+      width: 90%;
+      padding-left: 5%;
+      padding-right: 5%; } }
+  @media screen and (min-width: 768px) {
+    main {
+      width: 760px;
+      padding-left: 10%;
+      padding-right: 10%; } }
+
+.landing, .about, .login, .profile, .dashboard, .quizlist {
+  margin: 20px 10px 10px 10px;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
+  width: 100%; }
+
+.landing, .login, .profile {
+  text-align: center; }
 
 /* @@@@@@@@@@@@@@@@ ICONS @@@@@@@@@@@@@@ */
 .fa {
@@ -137,6 +150,35 @@ main {
 header .fa {
   color: #111110; }
 
+/* @@@@@@@@@@@@@@ LANDING @@@@@@@@@@@@ */
+.landingCover {
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; }
+
+.landingLogoTop {
+  font-size: 65px;
+  color: #746042; }
+
+.landingLogoMid {
+  margin-top: 10px;
+  font-size: 30px;
+  color: #9b8058; }
+
+.landingLogoBot {
+  font-size: 60px;
+  color: #746042;
+  margin-bottom: 30px; }
+
+.landingTitle {
+  font-size: 35px;
+  color: #52524e;
+  font-family: 'Archivo Black', sans-serif;
+  margin: 15px 0; }
+
 /* @@@@@@@@@@@@@@@@ HEADER @@@@@@@@@@@@@@ */
 .header {
   padding: 15px 5px;
@@ -160,105 +202,6 @@ header .fa {
     font-size: 24px;
     color: #fafcff;
     width: 100%; }
-
-.landing, .login, .profile {
-  text-align: center;
-  width: 100%; }
-
-/* @@@@@@@@@@@@@@ STATUS BAR @@@@@@@@@@@@ */
-.statusBarContainer, .statusIconContainer {
-  position: relative;
-  width: 100%;
-  margin-top: 10px;
-  margin-bottom: 30px;
-  height: 20px;
-  display: flex;
-  justify-content: flex-start;
-  overflow: none;
-  border: 1px solid #52524e;
-  z-index: 99; }
-
-.statusBarContainer {
-  width: 100%;
-  margin-top: 10px;
-  margin-bottom: 30px;
-  height: 20px;
-  -moz-box-shadow: 10px 10px 10px -8px #999;
-  -webkit-box-shadow: 10px 10px 10px -8px #999;
-  box-shadow: 10px 10px 10px -8px #999; }
-
-.statusIconContainer {
-  width: 50px;
-  height: 15px;
-  margin: 0 5px;
-  -moz-box-shadow: 5px 5px 5px -4px #999;
-  -webkit-box-shadow: 5px 5px 5px -4px #999;
-  box-shadow: 5px 5px 5px -4px #999; }
-
-.statusBarAttempt {
-  display: flex;
-  width: 20px;
-  font-size: 90%;
-  color: #797973; }
-
-.statusBar {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  top: 0;
-  -webkit-transition: width 2s, -webkit-transform 2s;
-  transition: width 2s, transform 2s; }
-
-.statusBarSkipped {
-  background: #ffe496;
-  /* For browsers that do not support gradients */
-  background: -webkit-linear-gradient(90deg, #ffe496, #ffca30);
-  /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient(90deg, #ffe496, #ffca30);
-  /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient(90deg, #ffe496, #ffca30);
-  /* For Firefox 3.6 to 15 */
-  background: linear-gradient(90deg, #ffe496, #ffca30);
-  /* Standard syntax (must be last) */ }
-
-.statusBarIncorrect {
-  background: #bc6da0;
-  /* For browsers that do not support gradients */
-  background: -webkit-linear-gradient(90deg, #bc6da0, #863d6c);
-  /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient(90deg, #bc6da0, #863d6c);
-  /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient(90deg, #bc6da0, #863d6c);
-  /* For Firefox 3.6 to 15 */
-  background: linear-gradient(90deg, #bc6da0, #863d6c);
-  /* Standard syntax (must be last) */ }
-
-.statusBarCorrect {
-  background: #15e6d4;
-  /* For browsers that do not support gradients */
-  background: -webkit-linear-gradient(90deg, #15e6d4, #0d887e);
-  /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient(90deg, #15e6d4, #0d887e);
-  /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient(90deg, #15e6d4, #0d887e);
-  /* For Firefox 3.6 to 15 */
-  background: linear-gradient(90deg, #15e6d4, #0d887e);
-  /* Standard syntax (must be last) */ }
-
-.statusBarJustOne {
-  background: #6c6c67;
-  /* For browsers that do not support gradients */
-  background: -webkit-linear-gradient(90deg, #6c6c67, #383835);
-  /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient(90deg, #6c6c67, #383835);
-  /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient(90deg, #6c6c67, #383835);
-  /* For Firefox 3.6 to 15 */
-  background: linear-gradient(90deg, #6c6c67, #383835);
-  /* Standard syntax (must be last) */ }
-
-.statusBarCurrent {
-  background-color: #52524e; }
 
 /* @@@@@@@@@@@@@@ BUTTONS @@@@@@@@@@@@ */
 button {
@@ -293,34 +236,6 @@ button {
   min-width: 200px;
   max-width: 250px; }
 
-/* @@@@@@@@@@@@@@ LANDING @@@@@@@@@@@@ */
-.landingCover {
-  padding: 50px 10px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center; }
-
-.landingLogoTop {
-  font-size: 75px;
-  color: #746042; }
-
-.landingLogoMid {
-  margin-top: 10px;
-  font-size: 40px;
-  color: #9b8058; }
-
-.landingLogoBot {
-  font-size: 70px;
-  color: #746042;
-  margin-bottom: 30px; }
-
-.landingTitle {
-  font-size: 45px;
-  color: #52524e;
-  font-family: 'Archivo Black', sans-serif;
-  margin: 15px 0; }
-
 .landingButtons, .loginButtons {
   display: flex;
   flex-direction: column;
@@ -328,47 +243,80 @@ button {
   align-items: center;
   text-align: center; }
 
-/* @@@@@@@@@@@@@@ LOGIN  @@@@@@@@@@@@ */
-.login {
+.questionButtons {
   display: flex;
-  justify-content: center;
-  flex-direction: column;
-  width: 100%; }
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline; }
+  .questionButtons .smallIcon {
+    width: 65px; }
 
-/* @@@@@@@@@@@@@@ QUIZ LISTS  @@@@@@@@@@@@ */
+/* @@@@@@@@@@@@@@ QUIZ LISTS AND DASHBOARD  @@@@@@@@@@@@ */
+.dashboardQuizListHeader, .quizListHeader {
+  margin: 20px 0; }
+
 .quizUl {
   display: flex;
-  flex-direction: column; }
+  flex-direction: column;
+  width: 100%;
+  margin-top: 25px; }
+  .quizUl :first-child .quizIdentifier .quizLiDifficulty .quizLiTopLabel {
+    display: block;
+    left: 11px; }
+  .quizUl :first-child .statusBarAttempt .quizLiTopLabel {
+    display: block;
+    left: 2px; }
+  .quizUl :first-child .quizIdentifier .quizLiCategory .quizLiTopLabel {
+    display: block;
+    left: 18px; }
+  .quizUl :first-child .statusIconWrapper .quizLiTopLabel {
+    display: block;
+    left: 12px; }
+
+.quizLiTopLabel {
+  display: none;
+  position: absolute;
+  bottom: 38px;
+  left: 12px;
+  font-size: 12px;
+  color: #9a9b94;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  -transform: rotate(-45deg); }
 
 .quizLi, .quizLiName, .quizLiCategory, .quizLiDifficulty {
   display: flex; }
 
 .quizLi {
-  align-items: center; }
-
-.quizLi-Li {
-  display: flex;
   align-items: center;
+  justify-content: space-between;
   padding-bottom: 5px;
   border-bottom: 1px solid #4a487f;
-  margin-bottom: 5px; }
-  .quizLi-Li .smallIcon {
-    width: 50px; }
+  margin-bottom: 5px;
+  width: 100%; }
+
+.quizIdentifier {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 66%; }
 
 .quizLiName {
-  width: 150px; }
-
-.quizLiCategory {
-  width: 55px;
-  padding-left: 5px;
-  font-size: 90%;
-  color: #797973; }
+  height: 25px;
+  width: 64%;
+  padding-left: 3%;
+  display: flex;
+  align-items: center; }
+  @media screen and (min-width: 375px) {
+    .quizLiName {
+      padding-right: 10px; } }
 
 .quizLiDifficulty {
   width: 25px;
   height: 25px;
-  margin-left: 5px;
-  margin-right: 5px;
   font-size: 14px;
   display: flex;
   justify-content: center;
@@ -377,28 +325,142 @@ button {
   border: 1px solid #4a487f;
   -moz-box-shadow: 5px 5px 5px -4px #999;
   -webkit-box-shadow: 5px 5px 5px -4px #999;
-  box-shadow: 5px 5px 5px -4px #999; }
+  box-shadow: 5px 5px 5px -4px #999;
+  position: relative; }
 
 .diff1 {
-  background-color: #fff8e3; }
+  background-color: #FCF593; }
 
 .diff2 {
-  background-color: #ffebb0; }
+  background-color: #FCD773; }
 
 .diff3 {
-  background-color: #ffd763; }
+  background-color: #FCC067; }
 
 .diff4 {
-  background-color: #ffc317; }
+  background-color: #FCAD58; }
 
 .diff5 {
-  background-color: #b08300; }
+  background-color: #F39543; }
 
-.dashboardQuizListHeader, .quizListHeader {
-  margin: 20px 0; }
+.quizLiCategory {
+  height: 25px;
+  width: 22%;
+  padding-left: 5px;
+  font-size: 90%;
+  color: #797973;
+  position: relative;
+  display: flex;
+  align-items: center; }
+  @media screen and (min-width: 375px) {
+    .quizLiCategory {
+      padding-left: 10px; } }
+
+.statusBarAttempt {
+  height: 25px;
+  position: relative;
+  display: flex;
+  align-items: center; }
+
+.statusIconWrapper {
+  width: 14%;
+  height: 25px;
+  margin: 0;
+  padding: 5px;
+  position: relative;
+  display: flex;
+  align-items: center; }
+
+.statusIconContainer {
+  width: 100%;
+  height: 15px;
+  -moz-box-shadow: 5px 5px 5px -4px #999;
+  -webkit-box-shadow: 5px 5px 5px -4px #999;
+  box-shadow: 5px 5px 5px -4px #999;
+  display: flex;
+  align-items: center; }
+
+.go {
+  height: 25px;
+  width: 8%;
+  padding-right: 2%;
+  display: flex;
+  align-items: center; }
+
+/* @@@@@@@@@@@@@@ STATUS BAR @@@@@@@@@@@@ */
+.statusBarContainer, .statusIconContainer {
+  display: flex;
+  justify-content: flex-start;
+  overflow: none;
+  border: 1px solid #52524e; }
+
+.statusBarAttempt {
+  display: flex;
+  width: 20px;
+  font-size: 90%;
+  color: #797973; }
 
 .statusBox {
   display: flex; }
+
+.statusBar {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  top: 0;
+  -webkit-transition: width 2s, -webkit-transform 2s;
+  transition: width 2s, transform 2s; }
+
+.statusBarSkipped {
+  background: #fef4d7;
+  /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(90deg, #fef4d7, #fbc941);
+  /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(90deg, #fef4d7, #fbc941);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(90deg, #fef4d7, #fbc941);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(90deg, #fef4d7, #fbc941);
+  /* Standard syntax (must be last) */ }
+
+.statusBarIncorrect {
+  background: #ecd6e4;
+  /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(90deg, #ecd6e4, #a54b85);
+  /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(90deg, #ecd6e4, #a54b85);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(90deg, #ecd6e4, #a54b85);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(90deg, #ecd6e4, #a54b85);
+  /* Standard syntax (must be last) */ }
+
+.statusBarCorrect {
+  background: #cdfaf6;
+  /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(90deg, #cdfaf6, #11bcad);
+  /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(90deg, #cdfaf6, #11bcad);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(90deg, #cdfaf6, #11bcad);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(90deg, #cdfaf6, #11bcad);
+  /* Standard syntax (must be last) */ }
+
+.statusBarJustOne {
+  background: #b8b8b4;
+  /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(90deg, #b8b8b4, #383835);
+  /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(90deg, #b8b8b4, #383835);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(90deg, #b8b8b4, #383835);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(90deg, #b8b8b4, #383835);
+  /* Standard syntax (must be last) */ }
+
+.statusBarCurrent {
+  background-color: #52524e; }
 
 /* @@@@@@@@@@@@@@ FORMS  @@@@@@@@@@@@ */
 .profileInput {
@@ -418,11 +480,26 @@ button {
   width: 250px;
   color: #9f9f9a; }
 
-.question {
+.statusBarContainer {
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  height: 20px;
+  -moz-box-shadow: 10px 10px 10px -8px #999;
+  -webkit-box-shadow: 10px 10px 10px -8px #999;
+  box-shadow: 10px 10px 10px -8px #999; }
+
+.quiz {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 90vh;
+  width: 90%; }
+
+.question, .results {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 90vh;
   width: 100%; }
 
 .questionAsked, .questionOptions {
@@ -449,14 +526,6 @@ button {
   display: flex;
   flex-direction: column;
   justify-content: space-between; }
-
-.questionButtons {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: baseline; }
-  .questionButtons .smallIcon {
-    width: 65px; }
 
 /* @@@@@@@@@@@@@@ GENERAL OVERRIDES @@@@@@@@@@@@ */
 .center {

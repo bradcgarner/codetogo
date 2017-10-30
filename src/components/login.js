@@ -23,6 +23,8 @@ export class Login extends React.Component {
   }
 
   render() {
+
+    const pwType = 'password'
     return (
       <div className="login">
         <form className="login" onSubmit={this.props.handleSubmit(values =>
@@ -43,7 +45,7 @@ export class Login extends React.Component {
             name="password" 
             id="password"
             component="input"
-            type="text" 
+            type={pwType} 
             placeholder="password" 
             required
           />

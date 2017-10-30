@@ -33,7 +33,11 @@ $brown4: #715c46;
 $brown4: #846d4b;
 
 $green1: #11b7a9;
-$yellow1: #ffd763;
+$yellow1: #FCF593;
+$yellow2: #FCD773; // original ffd763
+$yellow3: #FCC067;
+$yellow4: #FCAD58;
+$yellow5: #F39543;
 $black1: #1f1637;
 
 $backgroundColor: $gray1;
@@ -52,16 +56,16 @@ $formInsetColor: $coolwhite;
 $fontColorInactive: lighten($brown4, 25%);
 $fontColorCheck: $green1;
 
-$statusColorSkipped: $yellow1;
+$statusColorSkipped: $yellow2;
 $statusColorCorrect: $green1;
 $statusColorIncorrect: $brown3;
 $statusColorCurrent: $gray4;
 
-$diff1Color: lighten($yellow1, 25%);
-$diff2Color: lighten($yellow1, 15%);
-$diff3Color: $yellow1;
-$diff4Color: darken($yellow1, 15%);
-$diff5Color: darken($yellow1, 35%);
+$diff1Color: $yellow1;
+$diff2Color: $yellow2;
+$diff3Color: $yellow3;
+$diff4Color: $yellow4;
+$diff5Color: $yellow5;
 
 $lines: $gray4;
 $linesLight: $coolgray3;
@@ -76,12 +80,10 @@ $insetShadow: lighten($coolgray3, 30%);
   background: linear-gradient($deg, $start, $end); /* Standard syntax (must be last) */
 }
 
-
-/* @@@@@@@@@@@@@@  END VARIABLES @@@@@@@@@@@@@@@@@@@@ */
-
 $header-height: 50px;
+$quizLiHeight: 25px;
 
-/* @@@@@@@@@@@@@@ RESET @@@@@@@@@@@@@@@@@@@@ */
+/* @@@@@@@@@@@@@@  END VARIABLES - START RESET @@@@@@@@@@@@@@@@@@@@ */
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -131,29 +133,13 @@ table {
 * {
   box-sizing: border-box; /* Brad added */
 }
-/* @@@@@@@@@@@@@@@@ END RESET @@@@@@@@@@@@@@@ */
-
-/* @@@@@@@@@@@@@@ GENERAL @@@@@@@@@@@@ */
+/* @@@@@@@@@@@@@@@@ END RESET - START GENERAL @@@@@@@@@@@@ */
 
 h1, h2, h3, h4, h5, h6 {
   text-align: center;
 }
 
 body {
-  background-color: white;
-}
-
-.App {
-  width: 100%; /* phone, change later */
-  height: 100%;
-  min-height: 100vh;
-  margin: 0 auto;
-  background-color: $backgroundColor;
-  overflow: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
   background-image: -moz-linear-gradient(
     135deg, $lightblue1 0%, $lightblue2 30%, white 50%, $lightblue2 80%, $lightblue1 100%);
   background-image: -webkit-linear-gradient(
@@ -164,17 +150,46 @@ body {
     135deg, $lightblue1 0%, $lightblue2 30%, white 50%, $lightblue2 80%, $lightblue1 100%);
 }
 
-main {
-  width: 320px;
-  // min-width: 300px;
-  // max-width: 768px;
-}
-
-.about, .login, .profile, .dashboard, .quizlist {
-  margin: 20px 10px 10px 10px;
+.App { //immediate children are header and main
+  width: 100vw; // of screen
+  min-height: 100vh;
+  overflow: none;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
+}
+
+main { // children are .about, .login, .profile, .dashboard, etc.
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%; // of viewport
+  min-width: 320px;
+  @media screen and (min-width: 576px) {
+    width: 90%;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+  @media screen and (min-width: 768px) {
+    width: 760px;
+    padding-left: 10%;
+    padding-right: 10%;
+  }
+}
+
+.landing, .about, .login, .profile, .dashboard, .quizlist { // children of main
+  margin: 20px 10px 10px 10px;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
+  width: 100%; // of main
+}
+
+.landing, .login, .profile { // immediate parent is main
+  text-align: center; 
 }
 
 /* @@@@@@@@@@@@@@@@ ICONS @@@@@@@@@@@@@@ */
@@ -243,6 +258,41 @@ header {
   }
 }
 
+/* @@@@@@@@@@@@@@ LANDING @@@@@@@@@@@@ */
+
+.landingCover {
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.landingLogoTop {
+  font-size: 65px;
+  color: darken($fontColorLogo, 5%);
+}
+
+.landingLogoMid {
+  margin-top: 10px;
+  font-size: 30px;
+  color: lighten($fontColorLogo, 7%);
+}
+
+.landingLogoBot {
+  font-size: 60px;
+  color: darken($fontColorLogo, 5%);
+  margin-bottom: 30px;
+}
+
+.landingTitle {
+  font-size: 35px;
+  color: $fontColorLanding;
+  font-family: 'Archivo Black', sans-serif;
+  margin: 15px 0;
+}
+
 /* @@@@@@@@@@@@@@@@ HEADER @@@@@@@@@@@@@@ */
 
 .header {
@@ -259,82 +309,6 @@ header {
     color: $fontColorHeader;
     width: 100%;
   }
-}
-
-.landing, .login, .profile { // immediate parent is main
-  text-align: center; 
-  width: 100%; 
-}
-
-/* @@@@@@@@@@@@@@ STATUS BAR @@@@@@@@@@@@ */
-
-.statusBarContainer, .statusIconContainer { 
-  position: relative;
-  width: 100%;
-  margin-top: 10px;
-  margin-bottom: 30px;
-  height: 20px;  
-  display: flex;
-  justify-content: flex-start;
-  overflow: none;  
-  border: 1px solid $lines;
-  z-index: 99; 
-}
-
-.statusBarContainer { // immediate parent is .question
-  width: 100%;
-  margin-top: 10px;
-  margin-bottom: 30px;
-  height: 20px;  
-  -moz-box-shadow: 10px 10px 10px -8px $shadow;
-  -webkit-box-shadow: 10px 10px 10px -8px $shadow;
-  box-shadow: 10px 10px 10px -8px $shadow;
-}
-
-.statusIconContainer {
-  width: 50px;
-  height: 15px;
-  margin: 0 5px;
-  -moz-box-shadow: 5px 5px 5px -4px $shadow;
-  -webkit-box-shadow: 5px 5px 5px -4px $shadow;
-  box-shadow: 5px 5px 5px -4px $shadow;
-}
-
-.statusBarAttempt { // quizLi only
-  display: flex;
-  width: 20px;
-  font-size: 90%;
-  color: lighten($fontColorMain, 15%);
-}
-
-.statusBar { // each individual segment
-  width: 100%;
-  height: 100%;
-  display: flex;  
-  top: 0;
-  //border-right: 1px solid $linesLight;  
-  -webkit-transition: width 2s, -webkit-transform 2s;
-  transition: width 2s, transform 2s;
-}
-.statusBarSkipped {
-  // background-color: $yellow1;
-  @include linear-gradient(90deg, lighten($statusColorSkipped, 10%), darken($statusColorSkipped, 10%));
-}
-.statusBarIncorrect {
-  // background-color: $red1;
-  @include linear-gradient(90deg, lighten($statusColorIncorrect, 10%), darken($statusColorIncorrect, 10%));
-}
-.statusBarCorrect {
-  // background-color: $green3;
-  @include linear-gradient(90deg, lighten($statusColorCorrect, 10%), darken($statusColorCorrect, 10%));  
-}
-.statusBarJustOne {
-  @include linear-gradient(90deg, lighten($statusColorCurrent, 10%), darken($statusColorCurrent, 10%));
-  // background-color: $statusCurrentColor;
-}
-
-.statusBarCurrent {
-  background-color: $statusColorCurrent;
 }
 
 /* @@@@@@@@@@@@@@ BUTTONS @@@@@@@@@@@@ */
@@ -376,40 +350,6 @@ button {
   max-width: 250px;
 }
 
-/* @@@@@@@@@@@@@@ LANDING @@@@@@@@@@@@ */
-
-.landingCover {
-  padding: 50px 10px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.landingLogoTop {
-  font-size: 75px;
-  color: darken($fontColorLogo, 5%);
-}
-
-.landingLogoMid {
-  margin-top: 10px;
-  font-size: 40px;
-  color: lighten($fontColorLogo, 7%);
-}
-
-.landingLogoBot {
-  font-size: 70px;
-  color: darken($fontColorLogo, 5%);
-  margin-bottom: 30px;
-}
-
-.landingTitle {
-  font-size: 45px;
-  color: $fontColorLanding;
-  font-family: 'Archivo Black', sans-serif;
-  margin: 15px 0;
-}
-
 .landingButtons, .loginButtons {
   display: flex;
   flex-direction: column;
@@ -417,51 +357,96 @@ button {
   align-items: center;
   text-align: center;
 }
-/* @@@@@@@@@@@@@@ LOGIN  @@@@@@@@@@@@ */
 
-.login { // immediate parent is main
+.questionButtons {
   display: flex;
-  justify-content: center;
-  flex-direction: column;
-  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  .smallIcon {
+    width: 65px;
+  }
 }
-/* @@@@@@@@@@@@@@ QUIZ LISTS  @@@@@@@@@@@@ */
 
+/* @@@@@@@@@@@@@@ QUIZ LISTS AND DASHBOARD  @@@@@@@@@@@@ */
+
+.dashboardQuizListHeader, .quizListHeader {
+  margin: 20px 0;
+}
 .quizUl {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  margin-top: 25px;
+  :first-child .quizIdentifier .quizLiDifficulty {
+    .quizLiTopLabel {
+      display: block;
+      left: 11px;
+    }
+  }
+  :first-child .statusBarAttempt {
+    .quizLiTopLabel {
+      display: block;
+      left: 2px;
+    }
+  }
+  :first-child .quizIdentifier .quizLiCategory {
+    .quizLiTopLabel {
+      display: block;
+      left: 18px;
+    }
+  }
+  :first-child .statusIconWrapper {
+    .quizLiTopLabel {
+      display: block;
+      left: 12px;
+    }
+  }
 }
-
+.quizLiTopLabel {
+  display: none;
+  position: absolute;
+  bottom: 38px;
+  left: 12px;
+  font-size: 12px;
+  color: $gray3;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  -transform: rotate(-45deg);
+}
 .quizLi, .quizLiName, .quizLiCategory, .quizLiDifficulty {
   display: flex;
 }
-.quizLi {
-  align-items: center;  
-}
-.quizLi-Li {
-  display: flex;
+.quizLi { // each line item, immediate parent is .quizUl
   align-items: center;
+  justify-content: space-between;
   padding-bottom: 5px;
   border-bottom: 1px solid $linesLight;
   margin-bottom: 5px;
-  .smallIcon {
-    width: 50px;
+  width: 100%;
+}
+.quizIdentifier { // immediate parent is .quizLi
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 66%;
+}
+.quizLiName { // immediate parent is .quizIdentifier
+  height: $quizLiHeight;
+  width: 64%;
+  padding-left: 3%;
+  @media screen and (min-width: 375px) {
+    padding-right: 10px;
   }
+  display: flex;
+  align-items: center;
 }
-.quizLiName {
-  width: 150px;
-}
-.quizLiCategory {
-  width: 55px;
-  padding-left: 5px;
-  font-size: 90%;
-  color: lighten($fontColorMain, 15%);
-}
-.quizLiDifficulty {
-  width: 25px;
-  height: 25px;
-  margin-left: 5px;
-  margin-right: 5px;
+.quizLiDifficulty { // immediate parent is .quizIdentifier
+  width: $quizLiHeight; // 11% at min of 320px
+  height: $quizLiHeight;
   font-size: 14px;
   display: flex;
   justify-content: center;
@@ -471,6 +456,7 @@ button {
   -moz-box-shadow: 5px 5px 5px -4px $shadow;
   -webkit-box-shadow: 5px 5px 5px -4px $shadow;
   box-shadow: 5px 5px 5px -4px $shadow;
+  position: relative;
 }
 .diff1{
   background-color: $diff1Color;
@@ -487,12 +473,92 @@ button {
 .diff5{
   background-color: $diff5Color;
 }
-.dashboardQuizListHeader, .quizListHeader {
-  margin: 20px 0;
+.quizLiCategory { // immediate parent is .quizIdentifier
+  height: $quizLiHeight;
+  width: 22%;
+  padding-left: 5px;
+  font-size: 90%;
+  color: lighten($fontColorMain, 15%);
+  @media screen and (min-width: 375px) {
+    padding-left: 10px;
+  }
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.statusBarAttempt {
+  height: $quizLiHeight;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.statusIconWrapper {
+  width: 14%;
+  height: $quizLiHeight;
+  margin: 0;  
+  padding: 5px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.statusIconContainer {
+  width: 100%;
+  height: $quizLiHeight - 10;
+  -moz-box-shadow: 5px 5px 5px -4px $shadow;
+  -webkit-box-shadow: 5px 5px 5px -4px $shadow;
+  box-shadow: 5px 5px 5px -4px $shadow;
+  display: flex;
+  align-items: center;
+}
+.go {
+  height: $quizLiHeight;
+  width: 8%;
+  padding-right: 2%;
+  display: flex;
+  align-items: center;
 }
 
+/* @@@@@@@@@@@@@@ STATUS BAR @@@@@@@@@@@@ */
+
+.statusBarContainer, .statusIconContainer {  
+  display: flex;
+  justify-content: flex-start;
+  overflow: none;  
+  border: 1px solid $lines;
+}
+
+.statusBarAttempt { // quizLi only
+  display: flex;
+  width: 20px;
+  font-size: 90%;
+  color: lighten($fontColorMain, 15%);
+}
 .statusBox {
   display: flex;
+}
+.statusBar { // each individual segment
+  width: 100%;
+  height: 100%;
+  display: flex;  
+  top: 0;
+  //border-right: 1px solid $linesLight;  
+  -webkit-transition: width 2s, -webkit-transform 2s;
+  transition: width 2s, transform 2s;
+}
+.statusBarSkipped {
+  @include linear-gradient(90deg, lighten($statusColorSkipped, 20%), darken($statusColorSkipped, 10%));
+}
+.statusBarIncorrect {
+  @include linear-gradient(90deg, lighten($statusColorIncorrect, 40%), darken($statusColorIncorrect, 1%));
+}
+.statusBarCorrect {
+  @include linear-gradient(90deg, lighten($statusColorCorrect, 50%), lighten($statusColorCorrect, 1%));  
+}
+.statusBarJustOne {
+  @include linear-gradient(90deg, lighten($statusColorCurrent, 40%), darken($statusColorCurrent, 10%));
+}
+.statusBarCurrent {
+  background-color: $statusColorCurrent;
 }
 
 /* @@@@@@@@@@@@@@ FORMS  @@@@@@@@@@@@ */
@@ -515,11 +581,28 @@ button {
   color: $fontColorLabel;
 } 
 
-.question { // immediate parent is main
+.statusBarContainer { // immediate parent is .question
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  height: 20px;  
+  -moz-box-shadow: 10px 10px 10px -8px $shadow;
+  -webkit-box-shadow: 10px 10px 10px -8px $shadow;
+  box-shadow: 10px 10px 10px -8px $shadow;
+}
+
+.quiz { // immediate parent is main
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 90vh;
+  width: 90%;
+}
+
+.question, .results { // immediate parent is quiz
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 90vh;
   width: 100%;
 }
 
@@ -551,15 +634,7 @@ button {
   justify-content: space-between;
 }
 
-.questionButtons {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: baseline;
-  .smallIcon {
-    width: 65px;
-  }
-}
+
 /* @@@@@@@@@@@@@@ GENERAL OVERRIDES @@@@@@@@@@@@ */
 
 .center { text-align: center; }

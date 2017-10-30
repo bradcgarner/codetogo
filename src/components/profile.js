@@ -16,6 +16,7 @@ export class Profile extends React.Component {
     }
   }
   render() {
+    const pwType = 'password'    
     const buttonText = this.props.user.id ? 'Save Changes' : 'Create Account';
       return (
         <div className="profile">
@@ -61,7 +62,7 @@ export class Profile extends React.Component {
             name="password" 
             id="password"
             component="input"
-            type="text" 
+            type={pwType} 
             placeholder="password" 
             required
           /><br />
@@ -72,7 +73,7 @@ export class Profile extends React.Component {
             name="password2" 
             id="password2"
             component="input"
-            type="text" 
+            type={pwType} 
             placeholder="re-type password" 
             required/>
           <label className="inputLabel center" htmlFor="password2">Re-Type Password</label>

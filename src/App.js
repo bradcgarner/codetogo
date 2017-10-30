@@ -8,8 +8,7 @@ import Login from './components/login';
 import Profile from './components/profile';
 import Dashboard from './components/dashboard';
 import QuizList from './components/quizlist';
-import Question from  './components/question';
-import Results from  './components/results';
+import Quiz from  './components/quiz';
 
 export function App(props) {
   let mode = <Landing />;
@@ -29,11 +28,17 @@ export function App(props) {
     case 'quizlist':
       mode = <QuizList />;
       break;
-    case 'question' || 'accuracy' || 'key': // question asks question, accuracy layers on user' choice, layers on correct answer
-      mode = <Question />;
+    case 'question': // question asks question, accuracy layers on user' choice, layers on correct answer
+      mode = <Quiz />;
       break;
-    case 'results':         // results shows score, score is tabulation of choices
-      mode = <Results />;
+    case 'results':
+      mode = <Quiz />;
+      break;
+    case 'accuracy':
+      mode = <Quiz />;
+      break;
+    case 'key':
+      mode = <Quiz />;
       break;
     default:
       mode = <Landing />;

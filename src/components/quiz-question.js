@@ -2,9 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm, Field } from 'redux-form';
-import StatusBar from './question-statusbar';
-import Resources from './question-resources';
-import Comments  from './question-comments';
+import Resources from './quiz-question-resources';
+import Comments  from './quiz-question-comments';
 import * as actionsUser from '../actions/users';
 import * as actionsMode from '../actions/mode';
 import * as actionsQuiz from '../actions/quiz';
@@ -26,27 +25,43 @@ export class Question extends React.Component {
     };
   }
 
+  calcNextIndex (currentIndex, quizLength ) {
+    let nextIndex = currentIndex + 1;
+    if ( nextIndex < 0 ) {
+      nextIndex = 0;
+    } else if ( nextIndex > quizLength - 1 ) {
+      nextIndex = quizLength - 1;
+    } else if ( !nextIndex ) {
+      nextIndex = quizLength - 1;
+    }
+    console.log('nextIndex',nextIndex);
+    return nextIndex;
+  }
+
   handleSubmitButton(choice, currentIndex) {
     const formattedChoiceObject = this.formatChoiceObject(choice, currentIndex);
-    const nextIndex = this.props.quiz.currentIndex === (this.props.quiz.questions.length - 1) ?
-      999 : this.props.quiz.currentIndex + 1 ;
+    const nextIndex = this.calcNextIndex(this.props.quiz.currentIndex, this.props.quiz.questions.length );
     console.log('nextIndex', nextIndex);
+    const mode = this.props.quiz.currentIndex === (this.props.quiz.questions.length - 1) ? 'results' : 'question' ;
     const user = deepAssign({}, this.props.user);
     this.props.reset();   
-    this.props.dispatch(actionsUser.submitChoices(formattedChoiceObject, user, nextIndex));
+    this.props.dispatch(actionsUser.submitChoices(formattedChoiceObject, user, nextIndex, mode));
   }  // refer to actions/users.js for format of values
 
   handleGotoQuestionButton(index) { // for skipping; index = 1 or -1
     console.log('indices at go to question',index, this.props.quiz.currentIndex);
     console.log('this.props.quiz.total', this.props.quiz.total);
-    if ( ( index === -1 && this.props.quiz.currentIndex > 0 ) || 
-         ( index === 1 && this.props.quiz.currentIndex < this.props.quiz.total )
-    ) {
+    const nextIndex = this.calcNextIndex(this.props.quiz.currentIndex, this.props.quiz.questions.length );
+    console.log('nextIndex', nextIndex);  
+    if ( index === -1 && this.props.quiz.currentIndex > 0 )  {
       this.props.reset();    
       this.props.dispatch(actionsQuiz.updateCurrentQuestion(this.props.quiz.currentIndex + index))
     } else if ( index === 1 && this.props.quiz.currentIndex === this.props.quiz.total ) {
       this.props.reset();    
       this.props.dispatch(actionsMode.gotoResults())
+    } else if ( index === 1 ) {
+      this.props.reset();    
+      this.props.dispatch(actionsQuiz.updateCurrentQuestion(nextIndex))
     }
   }
 
@@ -56,9 +71,10 @@ export class Question extends React.Component {
   
   render() {
 
-    const currentIndex = this.props.quiz.currentIndex === 999 ? this.props.quiz.questions.length - 1 : this.props.quiz.currentIndex || 0;
+    const currentIndex = this.props.quiz.currentIndex ;
     console.log('this.props.quiz',this.props.quiz);
     const currQuestion = this.props.quiz.questions[currentIndex];
+    console.log('currQuestion',currQuestion);
     const inputType = currQuestion.inputType; 
     
     const options = currQuestion.answers.map((answer,index)=>{
@@ -86,16 +102,6 @@ export class Question extends React.Component {
     console.log('this.props.quiz.formIsEmpty',this.props.quiz.formIsEmpty);
     return (
     <div className="question">
-      <StatusBar 
-        mode={'question'}
-        name = {this.props.quiz.name} // only included for debugging of the status bar on the QuizList
-        total = {this.props.quiz.total}
-        current = {this.props.quiz.currentIndex + 1}
-        currentIndex = {this.props.quiz.currentIndex}
-        completed = {this.props.quiz.completed}
-        correct = {this.props.quiz.correct}
-        attempt = {this.props.quiz.attempt}
-      />
 
       <p className="questionAsked">{this.props.quiz.currentIndex + 1}. {currQuestion.question}</p>
       

@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import ResultsGraph from './results-graph';
-import ResultsScore from './results-score';
+import ResultsScore from './quiz-results-score';
 import * as actionsMode from '../actions/mode';
 
 export function Results(props) {
@@ -21,7 +20,6 @@ export function Results(props) {
 
     return (
       <div className="results">
-        <ResultsGraph />
         <ResultsScore />
         <button className="checkAccuracyButton" onClick={()=>handleGotoAccuracyButton()}>Check Accuracy</button>
         <button className="takeAnotherQuizButton" onClick={()=>handleGotoAnotherQuizButton()}>Take Another Quiz</button>

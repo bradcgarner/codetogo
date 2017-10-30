@@ -186,10 +186,10 @@ export const calcCompletedAndCorrect = (choices) => {
   return { correct, completed };
 }
 
-export const submitChoices = (choices, user, nextIndex) => dispatch => { // nextIndex === 999 if score
+export const submitChoices = (choices, user, nextIndex, mode) => dispatch => { 
   const updatedUser = deepAssign({}, user );
   let quizForStore;
-  console.log('nextIndex, choice as received by submitChoices',nextIndex, choices)
+  console.log('nextIndex, mode, choice as received by submitChoices',nextIndex, mode, choices)
   const quizIndexToUpdate = user.quizzes.findIndex(quiz=>quiz.id === choices.quizId);
   console.log('user.quizzes quizIndexToUpdate', quizIndexToUpdate, user.quizzes);
   console.log('quiz to update', user.quizzes[quizIndexToUpdate]);
@@ -229,8 +229,7 @@ export const submitChoices = (choices, user, nextIndex) => dispatch => { // next
 
   // UPDATE QUIZ STORE
   .then(()=>{
-    quizForStore = deepAssign({}, updatedUser.quizzes[quizIndexToUpdate]);
-    if (nextIndex !== 999 ) { quizForStore.nextIndex = nextIndex }
+    quizForStore = deepAssign({}, updatedUser.quizzes[quizIndexToUpdate], {nextIndex});
     console.log('quizForStore',quizForStore);
     return dispatch(actionsQuiz.nextQuestion(quizForStore));
   })
@@ -238,7 +237,7 @@ export const submitChoices = (choices, user, nextIndex) => dispatch => { // next
   // ADVANCE TO SCORE IF AT END
   .then(()=> {
     console.log('quizForStore',quizForStore);
-    if ( nextIndex === 999 ) { /// 999 === score
+    if ( mode === 'results' ) { 
       console.log('choices.quizId', choices.quizId, 'user', user, 'attempt', choices.attempt);
       return dispatch(actionsMode.gotoResults());
     } 

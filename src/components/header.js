@@ -43,9 +43,9 @@ export function Header(props) {
     header = <h1 className="headerLabel">{props.quiz.name}</h1>;
     settings = <Settings type={'quiz'}/>;
     
-  } else if (props.mode.view === 'result') {
+  } else if (props.mode.view === 'results') {
     home =<Home where={'dashboard'} label={'Dashboard'}/>; 
-    header = <h1 className="headerLabel">Score: {props.quiz.name}</h1>;
+    header = <h1 className="headerLabel">{props.quiz.name}</h1>;
     settings = <Settings type={'quiz'}/>;
     
   } else if (props.mode.view === 'accuracy') {
