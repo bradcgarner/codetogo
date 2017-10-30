@@ -6,12 +6,6 @@ import * as actionsUser from '../actions/users';
 import * as actionsMode from '../actions/mode';
 
 export class Login extends React.Component {
-
-  // trying to pre-populate username into form
-  componentDidMount() {
-    this.props.initialize({username: this.props.user.username})
-    console.log('did mount username', this.props);
-  }
   
   handleSubmitButton(values) {
     this.props.dispatch(actionsUser.login(values));
@@ -64,7 +58,8 @@ export class Login extends React.Component {
 const mapStateToProps = state => ({
   user: state.user,
   quiz: state.quiz,
-  mode: state.mode
+  mode: state.mode,
+  initialValues: state.user,  
 })
 
 export default compose(

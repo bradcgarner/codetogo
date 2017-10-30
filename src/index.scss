@@ -378,33 +378,9 @@ button {
   flex-direction: column;
   width: 100%;
   margin-top: 25px;
-  :first-child .quizIdentifier .quizLiDifficulty {
-    .quizLiTopLabel {
-      display: block;
-      left: 11px;
-    }
-  }
-  :first-child .statusBarAttempt {
-    .quizLiTopLabel {
-      display: block;
-      left: 2px;
-    }
-  }
-  :first-child .quizIdentifier .quizLiCategory {
-    .quizLiTopLabel {
-      display: block;
-      left: 18px;
-    }
-  }
-  :first-child .statusIconWrapper {
-    .quizLiTopLabel {
-      display: block;
-      left: 12px;
-    }
-  }
 }
+ 
 .quizLiTopLabel {
-  display: none;
   position: absolute;
   bottom: 38px;
   left: 12px;
@@ -457,6 +433,9 @@ button {
   -webkit-box-shadow: 5px 5px 5px -4px $shadow;
   box-shadow: 5px 5px 5px -4px $shadow;
   position: relative;
+  .quizLiTopLabel {
+    left: 11px;
+  }
 }
 .diff1{
   background-color: $diff1Color;
@@ -476,21 +455,30 @@ button {
 .quizLiCategory { // immediate parent is .quizIdentifier
   height: $quizLiHeight;
   width: 22%;
-  padding-left: 5px;
   font-size: 90%;
   color: lighten($fontColorMain, 15%);
-  @media screen and (min-width: 375px) {
-    padding-left: 10px;
-  }
   position: relative;
   display: flex;
   align-items: center;
+  .quizLiTopLabel {
+    left: 18px;
+  }
+  padding-left: 5px;
+  @media screen and (min-width: 375px) {
+    padding-left: 10%;
+    .quizLiTopLabel {
+      left: 30px;
+    }
+  }
 }
 .statusBarAttempt {
   height: $quizLiHeight;
   position: relative;
   display: flex;
   align-items: center;
+  .quizLiTopLabel {
+    left: 2px;
+  }
 }
 .statusIconWrapper {
   width: 14%;
@@ -500,6 +488,9 @@ button {
   position: relative;
   display: flex;
   align-items: center;
+  .quizLiTopLabel {
+    left: 12px;
+  }
 }
 .statusIconContainer {
   width: 100%;

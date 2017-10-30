@@ -17,7 +17,7 @@ export class Dashboard extends React.Component {
     const listHeader = this.props.user.quizzes ? 'My Quizzes' : '' ;
     console.log('this.props.user.quizzes',this.props.user.quizzes)
     const quizLi = this.props.user.quizzes.map((quiz, index)=>{
-      return <QuizLi key={index} li={deepAssign({},quiz)} />
+      return <QuizLi key={index} index={index} li={deepAssign({},quiz)} />
     })
     const addButtonLabel = this.props.user.quizzes.length ? 'Add Another Quiz' : 'Add a Quiz';
 

@@ -9,34 +9,16 @@ export const updateUserStore = user => {
   return deepAssign({}, user, {  type: UPDATE_USER_STORE } )
 }
 
+// export const TEMP_USER = 'TEMP_USER';
+// export const tempUser = user => {
+//   return {
+//     username: user.username,
+//     type: TEMP_USER }
+// }
+
 
 // @@@@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@@@@@@
 
-//get user by Id  - used at login
-// export const getUser = (id) => dispatch => { 
-//   console.log('id',id)
-//   const url = `${REACT_APP_BASE_URL}/api/users/${id}/`;
-//   console.log('url', url);
-//   const init = { 
-//     method: 'GET'
-//   };
-//   return fetch(url, init)
-//   .then(res=>{//response user api repr  
-//     console.log(res);
-//     if (!res.ok) { 
-//       return Promise.reject(res.statusText);
-//     }
-//     return res.json();
-//   }) 
-//   .then(user => { 
-//     console.log('user found', user); 
-//     return dispatch(updateUserStore(user));
-//   })
-//   .catch(error => {
-//   // dispatch(loginError(error));
-//     console.log(error);
-//   });
-// }
 
 export const login = (credentials) => dispatch => {
   const url = `${REACT_APP_BASE_URL}/api/auth/login`;

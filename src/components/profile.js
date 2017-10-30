@@ -11,7 +11,8 @@ export class Profile extends React.Component {
     if (this.props.user.id) {
       this.props.dispatch(actionsUser.updateUserProfile(values, this.props.user.authToken));
     } else {
-      this.props.dispatch(actionsMode.gotoLogin());   
+      // this.props.dispatch(actionsMode.gotoLogin());   
+      // this.props.dispatch(actionsUser.tempUser(values));   
       this.props.dispatch(actionsUser.createUser(values));
     }
   }
@@ -84,14 +85,12 @@ export class Profile extends React.Component {
       );
   }
 }
- 
-
-       
 
 const mapStateToProps = state => ({
   user: state.user,
   quiz: state.quiz,
-  mode: state.mode
+  mode: state.mode,
+  initialValues: state.user,
 })
 
 export default compose(

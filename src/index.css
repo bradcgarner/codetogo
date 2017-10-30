@@ -260,21 +260,8 @@ button {
   flex-direction: column;
   width: 100%;
   margin-top: 25px; }
-  .quizUl :first-child .quizIdentifier .quizLiDifficulty .quizLiTopLabel {
-    display: block;
-    left: 11px; }
-  .quizUl :first-child .statusBarAttempt .quizLiTopLabel {
-    display: block;
-    left: 2px; }
-  .quizUl :first-child .quizIdentifier .quizLiCategory .quizLiTopLabel {
-    display: block;
-    left: 18px; }
-  .quizUl :first-child .statusIconWrapper .quizLiTopLabel {
-    display: block;
-    left: 12px; }
 
 .quizLiTopLabel {
-  display: none;
   position: absolute;
   bottom: 38px;
   left: 12px;
@@ -327,6 +314,8 @@ button {
   -webkit-box-shadow: 5px 5px 5px -4px #999;
   box-shadow: 5px 5px 5px -4px #999;
   position: relative; }
+  .quizLiDifficulty .quizLiTopLabel {
+    left: 11px; }
 
 .diff1 {
   background-color: #FCF593; }
@@ -346,21 +335,27 @@ button {
 .quizLiCategory {
   height: 25px;
   width: 22%;
-  padding-left: 5px;
   font-size: 90%;
   color: #797973;
   position: relative;
   display: flex;
-  align-items: center; }
+  align-items: center;
+  padding-left: 5px; }
+  .quizLiCategory .quizLiTopLabel {
+    left: 18px; }
   @media screen and (min-width: 375px) {
     .quizLiCategory {
-      padding-left: 10px; } }
+      padding-left: 10%; }
+      .quizLiCategory .quizLiTopLabel {
+        left: 30px; } }
 
 .statusBarAttempt {
   height: 25px;
   position: relative;
   display: flex;
   align-items: center; }
+  .statusBarAttempt .quizLiTopLabel {
+    left: 2px; }
 
 .statusIconWrapper {
   width: 14%;
@@ -370,6 +365,8 @@ button {
   position: relative;
   display: flex;
   align-items: center; }
+  .statusIconWrapper .quizLiTopLabel {
+    left: 12px; }
 
 .statusIconContainer {
   width: 100%;

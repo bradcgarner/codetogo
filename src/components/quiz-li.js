@@ -20,6 +20,11 @@ export function QuizLi(props) {
   const user = deepAssign({}, props.user);
   const mode = props.mode.view;
 
+  const topLabelAttempt = props.index === 0 ? <div className="quizLiTopLabel">attempts</div> : '' ;
+  const topLabelDifficulty = props.index === 0 ? <div className="quizLiTopLabel">difficulty</div> : '' ;
+  const topLabelCategory = props.index === 0 ? <div className="quizLiTopLabel">category</div> : '' ;
+  const topLabelScore = props.index === 0 ? <div className="quizLiTopLabel">scores</div> : '' ;
+
   let isListed = false;
   props.user.quizzes.forEach(quiz=>{
     if (quiz.id===id) { isListed = true }
@@ -32,16 +37,16 @@ export function QuizLi(props) {
   const theQuiz = <div className="quizIdentifier">
     <div className="quizLiName">{name}</div>
     <div className={diffClass}>{difficulty}
-      <div className="quizLiTopLabel">difficulty</div>
+      {topLabelDifficulty}
     </div>
     <div className="quizLiCategory">{category}
-      <div className="quizLiTopLabel">category</div>
+      {topLabelCategory}
     </div>
   </div>;
 
   const statusBox = 
     <div className="statusIconWrapper">
-      <div className="quizLiTopLabel">scores</div>
+      {topLabelScore}
       <StatusBar 
         name = {thisQuiz.name} // only included for debugging of the status bar on the QuizList
         mode={'quizlist'}
@@ -61,7 +66,7 @@ export function QuizLi(props) {
 
   let attemptInner = attempt >= 0 ? '#' + (attempt + 1) : '' ;
   let attemptNumber =  <div className="statusBarAttempt">{attemptInner}
-      <div className="quizLiTopLabel">attempts</div>
+      {topLabelAttempt}
     </div>
 
   let statusBoxOrAddButton = addButton;

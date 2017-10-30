@@ -4,6 +4,7 @@ const deepAssign = require('deep-assign');
 
 
 export const reducer = ( state = initialUser, action ) => {
+  
   if ( action.type === actions.UPDATE_USER_STORE ) {
     console.log('update user store', action);
     return Object.assign({}, state, {
@@ -21,6 +22,11 @@ export const reducer = ( state = initialUser, action ) => {
     return Object.assign({}, state, {
       quizzes: action.quizzes
     })
+
+  // } else if ( action.type === 'actions.TEMP_USER' ) {
+  //   return Object.assign({}, state, {
+  //     username: action.username
+  //   })
     
   } else {
     return state;

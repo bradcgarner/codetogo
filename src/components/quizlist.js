@@ -7,7 +7,7 @@ const deepAssign = require('deep-assign');
 export function QuizList(props) {
 
   const quizLi = props.quiz.menuOfAllQuizzes.map((quiz, index)=>{
-    return <QuizLi key={index} li={deepAssign({},quiz)} />
+    return <QuizLi key={index} index={index} li={deepAssign({},quiz)} />
   })
   
     return (
