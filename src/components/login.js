@@ -18,7 +18,7 @@ export class Login extends React.Component {
 
   render() {
 
-    const pwType = 'password'
+    const pwType = 'text' // allow to toggle this later
     return (
       <div className="login">
         <form className="login" onSubmit={this.props.handleSubmit(values =>
