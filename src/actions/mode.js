@@ -62,7 +62,14 @@ export const gotoAnswer = () => ({
 })
 
 export const SHOW_MODAL = 'SHOW_MODAL';
-export const showModal = (modal) => ({
+export const showModal = (message) => ({
   type: SHOW_MODAL,
-  modal
+  modal: 'open',
+  message
+})
+
+export const CLOSE_MODAL = 'CLOSE_MODAL';
+export const closeModal = () => ({
+  type: CLOSE_MODAL,
+  modal: 'close'
 })

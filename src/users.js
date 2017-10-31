@@ -10,13 +10,6 @@ export const updateUserStore = user => {
   return deepAssign({}, user, {  type: UPDATE_USER_STORE } )
 }
 
-// export const TEMP_USER = 'TEMP_USER';
-// export const tempUser = user => {
-//   return {
-//     username: user.username,
-//     type: TEMP_USER }
-// }
-
 
 // @@@@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@@@@@@
 

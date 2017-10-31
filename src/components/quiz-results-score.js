@@ -6,7 +6,7 @@ export function ResultsScore(props) {
   const quizId = props.quiz.id;
   const currentQuizUser = props.user.quizzes.filter(quiz => quiz.id === quizId); // total # of quizzes
   console.log('resultsScore', currentQuizUser);
-  const completed = currentQuizUser[0].completed;
+  // const completed = currentQuizUser[0].completed;
   const total = currentQuizUser[0].completed;
   const correct = currentQuizUser[0].correct;
 

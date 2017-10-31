@@ -72,20 +72,20 @@ export const updateQuizMenu = (menu) => ({
 export const  fetchQuizzes = () => dispatch => { 
   console.log("fetches quizzes from server");
   return fetch(`${REACT_APP_BASE_URL}/api/quizzes/`)
-      .then(res => {
-        console.log('quizzes fetched',res);
-          if (!res.ok) {
-              return Promise.reject(res.statusText);
-          }
-          return res.json();
-      })
-      .then(quizzes => {
-        console.log('quizzes fetched',quizzes);
-        return dispatch(updateQuizMenu(quizzes));
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    .then(res => {
+      console.log('quizzes fetched',res);
+        if (!res.ok) {
+          return Promise.reject(res.statusText);
+        }
+        return res.json();
+    })
+    .then(quizzes => {
+      console.log('quizzes fetched',quizzes);
+      return dispatch(updateQuizMenu(quizzes));
+    })
+    .catch(error => {
+      dispatch(actionsMode.showModal(error));        
+    });
 };
 
 // ~~~~~~~~~~~~ HELPERS TO TAKE QUIZ ~~~~~~~~~~~~
@@ -150,7 +150,6 @@ export const takeQuiz = (quiz, user, option, mode) => dispatch => {
   console.log('take quiz option', option, quiz);
   console.log('user before update', user);
   let updatedUser = deepAssign({},user);
-  let updatedQuizList;
   const authToken = user.authToken;
   const quizId = quiz.id;  
   let thisQuiz = deepAssign({},quiz);
@@ -237,7 +236,6 @@ export const takeQuiz = (quiz, user, option, mode) => dispatch => {
       return dispatch(actionsMode.gotoQuestion());      
     })
     .catch(error => {
-      // dispatch(handleError(error));
-      console.log(error);
+      dispatch(actionsMode.showModal(error));
     });
   };

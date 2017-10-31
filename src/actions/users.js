@@ -1,7 +1,7 @@
+import 'whatwg-fetch';
 import { REACT_APP_BASE_URL } from '../config';
 import * as actionsMode from './mode';
 import * as actionsQuiz from './quiz';
-import 'whatwg-fetch';
 const deepAssign = require('deep-assign');
 
 
@@ -9,14 +9,6 @@ export const UPDATE_USER_STORE = 'UPDATE_USER_STORE';
 export const updateUserStore = user => {
   return deepAssign({}, user, {  type: UPDATE_USER_STORE } )
 }
-
-// export const TEMP_USER = 'TEMP_USER';
-// export const tempUser = user => {
-//   return {
-//     username: user.username,
-//     type: TEMP_USER }
-// }
-
 
 // @@@@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@@@@@@
 
@@ -31,7 +23,7 @@ export const login = (credentials) => dispatch => {
   };
   let fetchedUser;
   console.log('init', init);
-  return fetch(url, init)
+  return fetch(url, init)    // <<<<<<< NOT WORKING ON IOS !!!!!!
   .then(res=>{
     console.log(res);
     if (!res.ok) { 
@@ -56,8 +48,7 @@ export const login = (credentials) => dispatch => {
     }
   })
   .catch(error => {
-   // dispatch(loginError(error));
-    console.log(error);
+   dispatch(actionsMode.showModal(error));
   });
     
   
@@ -81,14 +72,16 @@ export const createUser = (credentials) => dispatch => { //credential should inc
     return res.json();
   }) 
   .then(user => { 
+    user.quizzes = [];
+    user.recent = [];
+    user.badges = [];
     dispatch(updateUserStore(user));
   })
   .then(()=>{
     return dispatch(actionsMode.gotoLogin());
   })
   .catch(error => {
-   // dispatch(loginError(error));
-    console.log(error);
+    dispatch(actionsMode.showModal(error));
   });
 }
 
@@ -116,8 +109,7 @@ export const updateUserProfile = (credentials, authToken) => dispatch => { //cre
     // let user know profile is updated
   })
   .catch(error => {
-   // dispatch(loginError(error));
-    console.log(error);
+    dispatch(actionsMode.showModal(error));
   });
 }
 
@@ -151,8 +143,7 @@ export const updateUserData = (userData, authToken) => dispatch => {
     return dispatch(updateUserStore(user)); // archived quizzes not included
   })
   .catch(error => {
-  // dispatch(loginError(error));
-    console.log(error);
+    dispatch(actionsMode.showModal(error));
   });
 }
 
@@ -226,7 +217,6 @@ export const submitChoices = (choices, user, nextIndex, mode) => dispatch => {
     } 
   })
   .catch(error => {
-   // dispatch(loginError(error));
-    console.log(error);
+    dispatch(actionsMode.showModal(error));
   });
 }

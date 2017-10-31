@@ -3,17 +3,20 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm, Field } from 'redux-form';
 import * as actionsUser from '../actions/users';
-import * as actionsMode from '../actions/mode';
+const deepAssign = require('deep-assign');
 
 export class Profile extends React.Component {
 
   handleSubmitButton(values) { // add form validation first
     if (this.props.user.id) {
+      console.log('update, not create');
       this.props.dispatch(actionsUser.updateUserProfile(values, this.props.user.authToken));
     } else {
-      // this.props.dispatch(actionsMode.gotoLogin());   
-      // this.props.dispatch(actionsUser.tempUser(values));   
-      this.props.dispatch(actionsUser.createUser(values));
+      const newValues = deepAssign(values);
+      newValues.quizzes = [];
+      newValues.recent = [];
+      newValues.badges = [];
+      this.props.dispatch(actionsUser.createUser(newValues));
     }
   }
   render() {
@@ -76,7 +79,8 @@ export class Profile extends React.Component {
             component="input"
             type={pwType} 
             placeholder="re-type password" 
-            required/>
+            required
+          />
           <label className="inputLabel center" htmlFor="password2">Re-Type Password</label>
           
           <button className="createAccountButton" type="submit">{buttonText}</button>

@@ -43,6 +43,7 @@ $black1: #1f1637;
 $backgroundColor: $gray1;
 $headerColor: $coolgray3;
 $buttonBackgroundColor: $coolgray1;
+$tooltipBackgroundColor: $lightblue1;
 
 $fontColorLogo: $brown4;
 $fontColorLanding: $gray4;
@@ -55,6 +56,8 @@ $fontColorButton: darken($brown4, 15%);
 $formInsetColor: $coolwhite;
 $fontColorInactive: lighten($brown4, 25%);
 $fontColorCheck: $green1;
+$fontColorError: $brown3;
+$fontColorTooltip: $coolgray3;
 
 $statusColorSkipped: $yellow2;
 $statusColorCorrect: $green1;
@@ -159,6 +162,7 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  position: relative;
 }
 
 main { // children are .about, .login, .profile, .dashboard, etc.
@@ -658,6 +662,83 @@ button {
   justify-content: space-between;
 }
 
+
+/* @@@@@@@@@@@@@@@@@@@@ MODAL @@@@@@@@@@@@@@@@@@ */
+
+.modalMask {
+  background-color: rgba(0,0,0,.2);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.modal {
+  position: relative;
+  width: 85vw;
+  padding: 15vw;
+  background-color: rgba(254,254,254,.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 2px solid $fontColorError;
+  color: $fontColorError;
+  border-radius: 4px;
+  z-index: 999;
+  .message {
+    font-size: 24px;
+    text-align: center;
+  }
+  .modalButton {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
+}
+
+/* @@@@@@@@@@@@@@ TOOLTIPS @@@@@@@@@@@@ */
+
+// Tooltip container
+.tooltip { // add .tooltip to any element that has a child of .tooltipText
+  position: relative;
+  .tooltipText {
+    display: none;
+    position: absolute;
+    // width: 200%; //of the menu li SPA
+    font-size: 12px;
+    td {
+      font-size: 12px;
+      padding: 2px;
+    }
+    h4 {
+      margin-bottom: 4px;
+    }
+    background-color: $tooltipBackgroundColor;
+    color: $fontColorTooltip;
+    text-align: left;
+    padding: 15px;
+    border-radius: 15px 0 15px 15px;
+    border: 1px solid $lines;
+    top: 110%;
+    right: 0;
+    z-index: 999;
+    width: 200px;
+    -moz-box-shadow: 7px 7px 7px -5px $shadow;
+    -webkit-box-shadow: 7px 7px 7px -5px $shadow;
+    box-shadow: 7px 7px 7px -5px $shadow;
+  }
+}
+.tooltip:hover {
+  .tooltipText {
+    display: block;
+  }
+} 
 
 /* @@@@@@@@@@@@@@ GENERAL OVERRIDES @@@@@@@@@@@@ */
 

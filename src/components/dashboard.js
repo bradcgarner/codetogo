@@ -4,7 +4,6 @@ import Badges from './dashboard-badges';
 import Recent  from './dashboard-recent';
 import QuizLi from './quiz-li';
 import * as actionsMode from '../actions/mode';
-import * as actionsQuiz from '../actions/quiz';
 const deepAssign = require('deep-assign');
 
 export class Dashboard extends React.Component {

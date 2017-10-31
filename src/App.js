@@ -9,8 +9,12 @@ import Profile from './components/profile';
 import Dashboard from './components/dashboard';
 import QuizList from './components/quizlist';
 import Quiz from  './components/quiz';
+import Modal from  './components/modal';
 
 export function App(props) {
+
+  const modal = props.mode.modal === 'open' ? <Modal /> : '' ;
+
   let mode = <Landing />;
   switch(props.mode.view) {
     case 'about':
@@ -28,16 +32,7 @@ export function App(props) {
     case 'quizlist':
       mode = <QuizList />;
       break;
-    case 'question': // question asks question, accuracy layers on user' choice, layers on correct answer
-      mode = <Quiz />;
-      break;
-    case 'results':
-      mode = <Quiz />;
-      break;
-    case 'accuracy':
-      mode = <Quiz />;
-      break;
-    case 'key':
+    case 'question' || 'results' || 'accuracy' || 'key': // question asks question, accuracy layers on user' choice, layers on correct answer
       mode = <Quiz />;
       break;
     default:
@@ -46,6 +41,7 @@ export function App(props) {
   
   return (
     <div className="App">
+      {modal}
       <Header />
       <main className="main">
       {mode}

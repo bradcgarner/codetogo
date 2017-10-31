@@ -29,6 +29,7 @@ export function QuizLi(props) {
   props.user.quizzes.forEach(quiz=>{
     if (quiz.id===id) { isListed = true }
   });
+
   
   const handleTakeQuizButton = (option) => {
     props.dispatch(actionsQuiz.takeQuiz(thisQuiz, user, option, mode))
@@ -48,14 +49,8 @@ export function QuizLi(props) {
     <div className="statusIconWrapper">
       {topLabelScore}
       <StatusBar 
-        name = {thisQuiz.name} // only included for debugging of the status bar on the QuizList
+        quiz = {thisQuiz} // only included for debugging of the status bar on the QuizList
         mode={'quizlist'}
-        total = {thisQuiz.total}
-        completed = {thisQuiz.completed}
-        correct = {thisQuiz.correct}
-        current = {0}
-        currentIndex = {0}
-        attempt = {thisQuiz.attempt}
       />
     </div>;
       
@@ -81,7 +76,12 @@ export function QuizLi(props) {
   </i>;
   
   return (
-      <li className="quizLi">{theQuiz}{attemptNumber}{statusBoxOrAddButton}{takeButton}</li>
+    <li className="quizLi">
+      {theQuiz}
+      {attemptNumber}
+      {statusBoxOrAddButton}
+      {takeButton}
+    </li>
   );
 }
 
