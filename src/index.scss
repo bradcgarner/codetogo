@@ -68,7 +68,7 @@ $diff4Color: $yellow4;
 $diff5Color: $yellow5;
 
 $lines: $gray4;
-$linesLight: $coolgray3;
+$linesLight: lighten($gray3, 20%);
 $shadow: #999;
 $insetShadow: lighten($coolgray3, 30%);
 
@@ -82,6 +82,7 @@ $insetShadow: lighten($coolgray3, 30%);
 
 $header-height: 50px;
 $quizLiHeight: 25px;
+$inputFieldWidth: 250px;
 
 /* @@@@@@@@@@@@@@  END VARIABLES - START RESET @@@@@@@@@@@@@@@@@@@@ */
 
@@ -347,8 +348,7 @@ button {
 }
 
 .enterButton, .aboutButton, .loginButton, .createAccountButton {
-  min-width: 200px;
-  max-width: 250px;
+  width: $inputFieldWidth;
 }
 
 .landingButtons, .loginButtons {
@@ -533,7 +533,20 @@ button {
   height: 100%;
   display: flex;  
   top: 0;
-  //border-right: 1px solid $linesLight;  
+  position: relative;
+  span {
+    display: flex;
+    color: $gray4;
+    font-size: 12px;
+    padding: 2px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: 100%;
+    min-width: 10px;
+  }
+  justify-content: flex-start;
+  align-items: center;
   -webkit-transition: width 2s, -webkit-transform 2s;
   transition: width 2s, transform 2s;
 }
@@ -566,7 +579,11 @@ button {
   margin: 5px;
   display: flex;
   text-align: left;
-  width: 250px;
+  width: $inputFieldWidth;
+  border: 1px solid $linesLight;
+  -moz-box-shadow: inset 3px 3px 3px -2px $insetShadow;
+  -webkit-box-shadow: inset 3px 3px 3px -2px $insetShadow;
+  box-shadow: inset 3px 3px 3px -2px $insetShadow;
 }
 .inputLabel {
   margin-bottom: 15px;
@@ -576,7 +593,7 @@ button {
   font-size: 12px;
   padding-left: 6px;
   display: flex;
-  width: 250px;
+  width: $inputFieldWidth;
   color: $fontColorLabel;
 } 
 
@@ -586,7 +603,6 @@ button {
   display: flex;
   margin-top: 0;
   margin-bottom: 0;
-  width: 250px;
 }
 
 .statusBarContainer { // immediate parent is .question

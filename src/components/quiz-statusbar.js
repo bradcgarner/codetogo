@@ -27,7 +27,8 @@ export class StatusBar extends React.Component {
     const currentIndexDisplay = isQuestion ? this.props.currentIndex + 1 : 0 ;
     const totalIndexDisplay = isQuestion ? currentIndexDisplay + priorCompleted : 0 ;
     
-    const currentSkipped = isQuestion ? currentIndex - currentCompleted : 0 ;
+    let currentSkipped = isQuestion ? currentIndex - currentCompleted : 0 ;
+    if (this.props.mode === 'results') {currentSkipped = currentIndex + 1 - currentCompleted}
     const totalCorrect = this.props.correct || 0;
     const totalIncorrect = totalCompleted - totalCorrect;
     const justOne = this.props.mode === 'question' ? 1 : 0 ; // more restrictive than isQuestion
@@ -39,10 +40,10 @@ export class StatusBar extends React.Component {
     const totalCorrectPct = (totalCorrect/totalLength)*100 || 0;
     const justOnePct = (justOne/totalLength)*100;
 
-    const skipDisplay = isQuestion ? currentSkipped : '' ;
-    const correctDisplay = isQuestion ? totalCorrect : '' ;
-    const incorrectDisplay = isQuestion ? totalIncorrect : '' ;
     const totalDisplay = isQuestion ? totalLength : '' ;   
+    const skipDisplay = (isQuestion && currentSkipped>0) ? <span>{currentSkipped}/{totalLength}</span> : '' ;
+    const correctDisplay = (isQuestion && totalCorrect>0)? <span>{totalCorrect}/{totalLength}</span> : '' ;
+    const incorrectDisplay = (isQuestion && totalIncorrect>0)? <span>{totalIncorrect}/{totalLength}</span> : '' ;
     
     console.log(this.props.name,'attempt', attempt, 'currentLength',currentLength,'totalLength',totalLength,'totalCompleted', totalCompleted, 'currentCompleted',currentCompleted,'priorCompleted',priorCompleted,'totalIndexDisplay',totalIndexDisplay,'currentIndex',currentIndex,'currentSkipped',currentSkipped,'currentSkippedPct', currentSkippedPct,'totalIncorrect',totalIncorrect, 'totalIncorrectPct', totalIncorrectPct, 'totalCorrect', totalCorrect, 'totalCorrectPct', totalCorrectPct, 'justOne', justOne, 'justOnePct', justOnePct);
     
@@ -51,7 +52,7 @@ export class StatusBar extends React.Component {
         <div className="statusBarSkipped statusBar" style={{width: currentSkippedPct + '%'}}>{skipDisplay}</div>
         <div className="statusBarIncorrect statusBar" style={{width: totalIncorrectPct + '%'}}>{incorrectDisplay}</div>
         <div className="statusBarCorrect statusBar" style={{width: totalCorrectPct + '%'}}>{correctDisplay}</div>
-        <div className="statusBarJustOne statusBar" style={{width: justOnePct + '%'}}>{totalDisplay}</div>
+        <div className="statusBarJustOne statusBar" style={{width: justOnePct + '%'}}></div>
       </div>
     );
   }

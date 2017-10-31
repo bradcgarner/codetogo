@@ -126,6 +126,8 @@ const updateUserQuizList = (user, theQuiz) => { // theQuiz.attempt should be the
   user.quizzes.forEach(exQuiz=>{
     if (exQuiz.id === quizId) {
       exQuiz.attempt = theQuiz.attempt;
+      exQuiz.correct = theQuiz.correct; // needed for reset, problem elsewhere?
+      exQuiz.completed = theQuiz.completed; // needed for reset
       quizIsListed = true;
       console.log('quizisListed, quizId', quizIsListed, quizId, exQuiz);
     }
