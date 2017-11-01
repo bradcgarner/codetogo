@@ -14,9 +14,12 @@ export const updateUserStore = user => {
 
 
 export const login = (credentials) => dispatch => {
-  const url = `${REACT_APP_BASE_URL}/api/auth/login`;
+  const url = `https://cors-anywhere.herokuapp.com/${REACT_APP_BASE_URL}/api/auth/login`;
   const auth = `${credentials.username}:${credentials.password}`; // u & pw as string
-  const headers = {"Authorization": "Basic " + btoa(auth)}; // base64 encryption
+  const headers = {
+    "Authorization": "Basic " + btoa(auth), // base64 encryption
+    "x-requested-with": "xhr"
+  }; 
   const init = { 
     method: 'POST',
     headers
