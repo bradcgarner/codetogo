@@ -19,7 +19,7 @@ export const initialUser = { // store.user, single current user, loads at login
 };
 
 export const initialQuiz = { // store.quiz - single current quiz, loads when user clicks <QuizLi/ > from <QuizList /> or <Dashboard />
-  id: null,
+  id: 0,
   name: '',
   attempt: 0,
   category: '',
@@ -29,11 +29,11 @@ export const initialQuiz = { // store.quiz - single current quiz, loads when use
   currentIndex: 0,       // index of array below, advances via submit choice or skip button
   questions: [{     // all questions this quiz, parsed out individually using "current" as the index
     question: '',
-    id: null,
+    id: 0,
     inputType: 'checkbox',
     answers: [{
       option: '',
-      id: null,
+      id: 0,
     }],
     // user data for current quiz
     correct: '',
@@ -47,5 +47,6 @@ export const initialMode = {  // store.mode
   view: 'landing', // landing, about, login, profile, dashboard, quizlist, 
                    // question, result, accuracy, key
   modal: '', // userSettings, quizSettings
-  burger: false // true if burgerMenu is also burgerShow
+  burger: false, // true if burgerMenu is also burgerShow
+  option: 'none' // key, accuracy
 } 

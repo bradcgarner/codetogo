@@ -21,7 +21,6 @@ export const reducer = ( state = initialUser, action ) => {
   //   })
     
   } else {
-    console.log('just returning', action)
     return state;
   }
 }

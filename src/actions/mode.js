@@ -55,10 +55,10 @@ export const gotoAccuracy = () => ({
   view: 'accuracy'
 })
 
-export const GOTO_ANSWER = 'GOTO_ANSWER';
-export const gotoAnswer = () => ({
-  type: GOTO_ANSWER,
-  view: 'answer'
+export const GOTO_KEY = 'GOTO_KEY';
+export const gotoKey = () => ({
+  type: GOTO_KEY,
+  view: 'key'
 })
 
 export const SHOW_MODAL = 'SHOW_MODAL';
@@ -78,4 +78,10 @@ export const TOGGLE_BURGER = 'TOGGLE_BURGER';
 export const toggleBurger = (current) => ({
   type: TOGGLE_BURGER,
   burger: !current
+})
+
+export const TOGGLE_OPTION = 'TOGGLE_OPTION';
+export const toggleOption = (option) => ({
+  type: TOGGLE_OPTION,
+  option: option
 })

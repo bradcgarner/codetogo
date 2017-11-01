@@ -6,14 +6,14 @@ const deepAssign = require('deep-assign');
 
 // NOTE: Quiz is for quizzes and questions. CHOICES GO IN USERS.
 
-export const QUESTIONS = 'QUESTIONS';
-export const questions = (questions) => ({
-  type: QUESTIONS,
-  questions
-});
+// export const QUESTIONS = 'QUESTIONS';
+// export const questions = questions => ({
+//   type: QUESTIONS,
+//   questions
+// });
 
 export const TOGGLE_FORM_STATUS = 'TOGGLE_FORM_STATUS';
-export const toggleFormStatus = (status) => ({
+export const toggleFormStatus = status => ({
   type: TOGGLE_FORM_STATUS,
   formIsEmpty: status,    
 })
@@ -45,7 +45,7 @@ export const nextQuestion = quiz => ({
 
 // only used for skipping, not when submitting choices
 export const UPDATE_CURRENT_QUESTION = 'UPDATE_CURRENT_QUESTION';
-export const updateCurrentQuestion = (nextIndex) => ({
+export const updateCurrentQuestion = nextIndex => ({
   type: UPDATE_CURRENT_QUESTION,
   currentIndex: nextIndex,
 });
@@ -60,7 +60,7 @@ export const scoreChoice = correct => ({
 });
 
 export const UPDATE_QUIZ_MENU = 'UPDATE_QUIZ_MENU';
-export const updateQuizMenu = (menu) => ({
+export const updateQuizMenu = menu => ({
   type: UPDATE_QUIZ_MENU,
   menuOfAllQuizzes: menu
 });
@@ -68,19 +68,16 @@ export const updateQuizMenu = (menu) => ({
 
 // @@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@
 
-// get list of all quizzes; only once at login
+// get list of all quizzes; only once at load
 export const  fetchQuizzes = () => dispatch => { 
-  console.log("fetches quizzes from server");
   return fetch(`${REACT_APP_BASE_URL}/api/quizzes/`)
     .then(res => {
-      console.log('quizzes fetched',res);
         if (!res.ok) {
           return Promise.reject(res.statusText);
         }
         return res.json();
     })
     .then(quizzes => {
-      console.log('quizzes fetched',quizzes);
       return dispatch(updateQuizMenu(quizzes));
     })
     .catch(error => {

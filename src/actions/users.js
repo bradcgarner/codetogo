@@ -14,7 +14,7 @@ export const updateUserStore = user => {
 
 
 export const login = (credentials) => dispatch => {
-  const url = `https://cors-anywhere.herokuapp.com/${REACT_APP_BASE_URL}/api/auth/login`;
+  const url = `${REACT_APP_BASE_URL}/api/auth/login`;
   const auth = `${credentials.username}:${credentials.password}`; // u & pw as string
   const headers = {
     "Authorization": "Basic " + btoa(auth), // base64 encryption
@@ -38,9 +38,6 @@ export const login = (credentials) => dispatch => {
     console.log('user returned at login', fetchedUser);    
     return fetchedUser = user;    
   })
-  .then(()=>{
-    return dispatch(actionsQuiz.fetchQuizzes());     
-  })
   .then(() => { 
     dispatch(updateUserStore(fetchedUser));
     console.log('END LOGIN. USER STORE IS UPDATED WITH:', fetchedUser);
@@ -59,7 +56,7 @@ export const login = (credentials) => dispatch => {
 // create new user
 export const createUser = (credentials) => dispatch => { //credential should include   username, password, firstName, lastName  
   const url = `${REACT_APP_BASE_URL}/api/users`;
-  const headers = { "Content-Type": "application/json"};
+  const headers = { "Content-Type": "application/json", "x-requested-with": "xhr" };
   const init = { 
     method: 'POST',
     body: JSON.stringify(credentials),
@@ -91,7 +88,11 @@ export const createUser = (credentials) => dispatch => { //credential should inc
 //update user core profile: username, password, firstName, lastName
 export const updateUserProfile = (credentials, authToken) => dispatch => { //credentials MAY include username, password, firstName, lastName
   const url = `${REACT_APP_BASE_URL}/api/users/${credentials.id}`;
-  const headers = { "Content-Type": "application/json", "Authorization": "Bearer " + authToken};
+  const headers = { 
+    "Content-Type": "application/json", 
+    "Authorization": "Bearer " + authToken,
+    "x-requested-with": "xhr"
+  };
   const init = { 
     method: 'PUT',
     body: credentials,
@@ -123,7 +124,8 @@ export const updateUserData = (userData, authToken) => dispatch => {
   const headers = { 
     "Content-Type": "application/json", 
     "Authorization": "Bearer " + authToken,
-    'Accept': 'application/json'
+    'Accept': 'application/json',
+    "x-requested-with": "xhr"
   };
   const init = { 
     method: 'PUT',
@@ -173,7 +175,11 @@ export const submitChoices = (choices, user, nextIndex, mode) => dispatch => {
   if (quizIndexToUpdate < 0 ) {return console.log('cannot updated quiz index of ', quizIndexToUpdate);}
 
   const url = `${REACT_APP_BASE_URL}/api/choices/`;
-  const headers = { "Content-Type": "application/json", "Authorization": "Bearer " + user.authToken};
+  const headers = { 
+    "Content-Type": "application/json", 
+    "Authorization": "Bearer " + user.authToken,
+    "x-requested-with": "xhr"
+  };
   const init = { 
     method: 'POST',
     headers,

@@ -1,5 +1,9 @@
 {
   "name": "CodeQuiz",
+  "jest": {
+    "collectCoverage" : true,
+    "collectCoverageFrom" : ["**/*.{js,jsx}", "!**/node_modules/**"]
+  },  
   "version": "0.1.0",
   "description": "Like Code Wars, but more mobile-friendly and multiple choice.",
   "private": true,
@@ -20,7 +24,12 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "jest -u --coverage",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "enzyme": "^3.1.0",
+    "enzyme-adapter-react-16": "^1.0.2",
+    "react-test-renderer": "^16.0.0"
   }
 }

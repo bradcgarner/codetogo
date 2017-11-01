@@ -306,10 +306,12 @@ main { // children are .about, .login, .profile, .dashboard, etc.
   position: relative;
   width: 100%;
   display: flex;
+  justify-content: center;
+  align-items: center;
   h1 {
     font-size: 24px;
     color: $fontColorHeader;
-    width: 100%;
+    width: 90%;
   }
 }
 
@@ -396,7 +398,7 @@ button {
 }
 
 .aboutButton, .createAccountButton, .gotoQuizListButton, 
-.checkAccuracyButton, .takeAnotherQuizButton {
+.showNextOptionButton {
   font-size: 20px;
   min-height: 40px;
 }
@@ -429,9 +431,13 @@ button {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: flex-end;
   .smallIcon {
+    font-size: 30px;
     width: 65px;
+    .faText {
+      margin-top: 10px;
+    }
   }
 }
 
@@ -724,6 +730,70 @@ button {
   justify-content: space-between;
 }
 
+/* @@@@@@@@@@@@@@@@@@@@ RESULTS @@@@@@@@@@@@@@@@@@ */
+
+.results {
+  justify-content: flex-start;
+  align-items: center;
+}
+.showNextOptionButton{
+  width: 250px;
+}
+.goToOptionButton {
+  width: 150px;
+  font-size: 16px;
+  display: inline-block;
+  margin-bottom: 25px;  
+}
+
+.resultsOptions {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  overflow-y: hidden;
+  .showOptionParagraph p {
+    text-align: left;
+    max-width: 300px;
+    transition-property: all;
+    transition-duration: 1.5s;
+    transition-timing-function: cubic-bezier();  
+  }
+  button {
+    transition-property: all;
+    transition-duration: 1.5s;
+    transition-timing-function: cubic-bezier();
+  }
+  transition-property: all;
+  transition-duration: 1.5s;
+  transition-timing-function: cubic-bezier();
+}
+.hideOption {
+  max-height: 0;
+  border: none;
+  .showOptionParagraph p {
+    color: $coolwhite;    
+  }
+  button {
+    background-color: transparent;
+    border: none;
+    color: $coolwhite;
+  }
+}
+.showOption {
+  max-height: 200px;
+  border-bottom: 1px solid $linesLight;  
+  .showOptionParagraph p {
+    color: $fontColorMain;    
+  }    
+  button {
+    // background-color: inherit;
+    // border: inherit;
+    // color: inherit;
+  }
+}
+
 
 /* @@@@@@@@@@@@@@@@@@@@ MODAL @@@@@@@@@@@@@@@@@@ */
 
@@ -799,6 +869,7 @@ button {
   position: absolute;
   background-color: $tooltipBackgroundColor;
   color: $fontColorTooltip;
+  opacity: .94;
   border: 1px solid $lines;
   -moz-box-shadow: 7px 7px 7px -5px $shadow;
   -webkit-box-shadow: 7px 7px 7px -5px $shadow;

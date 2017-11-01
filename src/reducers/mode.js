@@ -23,6 +23,10 @@ export const reducer = ( state = initialMode, action ) => {
     return Object.assign({}, state, {
       burger: action.burger,
     })
+  } else if ( action.type === actions.TOGGLE_OPTION ) {
+    return Object.assign({}, state, {
+      option: action.option,
+    })
   } else {
     return state;
   }

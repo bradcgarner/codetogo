@@ -90,12 +90,20 @@ export class Profile extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  user: state.user,
-  quiz: state.quiz,
-  mode: state.mode,
-  initialValues: state.user,
-})
+const mapStateToProps = state => {
+  const initialForm = deepAssign({}, state.user);
+  delete initialForm.recent;
+  delete initialForm.quizzes;
+  delete initialForm.badges;
+  delete initialForm.authToken;
+  delete initialForm.id;
+  return {
+    user: state.user,
+    quiz: state.quiz,
+    mode: state.mode,
+    initialValues: initialForm
+  }
+}
 
 export default compose(
   connect(mapStateToProps),

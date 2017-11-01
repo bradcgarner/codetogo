@@ -32,7 +32,16 @@ export function App(props) {
     case 'quizlist':
       mode = <QuizList />;
       break;
-    case 'question' || 'results' || 'accuracy' || 'key': // question asks question, accuracy layers on user' choice, layers on correct answer
+    case 'question':
+      mode = <Quiz />;
+      break;
+    case  'results':
+      mode = <Quiz />;
+      break;
+    case 'accuracy': // question asks question, accuracy layers on user' choice, layers on correct answer
+      mode = <Quiz />;
+      break;
+    case 'key':
       mode = <Quiz />;
       break;
     default:

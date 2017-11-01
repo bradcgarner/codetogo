@@ -48,12 +48,13 @@ describe('reducer', () => {
       firstName: 'testFirst2',
       lastName: 'testLast2',
       username: 'testusername2',
+      quizzes: [],
       badges: 'noBadges',
       recent: 'noRecent',
       authToken: '456'
     };
     let updatedUser = { 
-      id: '5555',
+      id: '5556',
       firstName: 'testFirst2',
       lastName: 'testLast2',
       username: 'testusername2',
@@ -73,11 +74,24 @@ describe('reducer', () => {
       type: 'UPDATE_USER_STORE'
     };
     const state = reducer(sampleUser, updatedUser);
-    console.log(state);
-    expect(state.user.firstName).toEqual(sampleUser.firstName);   
+    expect(state.user.id).toEqual('5556');   
+    expect(state.user.firstName).toEqual('testFirst2');   
+    expect(state.user.lastName).toEqual('testLast2');   
+    expect(state.user.username).toEqual('testusername2');   
     expect(state.user.quizzes).toEqual(updatedUser.quizzes);   
+    expect(state.user.quizzes[0].id).toEqual('1234');   
+    expect(state.user.quizzes[0].name).toEqual('testQuiz2');   
+    expect(state.user.quizzes[0].attempt).toEqual(0);   
+    expect(state.user.quizzes[0].total).toEqual(3);   
+    expect(state.user.quizzes[0].completed).toEqual(1);   
+    expect(state.user.quizzes[0].correct).toEqual(2);   
+    expect(state.user.quizzes[0].category).toEqual('CSS');   
+    expect(state.user.quizzes[0].difficulty).toEqual(5);
+    expect(state.user.badges).toEqual('noBadges');   
+    expect(state.user.recent).toEqual('noRecent');   
+    expect(state.user.authToken).toEqual('456');   
+    expect(state.user.type).toEqual(undefined);       
   });
-
 
 
 });

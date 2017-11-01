@@ -174,11 +174,13 @@ main {
   height: 50px;
   position: relative;
   width: 100%;
-  display: flex; }
+  display: flex;
+  justify-content: center;
+  align-items: center; }
   .headerContainer h1 {
     font-size: 24px;
     color: #fafcff;
-    width: 100%; }
+    width: 90%; }
 
 .header {
   height: 100%;
@@ -271,7 +273,7 @@ button {
   margin-bottom: 0; }
 
 .aboutButton, .createAccountButton, .gotoQuizListButton,
-.checkAccuracyButton, .takeAnotherQuizButton {
+.showNextOptionButton {
   font-size: 20px;
   min-height: 40px; }
 
@@ -299,9 +301,12 @@ button {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: baseline; }
+  align-items: flex-end; }
   .questionButtons .smallIcon {
+    font-size: 30px;
     width: 65px; }
+    .questionButtons .smallIcon .faText {
+      margin-top: 10px; }
 
 /* @@@@@@@@@@@@@@ QUIZ LISTS AND DASHBOARD  @@@@@@@@@@@@ */
 .dashboardQuizListHeader, .quizListHeader {
@@ -608,6 +613,57 @@ button {
   flex-direction: column;
   justify-content: space-between; }
 
+/* @@@@@@@@@@@@@@@@@@@@ RESULTS @@@@@@@@@@@@@@@@@@ */
+.results {
+  justify-content: flex-start;
+  align-items: center; }
+
+.showNextOptionButton {
+  width: 250px; }
+
+.goToOptionButton {
+  width: 150px;
+  font-size: 16px;
+  display: inline-block;
+  margin-bottom: 25px; }
+
+.resultsOptions {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  overflow-y: hidden;
+  transition-property: all;
+  transition-duration: 1.5s;
+  transition-timing-function: cubic-bezier(); }
+  .resultsOptions .showOptionParagraph p {
+    text-align: left;
+    max-width: 300px;
+    transition-property: all;
+    transition-duration: 1.5s;
+    transition-timing-function: cubic-bezier(); }
+  .resultsOptions button {
+    transition-property: all;
+    transition-duration: 1.5s;
+    transition-timing-function: cubic-bezier(); }
+
+.hideOption {
+  max-height: 0;
+  border: none; }
+  .hideOption .showOptionParagraph p {
+    color: #fafcff; }
+  .hideOption button {
+    background-color: transparent;
+    border: none;
+    color: #fafcff; }
+
+.showOption {
+  max-height: 200px;
+  border-bottom: 1px solid #ccccc9; }
+  .showOption .showOptionParagraph p {
+    color: #52524e; }
+
 /* @@@@@@@@@@@@@@@@@@@@ MODAL @@@@@@@@@@@@@@@@@@ */
 .modalMask {
   background-color: rgba(0, 0, 0, 0.2);
@@ -669,6 +725,7 @@ button {
   position: absolute;
   background-color: #ebf5ff;
   color: #4a487f;
+  opacity: .94;
   border: 1px solid #52524e;
   -moz-box-shadow: 7px 7px 7px -5px #999;
   -webkit-box-shadow: 7px 7px 7px -5px #999;

@@ -2,11 +2,12 @@ import * as actions from '../actions/quiz';
 import { initialQuiz } from './initialState';
 
 export const reducer = ( state = initialQuiz, action ) => {
-  if ( action.type === actions.questions ) {
-    return Object.assign({}, state, {
-      questions: action.questions
-    })
-  } else if ( action.type === actions.TOGGLE_FORM_STATUS ) {
+  // if ( action.type === actions.questions ) {
+  //   return Object.assign({}, state, {
+  //     questions: action.questions
+  //   })
+  // } else 
+  if ( action.type === actions.TOGGLE_FORM_STATUS ) {
     return Object.assign({}, state, {
       formIsEmpty: action.formIsEmpty
     })
@@ -15,7 +16,6 @@ export const reducer = ( state = initialQuiz, action ) => {
       menuOfAllQuizzes: action.menuOfAllQuizzes
     })
   } else if ( action.type === actions.LOAD_QUIZ ) {
-    console.log(action);
     return Object.assign({}, state, {
       id: action.id,    
       name: action.name,
@@ -31,7 +31,6 @@ export const reducer = ( state = initialQuiz, action ) => {
       formIsEmpty: true
     }) 
   } else if ( action.type === actions.NEXT_QUESTION ) {
-    console.log(action);
     return Object.assign({}, state, {
       currentIndex: action.currentIndex,
       completed: action.completed,
@@ -46,14 +45,10 @@ export const reducer = ( state = initialQuiz, action ) => {
       
   // this updates the CURRENT quiz
   } else if (action.type === actions.SCORE_CHOICE) {
-    console.log('action', action)
     const questions = [...state.questions]; // create/copy immutable object from state.quizzes
-    console.log('questions after array assign from state', questions)
     const questionIndex = questions.findIndex(question => question.id === action.questionId);
-    console.log('questionIndex', questionIndex)
     questions[questionIndex].correct = action.correct;
     questions[questionIndex].choices = action.choices;
-    console.log('questions after scoring', questions)
     return Object.assign({}, state, { formIsEmpty: true }, { questions });
   } else { 
     return state;

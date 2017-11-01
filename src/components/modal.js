@@ -15,7 +15,7 @@ export class Modal extends React.Component {
       <div className="modalMask">
         <div className="modal">
           <p className="message">{message}</p>
-          <i class="fa fa-window-close modalButton" aria-hidden="true" onClick={()=>this.handleCloseButton()}></i>
+          <i className="fa fa-window-close modalButton" aria-hidden="true" onClick={()=>this.handleCloseButton()}></i>
         </div>
       </div>
     );

@@ -5,7 +5,6 @@ import * as actionsMode from '../actions/mode';
 export function Back(props) {
   
   const handleBackButton=()=> {
-    console.log('GOING ~~~~~ TO ~~~~~', props.where);
     if(props.where === 'dashboard') {
       props.dispatch(actionsMode.gotoDashboard());      
     } else if (props.where === 'profile') {
