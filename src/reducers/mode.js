@@ -6,15 +6,22 @@ export const reducer = ( state = initialMode, action ) => {
   if ( goto === 'GOTO_' ) {
       return Object.assign({}, state, {
         view: action.view,
+        burger: false
       })
   } else if ( action.type === actions.SHOW_MODAL ) {
     return Object.assign({}, state, {
       modal: action.modal,
-      message: action.message
+      message: action.message,
+      burger: false
     })
   } else if ( action.type === actions.CLOSE_MODAL ) {
     return Object.assign({}, state, {
       modal: action.modal,
+      burger: false      
+    })
+  } else if ( action.type === actions.TOGGLE_BURGER ) {
+    return Object.assign({}, state, {
+      burger: action.burger,
     })
   } else {
     return state;

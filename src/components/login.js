@@ -8,6 +8,7 @@ import * as actionsMode from '../actions/mode';
 export class Login extends React.Component {
   
   handleSubmitButton(values) {
+    console.log('values submitted at login', values);
     this.props.dispatch(actionsUser.login(values));
     this.props.reset();   
   }
@@ -18,7 +19,7 @@ export class Login extends React.Component {
 
   render() {
 
-    const pwType = 'text' // allow to toggle this later
+    const pwType = 'password' // allow to toggle this later
     return (
       <div className="login">
         <form className="login" onSubmit={this.props.handleSubmit(values =>

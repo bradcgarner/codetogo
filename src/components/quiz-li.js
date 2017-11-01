@@ -7,8 +7,6 @@ const deepAssign = require('deep-assign');
 
 
 export function QuizLi(props) {
-
-  console.log('quiz in li',props.li);
   
   const thisQuiz = deepAssign({}, props.li);
   const id = thisQuiz.id;

@@ -8,8 +8,12 @@ const deepAssign = require('deep-assign');
 export function QuizList(props) {
 
   const handleQuizlistButton = () => {
-    props.dispatch(actionsMode.gotoQuizlist());
+    if (props.user.id) {
+      props.dispatch(actionsMode.gotoDashboard());      
+    }
   }
+
+  const dashboardClass = props.user.id ? 'gotoQuizListButton' : 'gotoQuizListButton inactive' ;
 
   const quizLi = props.quiz.menuOfAllQuizzes.map((quiz, index)=>{
     return <QuizLi key={index} index={index} li={deepAssign({},quiz)} />
@@ -23,7 +27,7 @@ export function QuizList(props) {
         <ul className="quizUl">
           {quizLi}
         </ul>
-        <button className="gotoQuizListButton"onClick={()=>handleQuizlistButton()}>{addButtonLabel}</button>
+        <button className={dashboardClass} onClick={()=>handleQuizlistButton()}>{addButtonLabel}</button>
       </div>
     );
 }

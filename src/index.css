@@ -109,16 +109,6 @@ main {
   display: flex;
   margin: 5px; }
 
-.homeIcon {
-  position: absolute;
-  left: 0;
-  top: 0; }
-
-.settingsIcon {
-  position: absolute;
-  right: 0;
-  top: 0; }
-
 .faText {
   font-size: 11px;
   font-family: 'Oxygen', sans-serif;
@@ -148,9 +138,6 @@ main {
 .smallIcon {
   font-size: 80%;
   margin-right: 5px; }
-
-header .fa {
-  color: #111110; }
 
 /* @@@@@@@@@@@@@@ LANDING @@@@@@@@@@@@ */
 .landingCover {
@@ -182,9 +169,28 @@ header .fa {
   margin: 15px 0; }
 
 /* @@@@@@@@@@@@@@@@ HEADER @@@@@@@@@@@@@@ */
-.header {
+.headerContainer {
   padding: 15px 5px;
   height: 50px;
+  position: relative;
+  width: 100%;
+  display: flex; }
+  .headerContainer h1 {
+    font-size: 24px;
+    color: #fafcff;
+    width: 100%; }
+
+.header {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  position: absolute;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  top: 0;
+  left: 0;
+  z-index: 50;
   background: #5d5aa0;
   /* For browsers that do not support gradients */
   background: -webkit-linear-gradient(60deg, #5d5aa0, #37365e);
@@ -197,13 +203,54 @@ header .fa {
   /* Standard syntax (must be last) */
   -moz-box-shadow: 0px 4px 4px #999;
   -webkit-box-shadow: 0px 4px 4px #999;
-  box-shadow: 0px 4px 4px #999;
-  position: relative;
-  width: 100%; }
-  .header h1 {
-    font-size: 24px;
-    color: #fafcff;
-    width: 100%; }
+  box-shadow: 0px 4px 4px #999; }
+
+.backIcon, .burgerIcon {
+  display: flex;
+  flex-direction: column;
+  color: #fafcff;
+  height: 50px;
+  width: 50px;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0; }
+
+.burgerIcon {
+  right: 0; }
+
+.backIcon {
+  left: 0; }
+
+.burgerIcon {
+  right: 0; }
+
+.burgerMenu {
+  padding: 20px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  right: 0;
+  -webkit-transition: position 1s linear, -webkit-transform 1s linear;
+  transition: position 1s linear, transform 1s linear;
+  overflow: none;
+  -webkit-transition: 1s;
+  -moz-transition: 1s;
+  -ms-transition: 1s;
+  -o-transition: 1s;
+  transition: 1s;
+  z-index: 30;
+  border-radius: 0 0 6px 6px; }
+  .burgerMenu li {
+    margin-bottom: 10px; }
+
+.burgerHide {
+  top: -350%; }
+
+.burgerShow {
+  top: 100%; }
 
 /* @@@@@@@@@@@@@@ BUTTONS @@@@@@@@@@@@ */
 button {
@@ -217,12 +264,16 @@ button {
 .enterButton, .loginButton, .submitButton {
   font-size: 35px; }
 
+.enterButton {
+  min-height: 55px; }
+
 .submitButton {
   margin-bottom: 0; }
 
 .aboutButton, .createAccountButton, .gotoQuizListButton,
 .checkAccuracyButton, .takeAnotherQuizButton {
-  font-size: 20px; }
+  font-size: 20px;
+  min-height: 40px; }
 
 .gotoQuizListButton {
   width: 90%;
@@ -565,11 +616,11 @@ button {
   height: 100%;
   top: 0;
   left: 0;
-  z-index: 99;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; }
+  justify-content: center;
+  z-index: 100; }
 
 .modal {
   position: relative;
@@ -583,7 +634,7 @@ button {
   border: 2px solid #a94d88;
   color: #a94d88;
   border-radius: 4px;
-  z-index: 999; }
+  z-index: 101; }
   .modal .message {
     font-size: 24px;
     text-align: center; }
@@ -597,21 +648,14 @@ button {
   position: relative; }
   .tooltip .tooltipText {
     display: none;
-    position: absolute;
     font-size: 12px;
-    background-color: #ebf5ff;
-    color: #4a487f;
     text-align: left;
     padding: 15px;
     border-radius: 15px 0 15px 15px;
-    border: 1px solid #52524e;
     top: 110%;
     right: 0;
-    z-index: 999;
     width: 200px;
-    -moz-box-shadow: 7px 7px 7px -5px #999;
-    -webkit-box-shadow: 7px 7px 7px -5px #999;
-    box-shadow: 7px 7px 7px -5px #999; }
+    z-index: 200; }
     .tooltip .tooltipText td {
       font-size: 12px;
       padding: 2px; }
@@ -620,6 +664,15 @@ button {
 
 .tooltip:hover .tooltipText {
   display: block; }
+
+.popover {
+  position: absolute;
+  background-color: #ebf5ff;
+  color: #4a487f;
+  border: 1px solid #52524e;
+  -moz-box-shadow: 7px 7px 7px -5px #999;
+  -webkit-box-shadow: 7px 7px 7px -5px #999;
+  box-shadow: 7px 7px 7px -5px #999; }
 
 /* @@@@@@@@@@@@@@ GENERAL OVERRIDES @@@@@@@@@@@@ */
 .center {
@@ -640,5 +693,8 @@ button {
 
 .inactive {
   color: #bfac8f; }
+
+.hidden {
+  display: none; }
 
 /*# sourceMappingURL=index.css.map */

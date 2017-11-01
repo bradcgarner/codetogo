@@ -4,7 +4,7 @@ export const initialUser = { // store.user, single current user, loads at login
   lastName: '',
   username: '',
   quizzes: [{ // all quizzes user has ever taken
-    id: 555,
+    id: 0,
     name: 'test',
     attempt: 0,
     total: 3,
@@ -46,5 +46,6 @@ export const initialQuiz = { // store.quiz - single current quiz, loads when use
 export const initialMode = {  // store.mode
   view: 'landing', // landing, about, login, profile, dashboard, quizlist, 
                    // question, result, accuracy, key
-  modal: '' // userSettings, quizSettings
+  modal: '', // userSettings, quizSettings
+  burger: false // true if burgerMenu is also burgerShow
 } 

@@ -4,7 +4,6 @@ import { initialUser } from './initialState';
 export const reducer = ( state = initialUser, action ) => {
   
   if ( action.type === actions.UPDATE_USER_STORE ) {
-    console.log('update user store', action);
     return Object.assign({}, state, {
       authToken: action.authToken,
       id: action.id,
@@ -16,12 +15,13 @@ export const reducer = ( state = initialUser, action ) => {
       quizzes: action.quizzes
     })
 
-  } else if ( action.type === 'actions.ADD_QUIZ_USER_LIST' ) {
-    return Object.assign({}, state, {
-      quizzes: action.quizzes
-    })
+  // } else if ( action.type === actions.ADD_QUIZ_USER_LIST ) {
+  //   return Object.assign({}, state, {
+  //     quizzes: action.quizzes
+  //   })
     
   } else {
+    console.log('just returning', action)
     return state;
   }
 }

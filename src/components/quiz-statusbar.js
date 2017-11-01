@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 export class StatusBar extends React.Component {
 
   render() {
-    console.log('this.props in statusbar', this.props);
     let isQuestion = true;
     if (this.props.mode === 'quizlist'){
       isQuestion = false;
@@ -25,11 +24,11 @@ export class StatusBar extends React.Component {
     
     const currentIndex = isQuestion ? thisQuiz.currentIndex : 0 ;
     const currentIndexDisplay = isQuestion ? thisQuiz.currentIndex + 1 : 0 ;
-    const currentIndexDisplayTooltip = isQuestion ? <p>Current Question: {currentIndexDisplay}</p> : '' ;
     const totalIndexDisplay = isQuestion ? currentIndexDisplay + priorCompleted : 0 ;
+    const currentIndexDisplayTooltip = isQuestion ? <p>Current Question: {totalIndexDisplay}</p> : '' ;
     
     let currentSkipped = isQuestion ? currentIndex - currentCompleted : 0 ;
-    let currentSkippedTooltip = isQuestion ? <p>Skipped: {currentSkipped}</p> : '' ;
+    let currentSkippedTooltip = isQuestion ? <tr><td>Skipped</td><td>{currentSkipped}</td></tr> : <tr></tr> ;
     if (this.props.mode === 'results') {currentSkipped = currentIndex + 1 - currentCompleted}
     const totalCorrect = thisQuiz.correct || 0;
     const totalIncorrect = totalCompleted - totalCorrect;
@@ -44,18 +43,20 @@ export class StatusBar extends React.Component {
     const correctDisplay = (isQuestion && totalCorrect>0)? <span>{totalCorrect}/{totalLength}</span> : '' ;
     const incorrectDisplay = (isQuestion && totalIncorrect>0)? <span>{totalIncorrect}/{totalLength}</span> : '' ;
     
-    console.log(thisQuiz.name,'attempt', thisQuiz.attempt, 'currentLength',currentLength,'totalLength',totalLength,'totalCompleted', totalCompleted, 'currentCompleted',currentCompleted,'priorCompleted',priorCompleted,'totalIndexDisplay',totalIndexDisplay,'currentIndex',currentIndex,'currentSkipped',currentSkipped,'currentSkippedPct', currentSkippedPct,'totalIncorrect',totalIncorrect, 'totalIncorrectPct', totalIncorrectPct, 'totalCorrect', totalCorrect, 'totalCorrectPct', totalCorrectPct, 'justOne', justOne, 'justOnePct', justOnePct);
-
-    const tooltip = <div className="tooltipText">
+    const tooltip = <div className="tooltipText popover">
       <h4>{thisQuiz.name}</h4>
       <table>
-      <tr><td>Category</td><td>{thisQuiz.category}</td></tr>
-      <tr><td>Difficulty</td><td>{thisQuiz.difficulty}</td></tr>
-      <tr><td>Attempts</td><td>{thisQuiz.attempt}</td></tr>
-      <tr><td>Completed</td><td>{totalCompleted}</td></tr>
-      <tr><td>Correct</td><td>{totalCorrect}</td><td>{Math.round(totalCorrectPct,0)}%</td></tr>
-      <tr><td>Incorrect</td><td>{totalIncorrect}</td><td>{Math.round(totalIncorrectPct,0)}%</td></tr>
+        <tbody>
+          <tr><td>Category</td><td>{thisQuiz.category}</td></tr>
+          <tr><td>Difficulty</td><td>{thisQuiz.difficulty}</td></tr>
+          <tr><td>Attempts</td><td>{thisQuiz.attempt}</td></tr>
+          <tr><td>Completed</td><td>{totalCompleted}</td></tr>
+          <tr><td>Correct</td><td>{totalCorrect}</td><td>{Math.round(totalCorrectPct,0)}%</td></tr>
+          <tr><td>Incorrect</td><td>{totalIncorrect}</td><td>{Math.round(totalIncorrectPct,0)}%</td></tr>
+          {currentSkippedTooltip}
+        </tbody>
       </table>
+      {currentIndexDisplayTooltip}
     </div>
 
     return (

@@ -43,9 +43,9 @@ export const gotoQuestion = () => ({
   view: 'question'
 })
 
-export const GOTO_RESULTs = 'GOTO_RESULTs';
+export const GOTO_RESULTS = 'GOTO_RESULTS';
 export const gotoResults = () => ({
-  type: GOTO_RESULTs,
+  type: GOTO_RESULTS,
   view: 'results'
 })
 
@@ -72,4 +72,10 @@ export const CLOSE_MODAL = 'CLOSE_MODAL';
 export const closeModal = () => ({
   type: CLOSE_MODAL,
   modal: 'close'
+})
+
+export const TOGGLE_BURGER = 'TOGGLE_BURGER';
+export const toggleBurger = (current) => ({
+  type: TOGGLE_BURGER,
+  burger: !current
 })
