@@ -18,7 +18,7 @@ export function QuizLi(props) {
   const user = deepAssign({}, props.user);
   const mode = props.mode.view;
 
-  const topLabelAttempt = props.index === 0 ? <div className="quizLiTopLabel">attempts</div> : '' ;
+  const topLabelAttempt = (props.index === 0 && mode === 'dashboard') ? <div className="quizLiTopLabel">attempts</div> : '' ;
   const topLabelDifficulty = props.index === 0 ? <div className="quizLiTopLabel">difficulty</div> : '' ;
   const topLabelCategory = props.index === 0 ? <div className="quizLiTopLabel">category</div> : '' ;
   const topLabelScore = props.index === 0 ? <div className="quizLiTopLabel">scores</div> : '' ;
@@ -28,7 +28,6 @@ export function QuizLi(props) {
     if (quiz.id===id) { isListed = true }
   });
 
-  
   const handleTakeQuizButton = (option) => {
     props.dispatch(actionsQuiz.takeQuiz(thisQuiz, user, option, mode))
   }
@@ -42,25 +41,26 @@ export function QuizLi(props) {
       {topLabelCategory}
     </div>
   </div>;
-
-  const statusBox = 
-    <div className="statusIconWrapper">
-      {topLabelScore}
-      <StatusBar 
-        quiz = {thisQuiz} // only included for debugging of the status bar on the QuizList
-        mode={'quizlist'}
-      />
-    </div>;
       
+  let attemptInner = attempt >= 0 ? '#' + (attempt + 1) : '' ;
+  let attemptNumber =  <div className="statusBarAttempt">{attemptInner}
+    {topLabelAttempt}
+  </div>
+        
   const addButton =
-  <i className="fa fa-list-ul smallIcon" aria-hidden="true"onClick={()=>handleTakeQuizButton('add')}>
+    <i className="fa fa-list-ul smallIcon" aria-hidden="true"onClick={()=>handleTakeQuizButton('add')}>
     <span className="faText">Add</span>
   </i> ;
 
-  let attemptInner = attempt >= 0 ? '#' + (attempt + 1) : '' ;
-  let attemptNumber =  <div className="statusBarAttempt">{attemptInner}
-      {topLabelAttempt}
-    </div>
+
+  const statusBox = 
+  <div className="statusIconWrapper">
+    {topLabelScore}
+    <StatusBar 
+      quiz = {thisQuiz} // only included for debugging of the status bar on the QuizList
+      mode={'quizlist'}
+    />
+  </div>;
 
   let statusBoxOrAddButton = addButton;
   if ( isListed && props.mode.view === 'dashboard' ) {

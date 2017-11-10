@@ -28,7 +28,6 @@ export class StatusBar extends React.Component {
     const currentIndexDisplayTooltip = isQuestion ? <p>Current Question: {totalIndexDisplay}</p> : '' ;
     
     let currentSkipped = isQuestion ? currentIndex - currentCompleted : 0 ;
-    let currentSkippedTooltip = isQuestion ? <tr><td>Skipped</td><td>{currentSkipped}</td></tr> : <tr></tr> ;
     if (this.props.mode === 'results') {currentSkipped = currentIndex + 1 - currentCompleted}
     const totalCorrect = thisQuiz.correct || 0;
     const totalIncorrect = totalCompleted - totalCorrect;
@@ -43,14 +42,16 @@ export class StatusBar extends React.Component {
     const correctDisplay = (isQuestion && totalCorrect>0)? <span>{totalCorrect}/{totalLength}</span> : '' ;
     const incorrectDisplay = (isQuestion && totalIncorrect>0)? <span>{totalIncorrect}/{totalLength}</span> : '' ;
     
+    let currentSkippedTooltip = isQuestion ? <tr><td>Skipped</td><td>{currentSkipped}</td><td>{Math.round(currentSkippedPct,0)}%</td></tr> : <tr></tr> ;
+    
     const tooltip = <div className="tooltipText popover">
       <h4>{thisQuiz.name}</h4>
       <table>
         <tbody>
-          <tr><td>Category</td><td>{thisQuiz.category}</td></tr>
-          <tr><td>Difficulty</td><td>{thisQuiz.difficulty}</td></tr>
-          <tr><td>Attempts</td><td>{thisQuiz.attempt}</td></tr>
-          <tr><td>Completed</td><td>{totalCompleted}</td></tr>
+          <tr><td>Category</td><td colSpan={2}>{thisQuiz.category}</td></tr>
+          <tr><td>Difficulty</td><td colSpan={2}>{thisQuiz.difficulty}</td></tr>
+          <tr><td>Attempts</td><td colSpan={2}>{thisQuiz.attempt}</td></tr>
+          <tr><td>Completed</td><td colSpan={2}>{totalCompleted}</td></tr>
           <tr><td>Correct</td><td>{totalCorrect}</td><td>{Math.round(totalCorrectPct,0)}%</td></tr>
           <tr><td>Incorrect</td><td>{totalIncorrect}</td><td>{Math.round(totalIncorrectPct,0)}%</td></tr>
           {currentSkippedTooltip}

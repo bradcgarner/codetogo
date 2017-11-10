@@ -10,7 +10,8 @@ export class Profile extends React.Component {
   handleSubmitButton(values) { // add form validation first
     if (this.props.user.id) {
       console.log('update, not create');
-      this.props.dispatch(actionsUser.updateUserProfile(values, this.props.user.authToken));
+      const user = Object.assign({},values,{id: this.props.user.id})
+      this.props.dispatch(actionsUser.updateUserProfile(user, this.props.user.authToken));
     } else {
       const newValues = deepAssign(values);
       newValues.quizzes = [];

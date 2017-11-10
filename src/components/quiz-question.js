@@ -34,14 +34,12 @@ export class Question extends React.Component {
     } else if ( !nextIndex ) {
       nextIndex = quizLength - 1;
     }
-    console.log('nextIndex',nextIndex);
     return nextIndex;
   }
 
   handleSubmitButton(choice, currentIndex) {
     const formattedChoiceObject = this.formatChoiceObject(choice, currentIndex);
     const nextIndex = this.calcNextIndex(this.props.quiz.currentIndex, this.props.quiz.questions.length );
-    console.log('nextIndex', nextIndex);
     const mode = this.props.quiz.currentIndex === (this.props.quiz.questions.length - 1) ? 'results' : 'question' ;
     const user = deepAssign({}, this.props.user);
     this.props.reset();   
@@ -49,11 +47,9 @@ export class Question extends React.Component {
   }  // refer to actions/users.js for format of values
 
   handleGotoQuestionButton(index) { // for skipping; index = 1 or -1
-    console.log('indices at go to question',index, this.props.quiz.currentIndex);
-    console.log('this.props.quiz.total', this.props.quiz.total);
     const nextIndex = this.calcNextIndex(this.props.quiz.currentIndex, this.props.quiz.questions.length );
-    console.log('nextIndex', nextIndex);  
     if ( index === -1 && this.props.quiz.currentIndex > 0 )  {
+      console.log('go back')
       this.props.reset();    
       this.props.dispatch(actionsQuiz.updateCurrentQuestion(this.props.quiz.currentIndex + index))
     } else if ( index === 1 && this.props.quiz.currentIndex === this.props.quiz.total-1) {
@@ -72,9 +68,7 @@ export class Question extends React.Component {
   render() {
 
     const currentIndex = this.props.quiz.currentIndex ;
-    console.log('this.props.quiz',this.props.quiz);
     const currQuestion = this.props.quiz.questions[currentIndex];
-    console.log('currQuestion',currQuestion);
     const inputType = currQuestion.inputType; 
     
     const options = currQuestion.answers.map((answer,index)=>{
@@ -96,10 +90,7 @@ export class Question extends React.Component {
 
     const prevQuestionClass = this.props.quiz.currentIndex > 0 ?
       'fa fa-hand-o-left smallIcon'  : 'fa fa-hand-o-left smallIcon inactive' ;
-    const nextQuestionClass = this.props.quiz.questions.length > ( this.props.quiz.currentIndex + 1 ) ?
-      'fa fa-hand-o-right smallIcon'  : 'fa fa-hand-o-right smallIcon inactive' ;
     const submitButtonClass = this.props.quiz.formIsEmpty===true ?  'submitButton inactive'  : 'submitButton' ;
-    console.log('this.props.quiz.formIsEmpty',this.props.quiz.formIsEmpty);
     return (
     <div className="question">
 
@@ -125,7 +116,7 @@ export class Question extends React.Component {
           <button className={submitButtonClass} type="submit">Submit</button>
 
           {/* next */}
-          <i className={nextQuestionClass} 
+          <i className="fa fa-hand-o-right smallIcon" 
             onClick={()=>this.handleGotoQuestionButton(1)}
             aria-hidden="true">
             <span className="faText">Skip</span>

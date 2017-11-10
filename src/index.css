@@ -63,7 +63,7 @@ body {
 
 .App {
   width: 100vw;
-  min-height: 100vh;
+  height: 100vh;
   overflow: none;
   display: flex;
   flex-direction: column;
@@ -75,6 +75,7 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  flex: 1;
   align-items: center;
   width: 100%;
   min-width: 320px; }
@@ -85,7 +86,7 @@ main {
       padding-right: 5%; } }
   @media screen and (min-width: 768px) {
     main {
-      width: 760px;
+      width: 80%;
       padding-left: 10%;
       padding-right: 10%; } }
 
@@ -180,7 +181,7 @@ main {
   .headerContainer h1 {
     font-size: 24px;
     color: #fafcff;
-    width: 90%; }
+    width: 100%; }
 
 .header {
   height: 100%;
@@ -217,15 +218,14 @@ main {
   align-items: center;
   position: absolute;
   top: 0; }
+  .backIcon:hover, .burgerIcon:hover {
+    color: #6172da; }
 
 .burgerIcon {
   right: 0; }
 
 .backIcon {
   left: 0; }
-
-.burgerIcon {
-  right: 0; }
 
 .burgerMenu {
   padding: 20px;
@@ -247,6 +247,8 @@ main {
   border-radius: 0 0 6px 6px; }
   .burgerMenu li {
     margin-bottom: 10px; }
+    .burgerMenu li:hover:not(.inactive) {
+      color: #6172da; }
 
 .burgerHide {
   top: -350%; }
@@ -262,6 +264,9 @@ button {
   text-align: center;
   justify-content: center;
   margin: 15px; }
+  button:hover:not(.inactive) {
+    color: #6172da;
+    background-color: #bfd4f7; }
 
 .enterButton, .loginButton, .submitButton {
   font-size: 35px; }
@@ -392,7 +397,7 @@ button {
 .quizLiCategory {
   height: 25px;
   width: 22%;
-  font-size: 90%;
+  font-size: 80%;
   color: #797973;
   position: relative;
   display: flex;
@@ -439,7 +444,19 @@ button {
   width: 8%;
   padding-right: 2%;
   display: flex;
-  align-items: center; }
+  flex-direction: row;
+  align-items: center;
+  font-size: 24px; }
+  .go:hover {
+    color: #6172da; }
+  .go .faText {
+    display: none;
+    font-size: 12px; }
+    @media screen and (min-width: 576px) {
+      .go .faText {
+        display: flex; } }
+    .go .faText:hover {
+      color: #6172da; }
 
 /* @@@@@@@@@@@@@@ STATUS BAR @@@@@@@@@@@@ */
 .statusBarContainer, .statusIconContainer {
@@ -491,43 +508,43 @@ button {
   /* Standard syntax (must be last) */ }
 
 .statusBarIncorrect {
-  background: #ecd6e4;
+  background: #f5e7e7;
   /* For browsers that do not support gradients */
-  background: -webkit-linear-gradient(90deg, #ecd6e4, #a54b85);
+  background: -webkit-linear-gradient(90deg, #f5e7e7, #ae4949);
   /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient(90deg, #ecd6e4, #a54b85);
+  background: -o-linear-gradient(90deg, #f5e7e7, #ae4949);
   /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient(90deg, #ecd6e4, #a54b85);
+  background: -moz-linear-gradient(90deg, #f5e7e7, #ae4949);
   /* For Firefox 3.6 to 15 */
-  background: linear-gradient(90deg, #ecd6e4, #a54b85);
+  background: linear-gradient(90deg, #f5e7e7, #ae4949);
   /* Standard syntax (must be last) */ }
 
 .statusBarCorrect {
-  background: #cdfaf6;
+  background: white;
   /* For browsers that do not support gradients */
-  background: -webkit-linear-gradient(90deg, #cdfaf6, #11bcad);
+  background: -webkit-linear-gradient(90deg, white, #70f113);
   /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient(90deg, #cdfaf6, #11bcad);
+  background: -o-linear-gradient(90deg, white, #70f113);
   /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient(90deg, #cdfaf6, #11bcad);
+  background: -moz-linear-gradient(90deg, white, #70f113);
   /* For Firefox 3.6 to 15 */
-  background: linear-gradient(90deg, #cdfaf6, #11bcad);
+  background: linear-gradient(90deg, white, #70f113);
   /* Standard syntax (must be last) */ }
 
 .statusBarJustOne {
-  background: #b8b8b4;
+  background: white;
   /* For browsers that do not support gradients */
-  background: -webkit-linear-gradient(90deg, #b8b8b4, #383835);
+  background: -webkit-linear-gradient(90deg, white, #bdc0ab);
   /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient(90deg, #b8b8b4, #383835);
+  background: -o-linear-gradient(90deg, white, #bdc0ab);
   /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient(90deg, #b8b8b4, #383835);
+  background: -moz-linear-gradient(90deg, white, #bdc0ab);
   /* For Firefox 3.6 to 15 */
-  background: linear-gradient(90deg, #b8b8b4, #383835);
+  background: linear-gradient(90deg, white, #bdc0ab);
   /* Standard syntax (must be last) */ }
 
 .statusBarCurrent {
-  background-color: #52524e; }
+  background-color: #d4d6c8; }
 
 /* @@@@@@@@@@@@@@ FORMS  @@@@@@@@@@@@ */
 .profileForm {
@@ -622,10 +639,15 @@ button {
   width: 250px; }
 
 .goToOptionButton {
-  width: 150px;
-  font-size: 16px;
+  width: 100%;
+  padding-top: 15px;
+  color: #846d4b;
+  font-style: bold;
+  font-size: 20px;
   display: inline-block;
   margin-bottom: 25px; }
+  .goToOptionButton:hover {
+    color: #6172da; }
 
 .resultsOptions {
   display: flex;
@@ -712,14 +734,21 @@ button {
     right: 0;
     width: 200px;
     z-index: 200; }
+    .tooltip .tooltipText table, .tooltip .tooltipText tr, .tooltip .tooltipText td {
+      border: 1px solid #ccccc9; }
     .tooltip .tooltipText td {
       font-size: 12px;
-      padding: 2px; }
+      padding: 2px 6px; }
     .tooltip .tooltipText h4 {
       margin-bottom: 4px; }
+    .tooltip .tooltipText p {
+      margin-top: 5px; }
 
 .tooltip:hover .tooltipText {
-  display: block; }
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center; }
 
 .popover {
   position: absolute;

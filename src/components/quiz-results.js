@@ -40,17 +40,17 @@ export function Results(props) {
         <button className="showNextOptionButton" onClick={()=>handleShowNextButton('accuracy')}>Review My Answers</button>
         <div className={accuracyClass}>
           <div className="showOptionParagraph">
-            <p>'Coming soon! This will allow you to see your answers, and which answers were correct, but it will not disclose the correct answers if you answered incorrectly. After this, you can take the quiz again for credit.  You will also see links to additional resources for continued learning.</p>
+            <p>Coming soon! This will allow you to see your answers, and which answers were correct, but it will not disclose the correct answers if you answered incorrectly. After this, you can take the quiz again for credit.  You will also see links to additional resources for continued learning.</p>
           </div>
-          <button className="goToOptionButton" onClick={()=>handleGotoAccuracyButton('accuracy')}>Let's Check Now</button>
+          <p className="goToOptionButton" onClick={()=>handleGotoAccuracyButton('accuracy')}>Let's Check Now!</p>
         </div>
 
         <button className="showNextOptionButton" onClick={()=>handleShowNextButton('key')}>See The Key</button>
         <div className={keyClass}>
           <div className="showOptionParagraph">
-            <p>'Coming soon! This will allow you to see all the correct answers, and will provide links to other resources for continued learning.  After seeing the key, you can take the quiz again, but not for credit.</p>
+            <p>Coming soon! This will allow you to see all the correct answers, and will provide links to other resources for continued learning.  After seeing the key, you can take the quiz again, but not for credit.</p>
           </div>
-          <button className="goToOptionButton" onClick={()=>handleGotoAccuracyButton('key')}>Go To The Key</button>
+          <p className="goToOptionButton" onClick={()=>handleGotoAccuracyButton('key')}>Go To The Key Now!</p>
         </div>
 
         <button className="showNextOptionButton" onClick={()=>handleGotoAnotherQuizButton()}>Take Another Quiz</button>

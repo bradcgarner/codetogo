@@ -28,9 +28,9 @@ $brown1: #c0637d;
 $brown2: #bd7781;
 $brown3: #a94d88;
 $brown4: #bc6a80;
-$brown4: #5c4a42;
-$brown4: #715c46;
-$brown4: #846d4b;
+$brown5: #5c4a42;
+$brown6: #715c46;
+$brown7: #846d4b;
 
 $green1: #11b7a9;
 $yellow1: #FCF593;
@@ -44,25 +44,31 @@ $backgroundColor: $gray1;
 $headerColor: $coolgray3;
 $buttonBackgroundColor: $coolgray1;
 $tooltipBackgroundColor: $lightblue1;
+$buttonBackgroundColorHover: darken($coolgray1, 3%);
 
-$fontColorLogo: $brown4;
+$fontColorLogo: $brown7;
 $fontColorLanding: $gray4;
 $fontColorMain: $gray4;
 $fontColorLabel: lighten($gray4, 30%);
 $fontColorIconHeader: $coolwhite;
 $fontColorCode: $brown3;
 $fontColorHeader: $coolwhite;
-$fontColorButton: darken($brown4, 15%);
+$fontColorButton: darken($brown7, 15%);
 $formInsetColor: $coolwhite;
-$fontColorInactive: lighten($brown4, 25%);
+$fontColorInactive: lighten($brown7, 25%);
 $fontColorCheck: $green1;
 $fontColorError: $brown3;
 $fontColorTooltip: $coolgray3;
+$fontColorGoToOption: $brown7;
+
+
+$fontcolorWhiteHover: $blue2;
+$fontColorDarkHover: $blue2;
 
 $statusColorSkipped: $yellow2;
-$statusColorCorrect: $green1;
-$statusColorIncorrect: $brown3;
-$statusColorCurrent: $gray4;
+$statusColorCorrect: #6DF10E;
+$statusColorIncorrect: #9C4141;
+$statusColorCurrent: $gray2;
 
 $diff1Color: $yellow1;
 $diff2Color: $yellow2;
@@ -86,6 +92,12 @@ $insetShadow: lighten($coolgray3, 30%);
 $header-height: 50px;
 $quizLiHeight: 25px;
 $inputFieldWidth: 250px;
+
+$portraitPhoneWide: 375px;
+$landscapePhone: 576px;
+$portraitTablet: 768px;
+$landscapeTablet: 992px;
+$laptopPlus: 1200px;
 
 $burgerIndex: 30;
 $headerZIndex: 50;
@@ -172,8 +184,8 @@ body {
 }
 
 .App { //immediate children are header and main
-  width: 100vw; // of screen
-  min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
   overflow: none;
   display: flex;
   flex-direction: column;
@@ -186,16 +198,17 @@ main { // children are .about, .login, .profile, .dashboard, etc.
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  flex: 1;
   align-items: center;
   width: 100%; // of viewport
   min-width: 320px;
-  @media screen and (min-width: 576px) {
+  @media screen and (min-width: $landscapePhone) {
     width: 90%;
     padding-left: 5%;
     padding-right: 5%;
   }
-  @media screen and (min-width: 768px) {
-    width: 760px;
+  @media screen and (min-width: $portraitTablet) {
+    width: 80%;
     padding-left: 10%;
     padding-right: 10%;
   }
@@ -311,7 +324,7 @@ main { // children are .about, .login, .profile, .dashboard, etc.
   h1 {
     font-size: 24px;
     color: $fontColorHeader;
-    width: 90%;
+    width: 100%;
   }
 }
 
@@ -341,7 +354,10 @@ main { // children are .about, .login, .profile, .dashboard, etc.
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: 0;  
+  top: 0; 
+  &:hover {
+    color: $fontcolorWhiteHover; 
+  }
 }
 .burgerIcon {
   right: 0;
@@ -349,9 +365,7 @@ main { // children are .about, .login, .profile, .dashboard, etc.
 .backIcon {
   left: 0;
 }
-.burgerIcon {
-  right: 0;
-}
+
 .burgerMenu {
   padding: 20px;
   position: absolute;
@@ -367,6 +381,9 @@ main { // children are .about, .login, .profile, .dashboard, etc.
   z-index: $burgerIndex;
   li {
     margin-bottom: 10px;
+    &:hover:not(.inactive) {
+      color: $fontColorDarkHover;
+    }
   }
   border-radius: 0 0 6px 6px;
 }
@@ -386,6 +403,10 @@ button {
   text-align: center;
   justify-content: center;
   margin: 15px;
+  &:hover:not(.inactive) {
+    color: $fontColorDarkHover;
+    background-color: $buttonBackgroundColorHover;
+  }
 }
 .enterButton, .loginButton, .submitButton {
   font-size: 35px;
@@ -487,7 +508,7 @@ button {
   height: $quizLiHeight;
   width: 64%;
   padding-left: 3%;
-  @media screen and (min-width: 375px) {
+  @media screen and (min-width: $portraitPhoneWide) {
     padding-right: 10px;
   }
   display: flex;
@@ -528,7 +549,7 @@ button {
 .quizLiCategory { // immediate parent is .quizIdentifier
   height: $quizLiHeight;
   width: 22%;
-  font-size: 90%;
+  font-size: 80%;
   color: lighten($fontColorMain, 15%);
   position: relative;
   display: flex;
@@ -537,7 +558,7 @@ button {
     left: 18px;
   }
   padding-left: 5px;
-  @media screen and (min-width: 375px) {
+  @media screen and (min-width: $portraitPhoneWide) {
     padding-left: 10%;
     .quizLiTopLabel {
       left: 30px;
@@ -579,7 +600,22 @@ button {
   width: 8%;
   padding-right: 2%;
   display: flex;
+  flex-direction: row;
   align-items: center;
+  font-size: 24px;
+  &:hover {
+    color: $fontColorDarkHover;
+  }
+  .faText {
+    display: none;
+    @media screen and (min-width: $landscapePhone) {
+      display: flex;
+    }
+    font-size: 12px;
+    &:hover {
+      color: $fontColorDarkHover;
+    }
+  }
 }
 
 /* @@@@@@@@@@@@@@ STATUS BAR @@@@@@@@@@@@ */
@@ -626,7 +662,7 @@ button {
   @include linear-gradient(90deg, lighten($statusColorSkipped, 20%), darken($statusColorSkipped, 10%));
 }
 .statusBarIncorrect {
-  @include linear-gradient(90deg, lighten($statusColorIncorrect, 40%), darken($statusColorIncorrect, 1%));
+  @include linear-gradient(90deg, lighten($statusColorIncorrect, 50%), lighten($statusColorIncorrect, 5%));
 }
 .statusBarCorrect {
   @include linear-gradient(90deg, lighten($statusColorCorrect, 50%), lighten($statusColorCorrect, 1%));  
@@ -739,11 +775,17 @@ button {
 .showNextOptionButton{
   width: 250px;
 }
-.goToOptionButton {
-  width: 150px;
-  font-size: 16px;
+.goToOptionButton { // not actually a button
+  width: 100%;
+  padding-top: 15px;
+  color: $fontColorGoToOption;
+  font-style: bold;
+  font-size: 20px;
   display: inline-block;
   margin-bottom: 25px;  
+  &:hover {
+    color: $fontColorDarkHover;
+  }
 }
 
 .resultsOptions {
@@ -787,11 +829,6 @@ button {
   .showOptionParagraph p {
     color: $fontColorMain;    
   }    
-  button {
-    // background-color: inherit;
-    // border: inherit;
-    // color: inherit;
-  }
 }
 
 
@@ -847,12 +884,18 @@ button {
     text-align: left;
     padding: 15px;
     border-radius: 15px 0 15px 15px;
+    table, tr, td {
+      border: 1px solid $linesLight;
+    }
     td {
       font-size: 12px;
-      padding: 2px;
+      padding: 2px 6px;
     }
     h4 {
       margin-bottom: 4px;
+    }
+    p {
+      margin-top: 5px;
     }
     top: 110%;
     right: 0;
@@ -862,7 +905,10 @@ button {
 }
 .tooltip:hover {
   .tooltipText {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
   }
 }
 .popover {

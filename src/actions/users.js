@@ -95,10 +95,10 @@ export const updateUserProfile = (credentials, authToken) => dispatch => { //cre
   };
   const init = { 
     method: 'PUT',
-    body: credentials,
+    body: JSON.stringify(credentials),
     headers
   };
-  console.log('init', init);
+  console.log('url', url, 'init', init);
   return fetch(url, init)
   .then(res=>{   //response user api repr (no need to do anything with it) 
     console.log(res);
