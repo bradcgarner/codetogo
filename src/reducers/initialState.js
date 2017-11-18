@@ -27,6 +27,8 @@ export const initialQuiz = { // store.quiz - single current quiz, loads when use
   total: '',
   originalLength: 0,
   currentIndex: 0,       // index of array below, advances via submit choice or skip button
+  completed: 1,
+  correct: 1,
   questions: [{     // all questions this quiz, parsed out individually using "current" as the index
     question: '',
     id: 0,
