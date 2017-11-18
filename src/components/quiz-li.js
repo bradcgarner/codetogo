@@ -29,7 +29,7 @@ export function QuizLi(props) {
   });
 
   const handleTakeQuizButton = (option) => {
-    props.dispatch(actionsQuiz.takeQuiz(thisQuiz, user, option, mode))
+    props.dispatch(actionsQuiz.takeOrAddQuiz(thisQuiz, user, option, mode))
   }
 
   const theQuiz = <div className="quizIdentifier">

@@ -154,7 +154,6 @@ export const updateUserData = (userData, authToken) => dispatch => {
 
 export const addQuiz = (quiz, userId) => {
   // update the user locally
-  // update the user remotely
 }
 // ~~~~~~~~~~~~~~ HELPERS FOR SUBMIT CHOICES ~~~~~~~~~~~~~~
 
