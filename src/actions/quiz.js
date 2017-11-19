@@ -2,7 +2,7 @@ import { REACT_APP_BASE_URL } from '../config';
 import * as actionsMode from './mode';
 import * as actionsUser from './users';
 import 'whatwg-fetch';
-const deepAssign = require('deep-assign');
+// const deepAssign = require('deep-assign');
 
 // NOTE: Quiz is for quizzes and questions. CHOICES GO IN USERS.
 
@@ -143,7 +143,7 @@ export const takeOrAddQuiz = (quiz, user, next) => dispatch => {
   if ( add === 'add') {
     dispatch(actionsUser.addQuiz(quiz));
   } else {
-    priorAttempt = attempt;
+    let priorAttempt = attempt;
     attempt = calcAttemptNum(quiz, user); 
     if (priorAttempt !== attempt) {
       dispatch(actionsUser.incrementAttempt(quiz.id, attempt));      
@@ -190,7 +190,7 @@ export const takeOrAddQuiz = (quiz, user, next) => dispatch => {
 
 // @@@@@@@@@@  S U B M I T     C H O I C E S     @@@@@@@@@@@@@@
 
-export const submitChoices = (quiz, nextIndex, mode, choices) => dispatch => { 
+export const submitChoices = (user, quiz, nextIndex, mode, choices) => dispatch => { 
   // choices has this format { userId, quizId, attempt, questionId, choices (array), index, stickyIndex }
   const preScoreUpdate = {
     nextIndex: nextIndex,

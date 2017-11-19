@@ -1,7 +1,6 @@
 import 'whatwg-fetch';
 import { REACT_APP_BASE_URL } from '../config';
 import * as actionsMode from './mode';
-import * as actionsQuiz from './quiz';
 const deepAssign = require('deep-assign');
 
 
@@ -75,7 +74,8 @@ export const login = (credentials) => dispatch => {
     
   
 }
-// create new user
+// @@@@@@@@@@  C R E A T E    U S E R  @@@@@@@@@@@@@@
+
 export const createUser = (credentials) => dispatch => { //credential should include   username, password, firstName, lastName  
   const url = `${REACT_APP_BASE_URL}/api/users`;
   const headers = { "Content-Type": "application/json", "x-requested-with": "xhr" };
@@ -107,7 +107,8 @@ export const createUser = (credentials) => dispatch => { //credential should inc
   });
 }
 
-//update user core profile: username, password, firstName, lastName
+// @@@@@@@@@@  U P D A T E     U S E R     P R O F I L E  @@@@@@@@@@@@@@
+// username, password, firstName, lastName
 export const updateUserProfile = (credentials, authToken) => dispatch => { //credentials MAY include username, password, firstName, lastName
   const url = `${REACT_APP_BASE_URL}/api/users/${credentials.id}`;
   const headers = { 
@@ -139,7 +140,8 @@ export const updateUserProfile = (credentials, authToken) => dispatch => { //cre
   });
 }
 
-// update user non-profile data (quizzes taken, badges, etc.)
+// @@@@@@@@@@  U P D A T E     N O N - P R O F I L E     D A T A  @@@@@@@@@@@@@@
+// quizzes taken, badges, etc.
 export const updateUserData = (userData, authToken) => dispatch => { 
   const url = `${REACT_APP_BASE_URL}/api/users/${userData.id}/data`;
   console.log('userData.id',userData.id)
@@ -168,68 +170,6 @@ export const updateUserData = (userData, authToken) => dispatch => {
     console.log('user returned from db',user);
     user.authToken = authToken;
     return dispatch(updateUserStore(user)); // archived quizzes not included
-  })
-  .catch(error => {
-    dispatch(actionsMode.showModal(error));
-  });
-}
-
-export const submitChoices = (quiz, nextIndex, mode, choices) => dispatch => { 
-  // choices has this format { userId, quizId, attempt, questionId, choices (array), index, stickyIndex }
-  const preScoreUpdate = {
-    nextIndex: nextIndex,
-    completed: quiz.completed + 1,
-    correct: quiz.correct,
-    pending: quiz.pending + 1
-  };
-  dispatch(actionsQuiz.nextQuestion(preScoreUpdate));
-  
-  const url = `${REACT_APP_BASE_URL}/api/choices/`;
-  const headers = { 
-    "Content-Type": "application/json", 
-    "Authorization": "Bearer " + user.authToken,
-    "x-requested-with": "xhr"
-  };
-  const init = { 
-    method: 'POST',
-    headers,
-    body: JSON.stringify(choices),
-  };
-  console.log('init for submitChoices', init);
-
-  // POST CHOICE: SCORES, SAVES IN DB, RETURNS TRUE OR FALSE
-  return fetch(url, init)
-  .then(res => {
-    console.log('choices fetched (this user, this quiz, this attempt',res);
-    if (!res.ok) {
-      return Promise.reject(res.statusText);
-    }
-    return res.json();
-  })
-
-  // UPDATE COMPLETED & CORRECT THIS QUIZ
-  .then(score => { // boolean
-    const correct = score ? quiz.correct + 1 : quiz.correct ;
-    const pending = quiz.pending > 0 ? quiz.pending - 1 : 0 ; 
-    const postScoreUpdate = {
-      quizPending: pending,
-      quizCompleted: quiz.completed,
-      quizCorrect: correct,
-      questionCorrect: score,
-      questionId: choices.questionId,
-      choices: choices.choices,
-      index: choices.index,
-      stickyIndex: choices.stickyIndex, // currently not using, might in future
-    };
-    dispatch(actionsQuiz.scoreChoice(postScoreUpdate));
-  })
-
-  // ADVANCE TO SCORE IF AT END
-  .then(()=> {
-    if ( mode === 'results' ) { 
-      console.log('choices.quizId', choices.quizId, 'attempt', choices.attempt);
-      return dispatch(actionsMode.gotoResults());
-    } 
   })
   .catch(error => {
     dispatch(actionsMode.showModal(error));

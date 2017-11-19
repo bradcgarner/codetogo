@@ -30,8 +30,8 @@ export const initialQuiz = { // store.quiz - single current quiz, loads when use
   completed: 1,
   correct: 1,  
   cacheForUser: {            // cache accumulates during quiz; when mode changes, clear this and move to user 
-    completed: 0,
-    correct: 0
+    completed: null,
+    correct: null,
   },
   pending: 0,         // only during async action of scoring each question
   questions: [{       // all questions this quiz, parsed out individually using "current" as the index

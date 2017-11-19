@@ -8,11 +8,13 @@ const deepAssign = require('deep-assign');
 export class Profile extends React.Component {
 
   handleSubmitButton(values) { // add form validation first
+    console.log('values submitted at profile', values);
     if (this.props.user.id) {
       console.log('update, not create');
       const user = Object.assign({},values,{id: this.props.user.id})
       this.props.dispatch(actionsUser.updateUserProfile(user, this.props.user.authToken));
     } else {
+      console.log('create');      
       const newValues = deepAssign(values);
       newValues.quizzes = [];
       newValues.recent = [];
@@ -25,7 +27,7 @@ export class Profile extends React.Component {
     const buttonText = this.props.user.id ? 'Save Changes' : 'Create Account';
       return (
         <div className="profile">
-          <form className="profileForm" onSubmit={this.props.handleSubmit(values => 
+          <form id='profile' className="profileForm" onSubmit={this.props.handleSubmit(values => 
             this.handleSubmitButton(values)
           )}>
 
@@ -92,17 +94,17 @@ export class Profile extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const initialForm = deepAssign({}, state.user);
-  delete initialForm.recent;
-  delete initialForm.quizzes;
-  delete initialForm.badges;
-  delete initialForm.authToken;
-  delete initialForm.id;
+  // const initialForm = deepAssign({}, state.user);
+  // delete initialForm.recent;
+  // delete initialForm.quizzes;
+  // delete initialForm.badges;
+  // delete initialForm.authToken;
+  // delete initialForm.id;
   return {
     user: state.user,
     quiz: state.quiz,
     mode: state.mode,
-    initialValues: initialForm
+    // initialValues: initialForm
   }
 }
 
