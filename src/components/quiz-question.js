@@ -21,7 +21,9 @@ export class Question extends React.Component {
       quizId: this.props.quiz.id,
       attempt: this.props.quiz.attempt,
       questionId: this.props.quiz.questions[currentIndex].id,
-      choices : formattedChoices
+      choices: formattedChoices,
+      index: currentIndex,
+      stickyIndex: currentIndex, // !!!!!!! FIX THIS !!!!!!!!
     };
   }
 
@@ -41,9 +43,8 @@ export class Question extends React.Component {
     const formattedChoiceObject = this.formatChoiceObject(choice, currentIndex);
     const nextIndex = this.calcNextIndex(this.props.quiz.currentIndex, this.props.quiz.questions.length );
     const mode = this.props.quiz.currentIndex === (this.props.quiz.questions.length - 1) ? 'results' : 'question' ;
-    const user = deepAssign({}, this.props.user);
     this.props.reset();   
-    this.props.dispatch(actionsUser.submitChoices(formattedChoiceObject, user, nextIndex, mode));
+    this.props.dispatch(actionsUser.submitChoices(this.props.quiz, nextIndex, mode, formattedChoiceObject));
   }  // refer to actions/users.js for format of values
 
   handleGotoQuestionButton(index) { // for skipping; index = 1 or -1

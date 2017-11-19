@@ -11,6 +11,9 @@ import QuizList from './components/quizlist';
 import Quiz from  './components/quiz';
 import Modal from  './components/modal';
 
+import * as actionsUser from './actions/users';
+import * as actionsQuiz from './actions/quiz';
+
 export function App(props) {
 
   const modal = props.mode.modal === 'open' ? <Modal /> : '' ;
@@ -47,6 +50,17 @@ export function App(props) {
     default:
       mode = <Landing />;
   }
+
+  if (props.mode.view !== 'question' &&
+    ( props.quiz.cacheForUser.completed || props.quiz.cacheForUser.correct ) &&
+    props.quiz.id ) {
+      dispatch(actionsUser.updateScoreFromCache(
+        props.quiz.id,
+        props.quiz.cacheForUser.completed,
+        props,quiz.cacheForUser.correct
+      ));
+      dispatch(actionsQuiz.clearUserCache());
+    }
   
   return (
     <div className="App">

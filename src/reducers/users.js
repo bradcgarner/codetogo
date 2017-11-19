@@ -1,10 +1,11 @@
 import * as actions from '../actions/users';
 import { initialUser } from './initialState';
+const deepAssign = require('deep-assign');
 
 export const reducer = ( state = initialUser, action ) => {
   
   if ( action.type === actions.UPDATE_USER_STORE ) {
-    return Object.assign({}, state, {
+    return deepAssign({}, state, { // 2 levels deep with quizzes, do deep assign
       authToken: action.authToken,
       id: action.id,
       username: action.username,
@@ -19,8 +20,17 @@ export const reducer = ( state = initialUser, action ) => {
   //   return Object.assign({}, state, {
   //     quizzes: action.quizzes
   //   })
+
+  } else if ( action.type === actions.UPDATE_SCORE_FROM_CACHE ) {
+    const quizzes = Object.assign({}, state.quizzes);
+    const index = quizzes.findIndex(quiz=>{ quiz.id === action.quizId })
+    quizzes[index].completed = action.completed;
+    quizzes[index].correct = action.correct;
+    return Object.assign({}, state, {    // quizzes is 1 level deep, no deep assign needed
+      quizzes: quizzes
+    });
     
   } else {
     return state;
   }
-}
+};

@@ -10,6 +10,16 @@ export const updateUserStore = user => {
   return deepAssign({}, user, {  type: UPDATE_USER_STORE } )
 }
 
+export const UPDATE_SCORE_FROM_CACHE = 'UPDATE_SCORE_FROM_CACHE';
+export const updateScoreFromCache = (quizId, completed, correct) => ({
+  type: UPDATE_SCORE_FROM_CACHE,
+  quizId,
+  completed,
+  correct,
+})
+
+
+
 // @@@@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@@@@@@
 
 
@@ -26,7 +36,7 @@ export const login = (credentials) => dispatch => {
   };
   let fetchedUser;
   console.log('init', init);
-  return fetch(url, init)    // <<<<<<< NOT WORKING ON IOS !!!!!!
+  return fetch(url, init)    
   .then(res=>{
     console.log(res);
     if (!res.ok) { 
@@ -155,28 +165,17 @@ export const updateUserData = (userData, authToken) => dispatch => {
 export const addQuiz = (quiz, userId) => {
   // update the user locally
 }
-// ~~~~~~~~~~~~~~ HELPERS FOR SUBMIT CHOICES ~~~~~~~~~~~~~~
 
-export const calcCompletedAndCorrect = (choices) => {
-  console.log('all Quiz Choices ', choices); 
-  const completed = choices.length;
-  console.log('completed',completed); 
-  const choicesCorrect = choices.filter(choice => choice.correct === true );
-  console.log('choicesCorrect',choicesCorrect); 
-  const correct = choicesCorrect.length;
-  console.log('correct',correct); 
-  return { correct, completed };
-}
-
-export const submitChoices = (choices, user, nextIndex, mode) => dispatch => { 
-  const updatedUser = deepAssign({}, user );
-  let quizForStore;
-  console.log('nextIndex, mode, choice as received by submitChoices',nextIndex, mode, choices)
-  const quizIndexToUpdate = user.quizzes.findIndex(quiz=>quiz.id === choices.quizId);
-  console.log('user.quizzes quizIndexToUpdate', quizIndexToUpdate, user.quizzes);
-  console.log('quiz to update', user.quizzes[quizIndexToUpdate]);
-  if (quizIndexToUpdate < 0 ) {return console.log('cannot updated quiz index of ', quizIndexToUpdate);}
-
+export const submitChoices = (quiz, nextIndex, mode, choices) => dispatch => { 
+  // choices has this format { userId, quizId, attempt, questionId, choices (array), index, stickyIndex }
+  const preScoreUpdate = {
+    nextIndex: nextIndex,
+    completed: quiz.completed + 1,
+    correct: quiz.correct,
+    pending: quiz.pending + 1
+  };
+  dispatch(actionsQuiz.nextQuestion(preScoreUpdate));
+  
   const url = `${REACT_APP_BASE_URL}/api/choices/`;
   const headers = { 
     "Content-Type": "application/json", 
@@ -190,7 +189,7 @@ export const submitChoices = (choices, user, nextIndex, mode) => dispatch => {
   };
   console.log('init for submitChoices', init);
 
-  // POST CHOICE: SCORES, SAVES IN DB, RETURNS ALL CHOICES THIS QUIZ, THIS ATTEMPT
+  // POST CHOICE: SCORES, SAVES IN DB, RETURNS TRUE OR FALSE
   return fetch(url, init)
   .then(res => {
     console.log('choices fetched (this user, this quiz, this attempt',res);
@@ -201,30 +200,26 @@ export const submitChoices = (choices, user, nextIndex, mode) => dispatch => {
   })
 
   // UPDATE COMPLETED & CORRECT THIS QUIZ
-  .then(allQuizChoices => { // this is to update state.user.quizzes[].completed
-    const score = calcCompletedAndCorrect(allQuizChoices);
-    updatedUser.quizzes[quizIndexToUpdate].completed = score.completed;
-    updatedUser.quizzes[quizIndexToUpdate].correct = score.correct;
-    
-    console.log('updatedUser after updating completed & correct',updatedUser);
-    console.log('updatedUser.quizzes[quizIndexToUpdate]',quizIndexToUpdate, updatedUser.quizzes[quizIndexToUpdate]);
-
-    // UPDATE USER IN DB (ASYNC) AND IN STORE    
-    return dispatch(updateUserData(updatedUser, user.authToken));
-  })
-
-  // UPDATE QUIZ STORE
-  .then(()=>{
-    quizForStore = deepAssign({}, updatedUser.quizzes[quizIndexToUpdate], {nextIndex});
-    console.log('quizForStore',quizForStore);
-    return dispatch(actionsQuiz.nextQuestion(quizForStore));
+  .then(score => { // boolean
+    const correct = score ? quiz.correct + 1 : quiz.correct ;
+    const pending = quiz.pending > 0 ? quiz.pending - 1 : 0 ; 
+    const postScoreUpdate = {
+      quizPending: pending,
+      quizCompleted: quiz.completed,
+      quizCorrect: correct,
+      questionCorrect: score,
+      questionId: choices.questionId,
+      choices: choices.choices,
+      index: choices.index,
+      stickyIndex: choices.stickyIndex, // currently not using, might in future
+    };
+    dispatch(actionsQuiz.scoreChoice(postScoreUpdate));
   })
 
   // ADVANCE TO SCORE IF AT END
   .then(()=> {
-    console.log('quizForStore',quizForStore);
     if ( mode === 'results' ) { 
-      console.log('choices.quizId', choices.quizId, 'user', user, 'attempt', choices.attempt);
+      console.log('choices.quizId', choices.quizId, 'attempt', choices.attempt);
       return dispatch(actionsMode.gotoResults());
     } 
   })

@@ -40,7 +40,8 @@ export const nextQuestion = quiz => ({
   type: NEXT_QUESTION,
   currentIndex: quiz.nextIndex,
   completed: quiz.completed,
-  correct: quiz.correct
+  correct: quiz.correct,
+  pending: quiz.pending
 });
 
 // only used for skipping, not when submitting choices
@@ -52,11 +53,17 @@ export const updateCurrentQuestion = nextIndex => ({
 
 // update current quiz with score for 1 question
 export const SCORE_CHOICE = 'SCORE_CHOICE';
-export const scoreChoice = correct => ({
+export const scoreChoice = score => ({
   type: SCORE_CHOICE,
-  questionId: correct.questionId,
-  correct: correct.correct,
-  choices: correct.choices
+  quizPending: pending,
+  quizCorrect: correct,
+  quizCompleted: score.quizCompleted,  
+  questionCorrect: score,
+  questionId: choices.questionId,
+  choices: choices.choices,
+  attempt: choices.attempt,
+  index: choices.index,
+  stickyIndex: choices.stickyIndex,
 });
 
 export const UPDATE_QUIZ_MENU = 'UPDATE_QUIZ_MENU';
@@ -64,6 +71,16 @@ export const updateQuizMenu = menu => ({
   type: UPDATE_QUIZ_MENU,
   menuOfAllQuizzes: menu
 });
+
+export const CLEAR_USER_CACHE = 'CLEAR_USER_CACHE';
+export const clearUserCache = menu => ({
+  type: CLEAR_USER_CACHE,
+  cacheForUser: {
+    correct: null,
+    completed: null,
+  }
+});
+
 
 
 // @@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@
