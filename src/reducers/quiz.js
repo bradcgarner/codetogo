@@ -24,6 +24,7 @@ export const reducer = ( state = initialQuiz, action ) => {
       category: action.category,
       difficulty: action.difficulty,
       questions: action.questions,
+      oldQuestions: action.oldQuestions,      
       originalLength: action.originalLength,
       attempt: action.attempt,    
       currentIndex: action.currentIndex || 0,
@@ -54,6 +55,7 @@ export const reducer = ( state = initialQuiz, action ) => {
       })    
       
   // update CURRENT quiz
+  // currently passing in stickyIndex and attempt, though not using
   } else if (action.type === actions.SCORE_CHOICE) {
     const questions = [...state.questions]; // create/copy immutable object from state.quizzes
     let questionIndex = action.index;
@@ -61,6 +63,10 @@ export const reducer = ( state = initialQuiz, action ) => {
     if (thisQuestion.id !== action.questionId) {
       questionIndex = questions.findIndex(question => question.id === action.questionId);
     }
+    if (!questionIndex) { // if no match, do nothing (client will be out-of-sync with server, but won't crash)
+      return state;
+    }
+
     questions[questionIndex].correct = action.questionCorrect;
     questions[questionIndex].choices = action.choices;
 

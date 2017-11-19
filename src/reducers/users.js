@@ -16,19 +16,30 @@ export const reducer = ( state = initialUser, action ) => {
       quizzes: action.quizzes
     })
 
-  // } else if ( action.type === actions.ADD_QUIZ_USER_LIST ) {
-  //   return Object.assign({}, state, {
-  //     quizzes: action.quizzes
-  //   })
-
   } else if ( action.type === actions.UPDATE_SCORE_FROM_CACHE ) {
-    const quizzes = Object.assign({}, state.quizzes);
+    const quizzes = Object.assign({}, state.quizzes); // quizzes is 1 level deep, no deep assign needed
     const index = quizzes.findIndex(quiz=>{ quiz.id === action.quizId })
     quizzes[index].completed = action.completed;
     quizzes[index].correct = action.correct;
-    return Object.assign({}, state, {    // quizzes is 1 level deep, no deep assign needed
+    return Object.assign({}, state, {    
       quizzes: quizzes
     });
+
+  } else if ( action.type === actions.ADD_QUIZ ) {
+    const quizzes = Object.assign({}, state.quizzes);  // quizzes is 1 level deep, no deep assign needed
+    quizzes.push(action.quiz);
+    return Object.assign({}, state, {
+      quizzes: quizzes
+    });
+
+  } else if ( action.type === actions.INCREMENT_ATTEMPT ) {
+    const quizzes = Object.assign({}, state.quizzes);  // quizzes is 1 level deep, no deep assign needed
+    const index = quizzes.findIndex(quiz=>{ quiz.id === action.quizId })
+    quizzes[index].attempt = action.attempt;
+    return Object.assign({}, state, {    
+      quizzes: quizzes
+    });
+    
     
   } else {
     return state;

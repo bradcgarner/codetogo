@@ -18,7 +18,19 @@ export const updateScoreFromCache = (quizId, completed, correct) => ({
   correct,
 })
 
+export const ADD_QUIZ = 'ADD_QUIZ';
+export const addQuiz = quiz => ({
+  type: ADD_QUIZ,
+  quiz: quiz,
+})
 
+
+export const INCREMENT_ATTEMPT = 'INCREMENT_ATTEMPT';
+export const incrementAttempt = (quizId, attempt) => ({
+  type: INCREMENT_ATTEMPT,
+  quizId: quizId,
+  attempt: attempt,
+})
 
 // @@@@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@@@@@@
 
@@ -160,10 +172,6 @@ export const updateUserData = (userData, authToken) => dispatch => {
   .catch(error => {
     dispatch(actionsMode.showModal(error));
   });
-}
-
-export const addQuiz = (quiz, userId) => {
-  // update the user locally
 }
 
 export const submitChoices = (quiz, nextIndex, mode, choices) => dispatch => { 
