@@ -23,9 +23,9 @@ export class StatusBar extends React.Component {
     const currentCompleted = totalCompleted - priorCompleted;
     
     const currentIndex = isQuestion ? thisQuiz.currentIndex : 0 ;
-    const currentIndexDisplay = isQuestion ? thisQuiz.currentIndex + 1 : 0 ;
-    const totalIndexDisplay = isQuestion ? currentIndexDisplay + priorCompleted : 0 ;
-    const currentIndexDisplayTooltip = isQuestion ? <p>Current Question: {totalIndexDisplay}</p> : '' ;
+    // const currentIndexDisplay = isQuestion ? thisQuiz.questions[currentIndex] + 1 : 0 ;
+    // const totalIndexDisplay = isQuestion ? currentIndexDisplay + priorCompleted : 0 ;
+    // const currentIndexDisplayTooltip = isQuestion ? <p>Current Question: {totalIndexDisplay}</p> : '' ;
     
     let currentSkipped = isQuestion ? currentIndex - currentCompleted : 0 ;
     if (this.props.mode === 'results') {currentSkipped = currentIndex + 1 - currentCompleted}
@@ -57,7 +57,6 @@ export class StatusBar extends React.Component {
           {currentSkippedTooltip}
         </tbody>
       </table>
-      {currentIndexDisplayTooltip}
     </div>
 
     return (

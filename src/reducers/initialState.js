@@ -1,20 +1,20 @@
 export const initialUser = { // store.user, single current user, loads at login
-  id: null,
+  id: '',
   firstName: '',
   lastName: '',
   username: '',
   quizzes: [{ // all quizzes user has ever taken
     id: 0,
-    name: 'test',
+    name: '',
     attempt: 0,
-    total: 3,
-    completed: 1,
-    correct: 1,
+    total: 0,
+    completed: 0,
+    correct: 0,
     category: '',
-    difficulty: 3
+    difficulty: 0,
   }],
-  badges: 'none',
-  recent: 'nothing',
+  badges: '',
+  recent: '',
   authToken: ''
 };
 
@@ -27,8 +27,8 @@ export const initialQuiz = { // store.quiz - single current quiz, loads when use
   total: '',
   originalLength: 0,
   currentIndex: 0,    // index of array below, advances via submit choice or skip button
-  completed: 1,
-  correct: 1,  
+  completed: 0,
+  correct: 0,  
   cacheForUser: {            // cache accumulates during quiz; when mode changes, clear this and move to user 
     completed: null,
     correct: null,

@@ -18,6 +18,7 @@ export const reducer = ( state = initialQuiz, action ) => {
     })
 
   } else if ( action.type === actions.LOAD_QUIZ ) {
+    console.log('LOAD QUIZ', action);
     return Object.assign({}, state, {
       id: action.id,    
       name: action.name,
@@ -57,32 +58,38 @@ export const reducer = ( state = initialQuiz, action ) => {
   // update CURRENT quiz
   // currently passing in stickyIndex and attempt, though not using
   } else if (action.type === actions.SCORE_CHOICE) {
+    console.log('SCORE', action)
     const questions = [...state.questions]; // create/copy immutable object from state.quizzes
     let questionIndex = action.index;
     const thisQuestion = questions[questionIndex];
+    console.log('index, thisQuestion', questionIndex, thisQuestion);
     if (thisQuestion.id !== action.questionId) {
       questionIndex = questions.findIndex(question => question.id === action.questionId);
+      console.log('new questionIndex', questionIndex);
     }
-    if (!questionIndex) { // if no match, do nothing (client will be out-of-sync with server, but won't crash)
+    if (questionIndex >=0 && typeof questionIndex === 'number') { // if no match, do nothing (client will be out-of-sync with server, but won't crash)
+
+      questions[questionIndex].correct = action.questionCorrect;
+      questions[questionIndex].choices = action.choices;
+      console.log('questions[questionIndex]', questions[questionIndex]);
+    
+      return Object.assign({},
+        state, 
+        { questions },
+        { formIsEmpty: true,
+          pending: action.quizPending,
+          correct: action.quizCorrect,
+          cacheForUser: {            // cache accumulates during quiz; when mode changes, clear this and move to user 
+            completed: action.quizCompleted,
+            correct: action.quizCorrect,
+          }, 
+        }
+      );
+    } else {
+      console.log('cancelling', questionIndex);
       return state;
     }
-
-    questions[questionIndex].correct = action.questionCorrect;
-    questions[questionIndex].choices = action.choices;
-
-    return Object.assign({},
-      state, 
-      { questions },
-      { formIsEmpty: true,
-        pending: action.quizPending,
-        correct: action.quizCorrect,
-        cacheForUser: {            // cache accumulates during quiz; when mode changes, clear this and move to user 
-          completed: action.quizCompleted,
-          correct: action.quizCorrect,
-        }, 
-      }
-    );
-
+    
   } else if ( action.type === actions.CLEAR_USER_CACHE ) {
     return Object.assign({}, state, {
       cacheForUser: action.cacheForUser,

@@ -177,6 +177,7 @@ export const takeOrAddQuiz = (quiz, user, next) => dispatch => {
     })
     .then(res=>{
       if (next === 'take') {
+        console.log('quiz to load',res.quiz)
         dispatch(loadQuiz(res.quiz));
         return dispatch(actionsMode.gotoQuestion());  
       } else {
@@ -188,7 +189,7 @@ export const takeOrAddQuiz = (quiz, user, next) => dispatch => {
     });
 };
 
-// @@@@@@@@@@  S U B M I T     C H O I C E S     @@@@@@@@@@@@@@
+// @@@@@@@@@@  S U B M I T     C H O I C E S    @@@@@@@@@@@@@@
 
 export const submitChoices = (user, quiz, nextIndex, mode, choices) => dispatch => { 
   // choices has this format { userId, quizId, attempt, questionId, choices (array), index, stickyIndex }
@@ -224,21 +225,32 @@ export const submitChoices = (user, quiz, nextIndex, mode, choices) => dispatch 
   })
 
   // UPDATE COMPLETED & CORRECT THIS QUIZ
-  .then(res => { // boolean
-    const score = res.score;
-    const correct = score ? quiz.correct + 1 : quiz.correct ;
+  .then(res => { 
+    // res has following format {}
+      // userId: 5a11c6d67d2c6e9078c1082e,
+      // questionId: 59ec0f3514f8ec02e5756737,
+      // quizId: 59ec0f3514f8ec02e57566d7,
+      // choices: ["59ec0f3514f8ec02e575673b"],
+      // correct: true,
+      // id: 5a11e391667288977fccb1fa,
+      // attempt: 0 }
+
+    const quizCorrect = res.correct ? quiz.correct + 1 : quiz.correct ;
     const pending = quiz.pending > 0 ? quiz.pending - 1 : 0 ; 
     const postScoreUpdate = {
+      id: res.id,
+      quizId: res.quizId,
       quizPending: pending,
       quizCompleted: quiz.completed,
-      quizCorrect: correct,
-      questionCorrect: score,
+      quizCorrect: quizCorrect,
+      questionCorrect: res.correct,
       questionId: res.questionId,  // used to confirm match in reducer
-      choices: choices.choices,
+      choices: res.choices,
       index: choices.index,
-      attempt: choices.attempt,
+      attempt: res.attempt,
       stickyIndex: choices.stickyIndex, // currently not using, might in future
     };
+    console.log('postScoreUpdate',postScoreUpdate);
     dispatch(scoreChoice(postScoreUpdate));
   })
 
