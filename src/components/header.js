@@ -1,24 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as actionsQuiz from '../actions/quiz';
-import * as actionsUser from '../actions/users';
+// import * as actionsUser from '../actions/users';
 import Burger from './header-burger';
 import BurgerMenu from './header-burger-menu';
 
 export class Header extends React.Component {
   componentDidMount() {
     this.props.dispatch(actionsQuiz.fetchQuizzes());
-
-    if (this.props.mode.view !== 'question' &&
-    ( this.props.quiz.cacheForUser.completed || this.props.quiz.cacheForUser.correct ) &&
-    this.props.quiz.id ) {
-      this.props.dispatch(actionsUser.updateScoreFromCache(
-        this.props.quiz.id,
-        this.props.quiz.cacheForUser.completed,
-        this.props.quiz.cacheForUser.correct
-      ));
-      this.props.dispatch(actionsQuiz.clearUserCache());
-    }
   }
 
  

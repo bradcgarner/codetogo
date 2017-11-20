@@ -56,16 +56,16 @@ export const login = (credentials) => dispatch => {
     return res.json();
   })
   .then(user=>{
-    console.log('user returned at login', fetchedUser);    
+    console.log('user returned at login', user);    
     return fetchedUser = user;    
   })
   .then(() => { 
     dispatch(updateUserStore(fetchedUser));
     console.log('END LOGIN. USER STORE IS UPDATED WITH:', fetchedUser);
     if (fetchedUser.quizzes.length > 0 ) {
-      return dispatch(actionsMode.gotoDashboard());      
+      return dispatch(actionsMode.changeMode('dashboard'));      
     } else {
-      return dispatch(actionsMode.gotoQuizlist());
+      return dispatch(actionsMode.changeMode('quizlist'));
     }
   })
   .catch(error => {
@@ -100,7 +100,7 @@ export const createUser = (credentials) => dispatch => { //credential should inc
     dispatch(updateUserStore(user));
   })
   .then(()=>{
-    return dispatch(actionsMode.gotoLogin());
+    return dispatch(actionsMode.changeMode('login'));
   })
   .catch(error => {
     dispatch(actionsMode.showModal(error));

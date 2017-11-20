@@ -2,11 +2,7 @@ import * as actions from '../actions/quiz';
 import { initialQuiz } from './initialState';
 
 export const reducer = ( state = initialQuiz, action ) => {
-  // if ( action.type === actions.questions ) {
-  //   return Object.assign({}, state, {
-  //     questions: action.questions
-  //   })
-  // } else 
+
   if ( action.type === actions.TOGGLE_FORM_STATUS ) {
     return Object.assign({}, state, {
       formIsEmpty: action.formIsEmpty
@@ -31,11 +27,9 @@ export const reducer = ( state = initialQuiz, action ) => {
       currentIndex: action.currentIndex || 0,
       completed: action.completed,
       correct: action.correct,  
-      cacheForUser: {            // cache accumulates during quiz; when mode changes, clear this and move to user 
-        completed: null,
-        correct: null,
-      }, 
-      total: action.questions.length,  
+      cacheCompleted: null,            // cache accumulates during quiz; when mode changes, clear this and move to user 
+      cacheCorrect: null,
+      total: action.total,  
       pending: 0,
       formIsEmpty: true
     }) 
@@ -44,7 +38,7 @@ export const reducer = ( state = initialQuiz, action ) => {
     return Object.assign({}, state, {
       currentIndex: action.currentIndex,
       completed: action.completed,
-      correct: action.correct,
+      cacheCompleted: action.cacheCompleted,      
       pending: action.pending,
       formIsEmpty: true      
     })
@@ -79,20 +73,18 @@ export const reducer = ( state = initialQuiz, action ) => {
         { formIsEmpty: true,
           pending: action.quizPending,
           correct: action.quizCorrect,
-          cacheForUser: {            // cache accumulates during quiz; when mode changes, clear this and move to user 
-            completed: action.quizCompleted,
-            correct: action.quizCorrect,
-          }, 
+          cacheCorrect: action.quizCorrect,           // cache accumulates during quiz; when mode changes, clear this and move to user
         }
       );
     } else {
       console.log('cancelling', questionIndex);
       return state;
     }
-    
+
   } else if ( action.type === actions.CLEAR_USER_CACHE ) {
     return Object.assign({}, state, {
-      cacheForUser: action.cacheForUser,
+      cacheCorrect: null,
+      cacheCompleted: null,
     });
 
   } else { 

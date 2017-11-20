@@ -9,14 +9,14 @@ const deepAssign = require('deep-assign');
 export class Dashboard extends React.Component {
 
   handleQuizlistButton(){
-    this.props.dispatch(actionsMode.gotoQuizlist());
+    this.props.dispatch(actionsMode.changeMode('quizlist', this.props.quiz));
   }
 
   render() {
     const listHeader = this.props.user.quizzes ? 'My Quizzes' : '' ;
     const quizLi = this.props.user.quizzes.map((quiz, index)=>{
       return <QuizLi key={index} index={index} li={deepAssign({},quiz)} />
-    })
+    });
     const addButtonLabel = this.props.user.quizzes.length ? 'Add Another Quiz' : 'Add a Quiz';
 
     return (

@@ -12,28 +12,37 @@ export class StatusBar extends React.Component {
     }
 
     const thisQuiz = this.props.quiz;
-
+    if (isQuestion) {console.log('this.props.quiz',this.props.quiz)}
+    
     const containerClass = isQuestion ? 'statusBarContainer tooltip' : 'statusIconContainer tooltip' ;
   
     const currentLength = thisQuiz.total;
     const totalLength = thisQuiz.originalLength || currentLength; // this.props.originalLength is available in question mode only
-  
+    if (isQuestion) {console.log('thisQuiz.originalLength',thisQuiz.originalLength,'currentLength',currentLength)}
+    
     const totalCompleted = thisQuiz.completed || 0; // reads directly from quiz, which updates as we go, includes
     const priorCompleted = totalLength - currentLength;
+    if (isQuestion) {console.log('thisQuiz.completed',thisQuiz.completed,'currentLength',currentLength)}
+    
     const currentCompleted = totalCompleted - priorCompleted;
+    if (isQuestion) {console.log('priorCompleted',priorCompleted)}
     
     const currentIndex = isQuestion ? thisQuiz.currentIndex : 0 ;
+    if (isQuestion) {console.log('thisQuiz.currentIndex',thisQuiz.currentIndex)}
+    
     // const currentIndexDisplay = isQuestion ? thisQuiz.questions[currentIndex] + 1 : 0 ;
     // const totalIndexDisplay = isQuestion ? currentIndexDisplay + priorCompleted : 0 ;
     // const currentIndexDisplayTooltip = isQuestion ? <p>Current Question: {totalIndexDisplay}</p> : '' ;
     
     let currentSkipped = isQuestion ? currentIndex - currentCompleted : 0 ;
+    if (isQuestion) {console.log('currentIndex',currentIndex,'currentCompleted',currentCompleted)}
     if (this.props.mode === 'results') {currentSkipped = currentIndex + 1 - currentCompleted}
     const totalCorrect = thisQuiz.correct || 0;
     const totalIncorrect = totalCompleted - totalCorrect;
     const justOne = this.props.mode === 'question' ? 1 : 0 ; // more restrictive than isQuestion
         
     const currentSkippedPct = (currentSkipped/totalLength)*100 || 0;
+    if ( isQuestion ) {console.log('currentSkipped',currentSkipped,'currentSkippedPct',currentSkippedPct,'totalLength',totalLength);}
     const totalIncorrectPct = (totalIncorrect/totalLength)* 100 || 0;
     const totalCorrectPct = (totalCorrect/totalLength)*100 || 0;
     const justOnePct = (justOne/totalLength)*100;

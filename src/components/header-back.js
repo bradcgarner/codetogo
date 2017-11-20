@@ -6,11 +6,11 @@ export function Back(props) {
   
   const handleBackButton=()=> {
     if(props.where === 'dashboard') {
-      props.dispatch(actionsMode.gotoDashboard());      
+      props.dispatch(actionsMode.changeMode('dashboard', props.quiz));      
     } else if (props.where === 'profile') {
-      props.dispatch(actionsMode.gotoProfile());
+      props.dispatch(actionsMode.changeMode('profile', props.quiz));
     } else {
-      props.dispatch(actionsMode.gotoLanding());
+      props.dispatch(actionsMode.changeMode('landing', props.quiz));
     }
   }
 
@@ -21,4 +21,10 @@ export function Back(props) {
     );
 }
 
-export default connect()(Back);
+const mapStateToProps = state => ({
+  user: state.user,
+  quiz: state.quiz,
+  mode: state.mode
+})
+
+export default connect(mapStateToProps)(Back);

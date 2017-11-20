@@ -22,6 +22,7 @@ export const loadQuiz = quiz => ({
   difficulty: quiz.difficulty,
   questions: quiz.newQuestions,
   oldQuestions: quiz.oldQuestions,
+  total: quiz.total,
   originalLength: quiz.originalLength,
   attempt: quiz.attempt,
   currentIndex: 0,
@@ -29,14 +30,14 @@ export const loadQuiz = quiz => ({
   correct: quiz.correct,
 });
 
-// this is the single current quiz
+// used only when submitting choices
 export const NEXT_QUESTION = 'NEXT_QUESTION';
 export const nextQuestion = quiz => ({
   type: NEXT_QUESTION,
   currentIndex: quiz.nextIndex,
   completed: quiz.completed,
-  correct: quiz.correct,
-  pending: quiz.pending
+  cacheCompleted: quiz.completed,  
+  pending: quiz.pending,
 });
 
 // only used for skipping, not when submitting choices
@@ -52,7 +53,6 @@ export const scoreChoice = score => ({
   type: SCORE_CHOICE,
   quizPending: score.quizPending,
   quizCorrect: score.quizCorrect,
-  quizCompleted: score.quizCompleted,  
   questionCorrect: score.questionCorrect,
   questionId: score.questionId,           // used to confirm a match in reducer
   choices: score.choices,
@@ -70,10 +70,8 @@ export const updateQuizMenu = menu => ({
 export const CLEAR_USER_CACHE = 'CLEAR_USER_CACHE';
 export const clearUserCache = menu => ({
   type: CLEAR_USER_CACHE,
-  cacheForUser: {
-    correct: null,
-    completed: null,
-  }
+  cacheCorrect: null,
+  cacheCompleted: null,
 });
 
 
@@ -99,14 +97,24 @@ export const  fetchQuizzes = () => dispatch => {
 // ~~~~~~~~~~~~ HELPERS TO TAKE OR ADD QUIZ ~~~~~~~~~~~~
 
 export const calcAttemptNum = (quizId, theUser) => {
-  let  attempt = 0;
-  const priorAttempts = theUser.quizzes.filter(quiz=>quiz.id === quizId); // user should already be deepAssign();
+  let  attempt = 1;
+  console.log('quizId',quizId)
+  console.log('theUser.quizzes',theUser.quizzes)
+  const priorAttempts = theUser.quizzes.filter(quiz=>quiz.id === quizId); 
+  console.log('priorAttempts',priorAttempts)
+  // user should already be deepAssign();
   const priorAttempt = priorAttempts[priorAttempts.length-1];
+  console.log('priorAttempt',priorAttempt)
   if ( priorAttempt ) {
+    console.log('priorAttempt is truthy')    
+    console.log('priorAttempt.completed',priorAttempt.completed, 'priorAttempt.originalLength',priorAttempt.originalLength)    
     if ( priorAttempt.completed >= priorAttempt.originalLength ) {
       attempt = priorAttempt.attempt + 1;
+      console.log('increment', attempt)
     } else {
-    attempt = priorAttempt.attempt || 0;    
+    attempt = priorAttempt.attempt || 1;    
+    console.log('same', attempt)
+    
     }
   }  
    return attempt;
@@ -120,10 +128,11 @@ export const takeOrAddQuiz = (quiz, user, next) => dispatch => {
   const authToken = user.authToken;
   const quizId = quiz.id; 
   const userId = user.id; 
-  let attempt = 0;
+  let attempt = 1;
   // whereas 'next' is used by client, 'add' is used by server; i.e. 'want to add?'
-  let prior = user.quizzes.find(quiz=>quiz.quizId === quizId);
+  let prior = user.quizzes.find(quiz=>quiz.id === quizId);
   let add = !prior ? 'add' : 'take' ;
+  console.log('next', next, 'add', add);
 
   // attempts are incremented here and only here (open to show more...)
     // this requires the local user to have an accurate completed #
@@ -141,10 +150,16 @@ export const takeOrAddQuiz = (quiz, user, next) => dispatch => {
     // user is loaded from db, after that scoring, at login
 
   if ( add === 'add') {
-    dispatch(actionsUser.addQuiz(quiz));
+    let quizToAdd = Object.assign({}, quiz,
+      { attempt: attempt,
+        completed: 0,
+        correct: 0,
+      }
+    );
+    dispatch(actionsUser.addQuiz(quizToAdd));
   } else {
     let priorAttempt = attempt;
-    attempt = calcAttemptNum(quiz, user); 
+    attempt = calcAttemptNum(quizId, user); 
     if (priorAttempt !== attempt) {
       dispatch(actionsUser.incrementAttempt(quiz.id, attempt));      
     }   
@@ -179,7 +194,7 @@ export const takeOrAddQuiz = (quiz, user, next) => dispatch => {
       if (next === 'take') {
         console.log('quiz to load',res.quiz)
         dispatch(loadQuiz(res.quiz));
-        return dispatch(actionsMode.gotoQuestion());  
+        return dispatch(actionsMode.changeMode('question', quiz));  
       } else {
         return;
       }    
@@ -196,7 +211,6 @@ export const submitChoices = (user, quiz, nextIndex, mode, choices) => dispatch 
   const preScoreUpdate = {
     nextIndex: nextIndex,
     completed: quiz.completed + 1,
-    correct: quiz.correct,
     pending: quiz.pending + 1
   };
   dispatch(nextQuestion(preScoreUpdate));
@@ -241,7 +255,6 @@ export const submitChoices = (user, quiz, nextIndex, mode, choices) => dispatch 
       id: res.id,
       quizId: res.quizId,
       quizPending: pending,
-      quizCompleted: quiz.completed,
       quizCorrect: quizCorrect,
       questionCorrect: res.correct,
       questionId: res.questionId,  // used to confirm match in reducer
@@ -258,7 +271,7 @@ export const submitChoices = (user, quiz, nextIndex, mode, choices) => dispatch 
   .then(()=> {
     if ( mode === 'results' ) { 
       console.log('choices.quizId', choices.quizId, 'attempt', choices.attempt);
-      return dispatch(actionsMode.gotoResults());
+      return dispatch(actionsMode.changeMode('results', quiz));
     } 
   })
   .catch(error => {

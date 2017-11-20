@@ -7,9 +7,9 @@ export function Results(props) {
 
   const handleGotoAnotherQuizButton = () => {
     if ( props.user.id ) {
-      props.dispatch(actionsMode.gotoDashboard() )
+      props.dispatch(actionsMode.changeMode('dashboard', props.quiz) )
     } else {
-      props.dispatch(actionsMode.gotoQuizlist() )
+      props.dispatch(actionsMode.changeMode('quizlist', props.quiz) )
     }
   } 
   let keyClass = props.mode.option === 'key' ? 'resultsOptions showOption' : 'resultsOptions hideOption';
@@ -27,9 +27,9 @@ export function Results(props) {
 
   const handleGotoAccuracyButton = (option) => {
     if (option === 'key') {
-      props.dispatch(actionsMode.gotoKey() )
+      props.dispatch(actionsMode.changeMode('key', props.quiz) )
     } else {
-      props.dispatch(actionsMode.gotoResults() )      
+      props.dispatch(actionsMode.changeMode('results', props.quiz) )      
     }
   } 
 

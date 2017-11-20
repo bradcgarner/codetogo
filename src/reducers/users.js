@@ -27,8 +27,9 @@ export const reducer = ( state = initialUser, action ) => {
 
   } else if ( action.type === actions.ADD_QUIZ ) {
     const quizzes = [...state.quizzes];  // quizzes is 1 level deep, no deep assign needed
-    console.log('quizzes in reducer',quizzes);
+    console.log('action in user reducer',action);
     quizzes.push(action.quiz);
+    console.log('quizzes in user reducer after adding',quizzes);
     return Object.assign({}, state, {
       quizzes: quizzes
     });

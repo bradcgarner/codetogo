@@ -55,7 +55,7 @@ export class Question extends React.Component {
       this.props.dispatch(actionsQuiz.updateCurrentQuestion(this.props.quiz.currentIndex + index))
     } else if ( index === 1 && this.props.quiz.currentIndex === this.props.quiz.total-1) {
       this.props.reset();    
-      this.props.dispatch(actionsMode.gotoResults())
+      this.props.dispatch(actionsMode.changeMode('results', this.props.quiz))
     } else if ( index === 1 ) {
       this.props.reset();    
       this.props.dispatch(actionsQuiz.updateCurrentQuestion(nextIndex))
