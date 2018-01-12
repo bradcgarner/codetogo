@@ -14,7 +14,7 @@ export class Quiz extends React.Component {
     <div className="quiz">
       <StatusBar 
         mode={this.props.mode.view}
-        quiz = {this.props.quiz} // only included for debugging of the status bar on the QuizList
+        quiz = {this.props.quiz}
       />
 
       {quizBody}

@@ -2,15 +2,9 @@ import { REACT_APP_BASE_URL } from '../config';
 import * as actionsMode from './mode';
 import * as actionsUser from './users';
 import 'whatwg-fetch';
-const deepAssign = require('deep-assign');
+// const deepAssign = require('deep-assign');
 
 // NOTE: Quiz is for quizzes and questions. CHOICES GO IN USERS.
-
-// export const QUESTIONS = 'QUESTIONS';
-// export const questions = questions => ({
-//   type: QUESTIONS,
-//   questions
-// });
 
 export const TOGGLE_FORM_STATUS = 'TOGGLE_FORM_STATUS';
 export const toggleFormStatus = status => ({
@@ -26,21 +20,24 @@ export const loadQuiz = quiz => ({
   name: quiz.name,
   category: quiz.category,
   difficulty: quiz.difficulty,
-  questions: quiz.questions,
+  questions: quiz.newQuestions,
+  oldQuestions: quiz.oldQuestions,
+  total: quiz.total,
   originalLength: quiz.originalLength,
   attempt: quiz.attempt,
-  currentIndex: quiz.nextIndex,
+  currentIndex: 0,
   completed: quiz.completed,
-  correct: quiz.correct 
+  correct: quiz.correct,
 });
 
-// this is the single current quiz
+// used only when submitting choices
 export const NEXT_QUESTION = 'NEXT_QUESTION';
 export const nextQuestion = quiz => ({
   type: NEXT_QUESTION,
   currentIndex: quiz.nextIndex,
   completed: quiz.completed,
-  correct: quiz.correct
+  cacheCompleted: quiz.completed,  
+  pending: quiz.pending,
 });
 
 // only used for skipping, not when submitting choices
@@ -52,17 +49,29 @@ export const updateCurrentQuestion = nextIndex => ({
 
 // update current quiz with score for 1 question
 export const SCORE_CHOICE = 'SCORE_CHOICE';
-export const scoreChoice = correct => ({
+export const scoreChoice = score => ({
   type: SCORE_CHOICE,
-  questionId: correct.questionId,
-  correct: correct.correct,
-  choices: correct.choices
+  quizPending: score.quizPending,
+  quizCorrect: score.quizCorrect,
+  questionCorrect: score.questionCorrect,
+  questionId: score.questionId,           // used to confirm a match in reducer
+  choices: score.choices,
+  index: score.index,
+  attempt: score.attempt,                // not currently used, might in future
+  stickyIndex: score.stickyIndex,        // not currently used, might in future
 });
 
 export const UPDATE_QUIZ_MENU = 'UPDATE_QUIZ_MENU';
 export const updateQuizMenu = menu => ({
   type: UPDATE_QUIZ_MENU,
   menuOfAllQuizzes: menu
+});
+
+export const CLEAR_USER_CACHE = 'CLEAR_USER_CACHE';
+export const clearUserCache = menu => ({
+  type: CLEAR_USER_CACHE,
+  cacheCorrect: null,
+  cacheCompleted: null,
 });
 
 
@@ -85,154 +94,188 @@ export const  fetchQuizzes = () => dispatch => {
     });
 };
 
-// ~~~~~~~~~~~~ HELPERS TO TAKE QUIZ ~~~~~~~~~~~~
+// ~~~~~~~~~~~~ HELPERS TO TAKE OR ADD QUIZ ~~~~~~~~~~~~
 
-// calculate attemp, correct, completed, filter true or false
-export const calculateQuizSettings = (theQuiz, theUser) => {
-  const quizId = theQuiz.id;  
-  const priorAttempts = theUser.quizzes.filter(quiz=>quiz.id === quizId); // user should already be deepAssign();
-  const priorAttemptPointer = priorAttempts[priorAttempts.length-1];
-  const priorAttempt = deepAssign({}, priorAttemptPointer);
-  console.log('priorAttempt, #', priorAttempts.length, priorAttempt)
-  if ( !priorAttempt ) {
-    theQuiz.attempt = 0;
-    theQuiz.correct = 0;
-    theQuiz.completed = 0;
-    console.log('priorAttempt (false)', priorAttempt);
-  } else if (!priorAttempt.completed) {
-    theQuiz.attempt = theQuiz.attempt || priorAttempt.attempt || 0;
-    console.log('priorAttempt.completed (false)', priorAttempt.completed);
-  } else if ( priorAttempt.completed > 0 && priorAttempt.completed < priorAttempt.total ) {
-    theQuiz.filterQuestions = true;
-    theQuiz.attempt = theQuiz.attempt || priorAttempt.attempt || 0;    
-    console.log('partial, filter', priorAttempt, theQuiz.filterQuestions);
-  } else if ( priorAttempts.length > 0 ) {
-    theQuiz.attempt = priorAttempt.attempt + 1;
-    theQuiz.correct = 0;
-    theQuiz.completed = 0;
-    console.log('restart theQuiz', theQuiz);
-  }
-  console.log('theQuiz @ end of settings', theQuiz);
-   return theQuiz
+export const calcAttemptNum = (quizId, theUser) => {
+  let  attempt = 1;
+  console.log('quizId',quizId)
+  console.log('theUser.quizzes',theUser.quizzes)
+  const priorAttempts = theUser.quizzes.filter(quiz=>quiz.id === quizId); 
+  console.log('priorAttempts',priorAttempts)
+  // user should already be deepAssign();
+  const priorAttempt = priorAttempts[priorAttempts.length-1];
+  console.log('priorAttempt',priorAttempt)
+  if ( priorAttempt ) {
+    console.log('priorAttempt is truthy')    
+    console.log('priorAttempt.completed',priorAttempt.completed, 'priorAttempt.originalLength',priorAttempt.originalLength)    
+    if ( priorAttempt.completed >= priorAttempt.originalLength ) {
+      attempt = priorAttempt.attempt + 1;
+      console.log('increment', attempt)
+    } else {
+    attempt = priorAttempt.attempt || 1;    
+    console.log('same', attempt)
+    
+    }
+  }  
+   return attempt;
 }
 
-const updateUserQuizList = (user, theQuiz) => { // theQuiz.attempt should be the current attempt
-  const quizId = theQuiz.id;  
-  let quizIsListed = false;
-  let quizzes;
-  user.quizzes.forEach(exQuiz=>{
-    if (exQuiz.id === quizId) {
-      exQuiz.attempt = theQuiz.attempt;
-      exQuiz.correct = theQuiz.correct; // needed for reset, problem elsewhere?
-      exQuiz.completed = theQuiz.completed; // needed for reset
-      quizIsListed = true;
-      console.log('quizisListed, quizId', quizIsListed, quizId, exQuiz);
-    }
-  });
-  console.log('user b4, quizId, quizIsListed',quizId, quizIsListed, user);
-  if (quizIsListed) {
-    quizzes = [...user.quizzes];
-    console.log('NOT ADDING QUIZ !!')
-  } else {
-    quizzes = [...user.quizzes, theQuiz];
-    console.log('ADDING', user);
-  } 
-  console.log('updatedQuizList', quizzes);
-  return quizzes;
-} 
+// @@@@@@@@@@  T A K E     O R     A D D     Q U I Z  @@@@@@@@@@@@@@
 
-// take (or add) quiz
-export const takeQuiz = (quiz, user, option, mode) => dispatch => {
-  //const attempt = quiz.attempt;
-  console.log('take quiz option', option, quiz);
-  console.log('user before update', user);
-  let updatedUser = deepAssign({},user);
+// quiz parameter is either one of user.quizzes or menuOfAllQuizzes
+// next parameter is 'callback' (what do you want to do next? take quiz? or nothing?)
+export const takeOrAddQuiz = (quiz, user, next) => dispatch => {
   const authToken = user.authToken;
-  const quizId = quiz.id;  
-  let thisQuiz = deepAssign({},quiz);
-  let fetchedQuestions = [];
-  let filterQuestions = false;
-  let originalLength;
-  let updatedQuiz = {};
+  const quizId = quiz.id; 
+  const userId = user.id; 
+  let attempt = 1;
+  // whereas 'next' is used by client, 'add' is used by server; i.e. 'want to add?'
+  let prior = user.quizzes.find(quiz=>quiz.id === quizId);
+  console.log('prior', prior);
+  let add = !prior ? 'add' : 'take' ;
+  console.log('next', next, 'add', add);
 
-  // CALCULATE THE QUIZ SETTINGS: 
-  // 1) ATTEMPT, 2) RESET CORRECT, 3) FILTER COMPLETED QUESTIONS
-  if ( option !== 'add' ) {
-    thisQuiz = calculateQuizSettings(thisQuiz, updatedUser);
-    filterQuestions = thisQuiz.filterQuestions;
-    delete thisQuiz.filterQuestions;    
-    console.log('take quiz (not add), filterQuestions tf', filterQuestions);
-    console.log('thisQuiz at end of take (not add)', thisQuiz); 
+  // attempts are incremented here and only here (open to show more...)
+    // this requires the local user to have an accurate completed #
+    // local user gets completed # as follows: 
+        // on load of each quiz reading from choices in db
+        // on each choice submitted, saved locally (choices saved in db)
+    // the two steps above leave one loophole:
+        // Quiz A has 1 answered, 1 correct at login
+        // user advances to 3 answered, 2 correct
+        // choices are in db
+        // scorecard is correct locally
+        // scorecard in db is NOT updated !!!!!
+    // to address that, each time user takes a quiz, the user.lastSession gets the quizId in the db
+    // next log in, the lastSession quizzes are scored from scratch reading choices in the db (versus all quizzes rescored, which would have a high big O)
+    // user is loaded from db, after that scoring, at login
+
+  if ( add === 'add') {
+    let quizToAdd = Object.assign({}, quiz,
+      { attempt: attempt,
+        completed: 0,
+        correct: 0,
+      }
+    );
+    dispatch(actionsUser.addQuiz(quizToAdd));
+  } else {
+    let priorAttempt = attempt;
+    attempt = calcAttemptNum(quizId, user); 
+    if (priorAttempt !== attempt) {
+      dispatch(actionsUser.incrementAttempt(quiz.id, attempt));      
+    }   
   }
-
-  // add quiz to updated user if needed
-  updatedUser.quizzes = updateUserQuizList(updatedUser, thisQuiz); // thisQuiz.attempt should be the current attempt
-  console.log('updatedUser', updatedUser);
-  
-
-  // IF ONLY ADD, UPDATE USER STORE, AND END
-  if ( option === 'add' ) {
-    console.log('adding quiz, updatedUser', updatedUser);
-    return dispatch(actionsUser.updateUserData(updatedUser, authToken));    
-  }
-
-  // GET ALL QUESTIONS FOR THIS QUIZ FROM DATABASE
-  return fetch(`${REACT_APP_BASE_URL}/api/quizzes/${quizId}/questions`)
+  const url = `${REACT_APP_BASE_URL}/api/quizzes/${quizId}/users/${userId}/${add}/${attempt}/${next}`;
+  const headers = { 
+    "Content-Type": "application/json", 
+    "Authorization": "Bearer " + authToken,
+    "x-requested-with": "xhr"
+  };
+  const init = { 
+    method: 'PUT',
+    headers
+  };
+  // GET EVERYTING FOR THIS QUIZ FROM DATABASE, put b/c potentially modify user
+  return fetch(url, init)
     .then(res => {
       console.log(res);
       if (!res.ok) {
         return Promise.reject(res.statusText);
       }
-      return res.json();
-    })
+      // res is object { quiz: {}, user: {} } mirroring store (open to see more...)
+        // user is included for confirmation, though we are not using new user,
+        // instead we are updating user locally, with locally available data, and in the db concurrently. 
+        // Next take of quiz prompts partial reload of user for that quiz. 
+        // Next login prompts rescoring of user's most recent quizzes (to sync).
+        // Next login fully refreshes user from db, of course.
 
-    // FILTER OUT COMPLETED QUESTIONS IF NEEDED
-    .then(questions => {
-      console.log('questions returned', questions);
-      originalLength = questions.length;
-      console.log('originalLength',originalLength);
-      if (filterQuestions  === true) {
-        const choiceObject = {};
-        console.log('attempt to fetch', thisQuiz.attempt);
-        return fetch(`${REACT_APP_BASE_URL}/api/choices/quizzes/${quizId}/users/${user.id}/${thisQuiz.attempt}`)
-          .then(res => {
-            if (!res.ok) {
-              return Promise.reject(res.statusText);
-            }
-            return res.json();
-          })
-          .then(choices=>{
-            console.log('choices fetched to use for filter',choices);
-            choices.forEach(choice=>{
-              choiceObject[choice.questionId] = true;
-            });
-            fetchedQuestions = questions.filter(question=>choiceObject[question.id] !== true);
-            console.log('fetchedQuestions after filter', fetchedQuestions);
-          })
+      return res.json(); 
+    })
+    .then(res=>{
+      if (next === 'take') {
+        console.log('quiz to load',res.quiz)
+        dispatch(loadQuiz(res.quiz));
+        return dispatch(actionsMode.changeMode('question', quiz));  
       } else {
-        fetchedQuestions = questions;
-      } // end if
-      return;
-    }) // end then
-
-    // UPDATE STORE
-    .then(()=>{
-      console.log('fetchedQuestions inside then', fetchedQuestions);
-      updatedQuiz = deepAssign({}, thisQuiz, {
-        questions: fetchedQuestions,
-        currentIndex: 0,  // always start at 0, which might be start of a filtered array
-        originalLength
-      });
-      console.log('update quiz store', updatedQuiz);
-      return dispatch(loadQuiz(updatedQuiz)); // updates state.quiz, but not state.quiz.questions
-    })
-    .then(()=>{
-      return dispatch(actionsUser.updateUserData(updatedUser, authToken)); // async
-    })
-    .then(()=>{
-      return dispatch(actionsMode.gotoQuestion());      
+        return;
+      }    
     })
     .catch(error => {
       dispatch(actionsMode.showModal(error));
     });
+};
+
+// @@@@@@@@@@  S U B M I T     C H O I C E S    @@@@@@@@@@@@@@
+
+export const submitChoices = (user, quiz, nextIndex, mode, choices) => dispatch => { 
+  // choices has this format { userId, quizId, attempt, questionId, choices (array), index, stickyIndex }
+  const preScoreUpdate = {
+    nextIndex: nextIndex,
+    completed: quiz.completed + 1,
+    pending: quiz.pending + 1
   };
+  dispatch(nextQuestion(preScoreUpdate));
+  
+  const url = `${REACT_APP_BASE_URL}/api/choices/`;
+  const headers = { 
+    "Content-Type": "application/json", 
+    "Authorization": "Bearer " + user.authToken,
+    "x-requested-with": "xhr"
+  };
+  const init = { 
+    method: 'POST',
+    headers,
+    body: JSON.stringify(choices),
+  };
+  console.log('init for submitChoices', init);
+
+  // POST CHOICE: SCORES, SAVES IN DB, RETURNS TRUE OR FALSE
+  return fetch(url, init)
+  .then(res => {
+    console.log('choices fetched (this user, this quiz, this attempt',res);
+    if (!res.ok) {
+      return Promise.reject(res.statusText);
+    }
+    return res.json();
+  })
+
+  // UPDATE COMPLETED & CORRECT THIS QUIZ
+  .then(res => { 
+    // res has following format {}
+      // userId: 5a11c6d67d2c6e9078c1082e,
+      // questionId: 59ec0f3514f8ec02e5756737,
+      // quizId: 59ec0f3514f8ec02e57566d7,
+      // choices: ["59ec0f3514f8ec02e575673b"],
+      // correct: true,
+      // id: 5a11e391667288977fccb1fa,
+      // attempt: 0 }
+
+    const quizCorrect = res.correct ? quiz.correct + 1 : quiz.correct ;
+    const pending = quiz.pending > 0 ? quiz.pending - 1 : 0 ; 
+    const postScoreUpdate = {
+      id: res.id,
+      quizId: res.quizId,
+      quizPending: pending,
+      quizCorrect: quizCorrect,
+      questionCorrect: res.correct,
+      questionId: res.questionId,  // used to confirm match in reducer
+      choices: res.choices,
+      index: choices.index,
+      attempt: res.attempt,
+      stickyIndex: choices.stickyIndex, // currently not using, might in future
+    };
+    console.log('postScoreUpdate',postScoreUpdate);
+    dispatch(scoreChoice(postScoreUpdate));
+  })
+
+  // ADVANCE TO SCORE IF AT END
+  .then(()=> {
+    if ( mode === 'results' ) { 
+      console.log('choices.quizId', choices.quizId, 'attempt', choices.attempt);
+      return dispatch(actionsMode.changeMode('results', quiz));
+    } 
+  })
+  .catch(error => {
+    dispatch(actionsMode.showModal(error));
+  });
+}

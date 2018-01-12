@@ -1,64 +1,13 @@
+import * as actionsQuiz from './quiz';
+import * as actionsUser from './users'; 
+
 // one action for each property of state.mode
 // see initialState.js for the list
 
-export const GOTO_LANDING = 'GOTO_LANDING';
-export const gotoLanding = () => ({
-  type: GOTO_LANDING,
-  view: 'landing'
-})
-
-export const GOTO_ABOUT = 'GOTO_ABOUT';
-export const gotoAbout = () => ({
-  type: GOTO_ABOUT,
-  view: 'about'
-})
-
-export const GOTO_LOGIN = 'GOTO_LOGIN';
-export const gotoLogin = () => ({
-  type: GOTO_LOGIN,
-  view: 'login'
-})
-
-export const GOTO_PROFILE = 'GOTO_PROFILE';
-export const gotoProfile = () => ({
-  type: GOTO_PROFILE,
-  view: 'profile'
-})
-
-export const GOTO_DASHBOARD = 'GOTO_DASHBOARD';
-export const gotoDashboard = () => ({
-  type: GOTO_DASHBOARD,
-  view: 'dashboard'
-})
-
-export const GOTO_QUIZLIST = 'GOTO_QUIZLIST';
-export const gotoQuizlist = () => ({
-  type: GOTO_QUIZLIST,
-  view: 'quizlist'
-})
-
-export const GOTO_QUESTION = 'GOTO_QUESTION';
-export const gotoQuestion = () => ({
-  type: GOTO_QUESTION,
-  view: 'question'
-})
-
-export const GOTO_RESULTS = 'GOTO_RESULTS';
-export const gotoResults = () => ({
-  type: GOTO_RESULTS,
-  view: 'results'
-})
-
-export const GOTO_ACCURACY = 'GOTO_ACCURACY';
-export const gotoAccuracy = () => ({
-  type: GOTO_ACCURACY,
-  view: 'accuracy'
-})
-
-export const GOTO_KEY = 'GOTO_KEY';
-export const gotoKey = () => ({
-  type: GOTO_KEY,
-  view: 'key'
+export const GOTO = 'GOTO';
+export const goto = view => ({
+  type: GOTO,
+  view: view
 })
 
 export const SHOW_MODAL = 'SHOW_MODAL';
@@ -85,3 +34,21 @@ export const toggleOption = (option) => ({
   type: TOGGLE_OPTION,
   option: option
 })
+
+// @@@@@@@@@@@@@@ 'ASYNC' @@@@@@@@@@@@@@@@
+
+export const changeMode = (view,quiz) => dispatch => {
+  dispatch(goto(view));
+  if (quiz) {
+    console.log('changeMode quiz', quiz);
+    if (view !== 'question' && ( quiz.cacheCompleted || quiz.cacheCorrect ) && quiz.id ) {
+      console.log('UPDATING USER SCORE',quiz.id,quiz.cacheCompleted,quiz.cacheCorrect);
+      dispatch(actionsUser.updateScoreFromCache(
+        quiz.id,
+        quiz.cacheCompleted,
+        quiz.cacheCorrect
+      ));
+      dispatch(actionsQuiz.clearUserCache());
+    }
+  }
+}

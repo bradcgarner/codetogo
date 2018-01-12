@@ -1,7 +1,6 @@
 import 'whatwg-fetch';
 import { REACT_APP_BASE_URL } from '../config';
 import * as actionsMode from './mode';
-import * as actionsQuiz from './quiz';
 const deepAssign = require('deep-assign');
 
 
@@ -9,6 +8,31 @@ export const UPDATE_USER_STORE = 'UPDATE_USER_STORE';
 export const updateUserStore = user => {
   return deepAssign({}, user, {  type: UPDATE_USER_STORE } )
 }
+
+export const UPDATE_SCORE_FROM_CACHE = 'UPDATE_SCORE_FROM_CACHE';
+export const updateScoreFromCache = (quizId, completed, correct) => ({
+  type: UPDATE_SCORE_FROM_CACHE,
+  quizId,
+  completed,
+  correct,
+})
+
+export const ADD_QUIZ = 'ADD_QUIZ';
+export const addQuiz = quiz => ({
+  type: ADD_QUIZ,
+  quiz: quiz,
+})
+
+
+export const INCREMENT_ATTEMPT = 'INCREMENT_ATTEMPT';
+export const incrementAttempt = (quizId, attempt) => ({
+  type: INCREMENT_ATTEMPT,
+  quizId: quizId,
+  attempt: attempt,
+  completed: 0,
+  correct: 0,
+  pending: 0,
+})
 
 // @@@@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@@@@@@
 
@@ -26,7 +50,7 @@ export const login = (credentials) => dispatch => {
   };
   let fetchedUser;
   console.log('init', init);
-  return fetch(url, init)    // <<<<<<< NOT WORKING ON IOS !!!!!!
+  return fetch(url, init)    
   .then(res=>{
     console.log(res);
     if (!res.ok) { 
@@ -35,16 +59,16 @@ export const login = (credentials) => dispatch => {
     return res.json();
   })
   .then(user=>{
-    console.log('user returned at login', fetchedUser);    
+    console.log('user returned at login', user);    
     return fetchedUser = user;    
   })
   .then(() => { 
     dispatch(updateUserStore(fetchedUser));
     console.log('END LOGIN. USER STORE IS UPDATED WITH:', fetchedUser);
     if (fetchedUser.quizzes.length > 0 ) {
-      return dispatch(actionsMode.gotoDashboard());      
+      return dispatch(actionsMode.changeMode('dashboard'));      
     } else {
-      return dispatch(actionsMode.gotoQuizlist());
+      return dispatch(actionsMode.changeMode('quizlist'));
     }
   })
   .catch(error => {
@@ -53,7 +77,8 @@ export const login = (credentials) => dispatch => {
     
   
 }
-// create new user
+// @@@@@@@@@@  C R E A T E    U S E R  @@@@@@@@@@@@@@
+
 export const createUser = (credentials) => dispatch => { //credential should include   username, password, firstName, lastName  
   const url = `${REACT_APP_BASE_URL}/api/users`;
   const headers = { "Content-Type": "application/json", "x-requested-with": "xhr" };
@@ -78,14 +103,15 @@ export const createUser = (credentials) => dispatch => { //credential should inc
     dispatch(updateUserStore(user));
   })
   .then(()=>{
-    return dispatch(actionsMode.gotoLogin());
+    return dispatch(actionsMode.changeMode('login'));
   })
   .catch(error => {
     dispatch(actionsMode.showModal(error));
   });
 }
 
-//update user core profile: username, password, firstName, lastName
+// @@@@@@@@@@  U P D A T E     U S E R     P R O F I L E  @@@@@@@@@@@@@@
+// username, password, firstName, lastName
 export const updateUserProfile = (credentials, authToken) => dispatch => { //credentials MAY include username, password, firstName, lastName
   const url = `${REACT_APP_BASE_URL}/api/users/${credentials.id}`;
   const headers = { 
@@ -117,7 +143,8 @@ export const updateUserProfile = (credentials, authToken) => dispatch => { //cre
   });
 }
 
-// update user non-profile data (quizzes taken, badges, etc.)
+// @@@@@@@@@@  U P D A T E     N O N - P R O F I L E     D A T A  @@@@@@@@@@@@@@
+// quizzes taken, badges, etc.
 export const updateUserData = (userData, authToken) => dispatch => { 
   const url = `${REACT_APP_BASE_URL}/api/users/${userData.id}/data`;
   console.log('userData.id',userData.id)
@@ -146,84 +173,6 @@ export const updateUserData = (userData, authToken) => dispatch => {
     console.log('user returned from db',user);
     user.authToken = authToken;
     return dispatch(updateUserStore(user)); // archived quizzes not included
-  })
-  .catch(error => {
-    dispatch(actionsMode.showModal(error));
-  });
-}
-
-// ~~~~~~~~~~~~~~ HELPERS FOR SUBMIT CHOICES ~~~~~~~~~~~~~~
-
-export const calcCompletedAndCorrect = (choices) => {
-  console.log('all Quiz Choices ', choices); 
-  const completed = choices.length;
-  console.log('completed',completed); 
-  const choicesCorrect = choices.filter(choice => choice.correct === true );
-  console.log('choicesCorrect',choicesCorrect); 
-  const correct = choicesCorrect.length;
-  console.log('correct',correct); 
-  return { correct, completed };
-}
-
-export const submitChoices = (choices, user, nextIndex, mode) => dispatch => { 
-  const updatedUser = deepAssign({}, user );
-  let quizForStore;
-  console.log('nextIndex, mode, choice as received by submitChoices',nextIndex, mode, choices)
-  const quizIndexToUpdate = user.quizzes.findIndex(quiz=>quiz.id === choices.quizId);
-  console.log('user.quizzes quizIndexToUpdate', quizIndexToUpdate, user.quizzes);
-  console.log('quiz to update', user.quizzes[quizIndexToUpdate]);
-  if (quizIndexToUpdate < 0 ) {return console.log('cannot updated quiz index of ', quizIndexToUpdate);}
-
-  const url = `${REACT_APP_BASE_URL}/api/choices/`;
-  const headers = { 
-    "Content-Type": "application/json", 
-    "Authorization": "Bearer " + user.authToken,
-    "x-requested-with": "xhr"
-  };
-  const init = { 
-    method: 'POST',
-    headers,
-    body: JSON.stringify(choices),
-  };
-  console.log('init for submitChoices', init);
-
-  // POST CHOICE: SCORES, SAVES IN DB, RETURNS ALL CHOICES THIS QUIZ, THIS ATTEMPT
-  return fetch(url, init)
-  .then(res => {
-    console.log('choices fetched (this user, this quiz, this attempt',res);
-    if (!res.ok) {
-      return Promise.reject(res.statusText);
-    }
-    return res.json();
-  })
-
-  // UPDATE COMPLETED & CORRECT THIS QUIZ
-  .then(allQuizChoices => { // this is to update state.user.quizzes[].completed
-    const score = calcCompletedAndCorrect(allQuizChoices);
-    updatedUser.quizzes[quizIndexToUpdate].completed = score.completed;
-    updatedUser.quizzes[quizIndexToUpdate].correct = score.correct;
-    
-    console.log('updatedUser after updating completed & correct',updatedUser);
-    console.log('updatedUser.quizzes[quizIndexToUpdate]',quizIndexToUpdate, updatedUser.quizzes[quizIndexToUpdate]);
-
-    // UPDATE USER IN DB (ASYNC) AND IN STORE    
-    return dispatch(updateUserData(updatedUser, user.authToken));
-  })
-
-  // UPDATE QUIZ STORE
-  .then(()=>{
-    quizForStore = deepAssign({}, updatedUser.quizzes[quizIndexToUpdate], {nextIndex});
-    console.log('quizForStore',quizForStore);
-    return dispatch(actionsQuiz.nextQuestion(quizForStore));
-  })
-
-  // ADVANCE TO SCORE IF AT END
-  .then(()=> {
-    console.log('quizForStore',quizForStore);
-    if ( mode === 'results' ) { 
-      console.log('choices.quizId', choices.quizId, 'user', user, 'attempt', choices.attempt);
-      return dispatch(actionsMode.gotoResults());
-    } 
   })
   .catch(error => {
     dispatch(actionsMode.showModal(error));

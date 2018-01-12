@@ -8,7 +8,7 @@ const deepAssign = require('deep-assign');
 
 export function QuizLi(props) {
   
-  const thisQuiz = deepAssign({}, props.li);
+  const thisQuiz = props.li; // props.li is one of user.quizzes or menuOfAllQuizzes
   const id = thisQuiz.id;
   const attempt = thisQuiz.attempt;
   const category= thisQuiz.category || 'cat';
@@ -28,8 +28,8 @@ export function QuizLi(props) {
     if (quiz.id===id) { isListed = true }
   });
 
-  const handleTakeQuizButton = (option) => {
-    props.dispatch(actionsQuiz.takeQuiz(thisQuiz, user, option, mode))
+  const handleTakeQuizButton = next => {
+    props.dispatch(actionsQuiz.takeOrAddQuiz(thisQuiz, user, next))
   }
 
   const theQuiz = <div className="quizIdentifier">
@@ -42,7 +42,7 @@ export function QuizLi(props) {
     </div>
   </div>;
       
-  let attemptInner = attempt >= 0 ? '#' + (attempt + 1) : '' ;
+  let attemptInner = attempt >= 0 ? '#' + (attempt) : '' ;
   let attemptNumber =  <div className="statusBarAttempt">{attemptInner}
     {topLabelAttempt}
   </div>

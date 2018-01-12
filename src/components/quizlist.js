@@ -9,7 +9,7 @@ export function QuizList(props) {
 
   const handleQuizlistButton = () => {
     if (props.user.id) {
-      props.dispatch(actionsMode.gotoDashboard());      
+      props.dispatch(actionsMode.changeMode('dashboard', props.quiz));      
     }
   }
 

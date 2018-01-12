@@ -1,5 +1,5 @@
 {
-  "name": "CodeQuiz",
+  "name": "codetogo",
   "jest": {
     "collectCoverage" : true,
     "collectCoverageFrom" : ["**/*.{js,jsx}", "!**/node_modules/**"]
