@@ -29,6 +29,9 @@ export const incrementAttempt = (quizId, attempt) => ({
   type: INCREMENT_ATTEMPT,
   quizId: quizId,
   attempt: attempt,
+  completed: 0,
+  correct: 0,
+  pending: 0,
 })
 
 // @@@@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@@@@@@

@@ -131,6 +131,7 @@ export const takeOrAddQuiz = (quiz, user, next) => dispatch => {
   let attempt = 1;
   // whereas 'next' is used by client, 'add' is used by server; i.e. 'want to add?'
   let prior = user.quizzes.find(quiz=>quiz.id === quizId);
+  console.log('prior', prior);
   let add = !prior ? 'add' : 'take' ;
   console.log('next', next, 'add', add);
 

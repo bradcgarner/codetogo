@@ -42,7 +42,7 @@ export function QuizLi(props) {
     </div>
   </div>;
       
-  let attemptInner = attempt >= 0 ? '#' + (attempt + 1) : '' ;
+  let attemptInner = attempt >= 0 ? '#' + (attempt) : '' ;
   let attemptNumber =  <div className="statusBarAttempt">{attemptInner}
     {topLabelAttempt}
   </div>

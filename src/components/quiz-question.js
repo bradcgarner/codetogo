@@ -95,7 +95,7 @@ export class Question extends React.Component {
     return (
     <div className="question">
 
-      <p className="questionAsked">{this.props.quiz.currentIndex + 1}. {currQuestion.question}</p>
+      <p className="questionAsked">{currQuestion.stickyIndex + 1}. {currQuestion.question}</p>
       
       <form className="questionForm" onSubmit={this.props.handleSubmit(values =>
         this.handleSubmitButton(values, currentIndex)

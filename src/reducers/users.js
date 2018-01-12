@@ -21,27 +21,20 @@ export const reducer = ( state = initialUser, action ) => {
     const index = quizzes.findIndex(quiz=> quiz.id === action.quizId )
     quizzes[index].completed = action.completed;
     quizzes[index].correct = action.correct;
-    return Object.assign({}, state, {    
-      quizzes: quizzes
-    });
+    return { ...state,  quizzes };
 
   } else if ( action.type === actions.ADD_QUIZ ) {
     const quizzes = [...state.quizzes];  // quizzes is 1 level deep, no deep assign needed
     console.log('action in user reducer',action);
     quizzes.push(action.quiz);
     console.log('quizzes in user reducer after adding',quizzes);
-    return Object.assign({}, state, {
-      quizzes: quizzes
-    });
+    return { ...state,  quizzes };
 
   } else if ( action.type === actions.INCREMENT_ATTEMPT ) {
     const quizzes = [...state.quizzes];  // quizzes is 1 level deep, no deep assign needed
     const index = quizzes.findIndex(quiz=> quiz.id === action.quizId )
     quizzes[index].attempt = action.attempt;
-    return Object.assign({}, state, {    
-      quizzes: quizzes
-    });
-    
+    return { ...state,  quizzes };
     
   } else {
     return state;

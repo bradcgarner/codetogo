@@ -13,16 +13,19 @@ export class Dashboard extends React.Component {
   }
 
   render() {
-    const listHeader = this.props.user.quizzes ? 'My Quizzes' : '' ;
-    const quizLi = this.props.user.quizzes.map((quiz, index)=>{
+
+    const {quizzes, recent} = this.props.user;
+  
+    const listHeader = quizzes ? 'My Quizzes' : '' ;
+    const quizLi = quizzes.map((quiz, index)=>{
       return <QuizLi key={index} index={index} li={deepAssign({},quiz)} />
     });
-    const addButtonLabel = this.props.user.quizzes.length ? 'Add Another Quiz' : 'Add a Quiz';
+    const addButtonLabel = quizzes.length ? 'Add Another Quiz' : 'Add a Quiz';
 
     return (
       <div className="dashboard">
         <Badges />
-        <Recent recent={this.props.user.recent}/>
+        <Recent recent={recent}/>
         <h3 className="dashboardQuizListHeader">{listHeader}</h3>
         <ul className="quizUl">
           {quizLi}
