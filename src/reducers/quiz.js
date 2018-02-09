@@ -2,56 +2,17 @@ import * as actions from '../actions/quiz';
 import { initialQuiz } from './initialState';
 
 export const reducer = ( state = initialQuiz, action ) => {
-  // if ( action.type === actions.questions ) {
-  //   return Object.assign({}, state, {
-  //     questions: action.questions
-  //   })
-  // } else 
-  if ( action.type === actions.TOGGLE_FORM_STATUS ) {
-    return Object.assign({}, state, {
-      formIsEmpty: action.formIsEmpty
-    })
-  } else if ( action.type === actions.UPDATE_QUIZ_MENU ) {
-    return Object.assign({}, state, {
-      menuOfAllQuizzes: action.menuOfAllQuizzes
-    })
-  } else if ( action.type === actions.LOAD_QUIZ ) {
-    return Object.assign({}, state, {
-      id: action.id,    
-      name: action.name,
-      category: action.category,
-      difficulty: action.difficulty,
-      questions: action.questions,
-      originalLength: action.originalLength,
-      attempt: action.attempt,    
-      currentIndex: action.currentIndex || 0,
-      completed: action.completed,
-      correct: action.correct,  
-      total: action.questions.length,  
-      formIsEmpty: true
-    }) 
-  } else if ( action.type === actions.NEXT_QUESTION ) {
-    return Object.assign({}, state, {
-      currentIndex: action.currentIndex,
-      completed: action.completed,
-      correct: action.correct,  
-      formIsEmpty: true      
-    })
-  } else if ( action.type === actions.UPDATE_CURRENT_QUESTION ) {
-      return Object.assign({}, state, {
-        currentIndex: action.currentIndex,
-        formIsEmpty: true        
-      })    
-      
-  // this updates the CURRENT quiz
-  } else if (action.type === actions.SCORE_CHOICE) {
-    const questions = [...state.questions]; // create/copy immutable object from state.quizzes
-    const questionIndex = questions.findIndex(question => question.id === action.questionId);
-    questions[questionIndex].correct = action.correct;
-    questions[questionIndex].choices = action.choices;
-    return Object.assign({}, state, { formIsEmpty: true }, { questions });
-  } else { 
-    return state;
+
+  if ( action.type === actions.LOAD_QUIZ ) {
+    return action.quiz;
   }
+  if ( action.type === actions.UPDATE_QUIZ_SCORE_AND_INDEX ) {
+    return {
+      ...state, 
+      score: action.score, 
+      indexCurrent: action.indexCurrent
+    };
+  }
+  return state;
 }
 

@@ -1,23 +1,28 @@
-// this is the single current quiz when new quiz selected
+// questions for the current quiz
+// single current question is store.questions[store.quiz.indexCurrent]
 
 import { REACT_APP_BASE_URL } from '../config';
 import * as actionsDisplay from './display';
-import * as actionsUser from './user';
 import 'whatwg-fetch';
 
-export const LOAD_QUIZ = 'LOAD_QUIZ';
-export const loadQuiz = quiz => ({
-  type: LOAD_QUIZ,
-  quiz
+
+// load all questions when user loads a quiz
+export const LOAD_QUESTIONS = 'LOAD_QUESTIONS';
+export const loadQuestions = questions => ({
+  type: LOAD_QUESTIONS,
+  questions,
 });
 
-export const UPDATE_QUIZ_SCORE_AND_INDEX = 'UPDATE_QUIZ_SCORE_AND_INDEX';
-export const updateQuizScoreAndIndex = (score, indexCurrent) => ({
-  type: UPDATE_QUIZ_SCORE_AND_INDEX,
-  score,
-  indexCurrent,
+// update a single question in the array
+// reducer uses default values if none passed, so we can pass only indexNext
+export const UPDATE_QUESTION = 'UPDATE_QUESTION';
+export const updateQuestion = (index, answers, score, indexNext) => ({
+  type: UPDATE_QUESTION,
+  index, 
+  answers,
+  score, 
+  indexNext
 });
-
 
 // @@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@
 
@@ -40,7 +45,61 @@ export const  fetchQuizzes = () => dispatch => {
 
 // ~~~~~~~~~~~~ HELPERS TO TAKE QUIZ ~~~~~~~~~~~~
 
-// take quiz
+// calculate attemp, correct, completed, filter true or false
+export const calculateQuizSettings = (theQuiz, theUser) => {
+  const quizId = theQuiz.id;  
+  const priorAttempts = theUser.quizzes.filter(quiz=>quiz.id === quizId); // user should already be deepAssign();
+  const priorAttemptPointer = priorAttempts[priorAttempts.length-1];
+  const priorAttempt = deepAssign({}, priorAttemptPointer);
+  console.log('priorAttempt, #', priorAttempts.length, priorAttempt)
+  if ( !priorAttempt ) {
+    theQuiz.attempt = 0;
+    theQuiz.correct = 0;
+    theQuiz.completed = 0;
+    console.log('priorAttempt (false)', priorAttempt);
+  } else if (!priorAttempt.completed) {
+    theQuiz.attempt = theQuiz.attempt || priorAttempt.attempt || 0;
+    console.log('priorAttempt.completed (false)', priorAttempt.completed);
+  } else if ( priorAttempt.completed > 0 && priorAttempt.completed < priorAttempt.total ) {
+    theQuiz.filterQuestions = true;
+    theQuiz.attempt = theQuiz.attempt || priorAttempt.attempt || 0;    
+    console.log('partial, filter', priorAttempt, theQuiz.filterQuestions);
+  } else if ( priorAttempts.length > 0 ) {
+    theQuiz.attempt = priorAttempt.attempt + 1;
+    theQuiz.correct = 0;
+    theQuiz.completed = 0;
+    console.log('restart theQuiz', theQuiz);
+  }
+  console.log('theQuiz @ end of settings', theQuiz);
+   return theQuiz
+}
+
+const updateUserQuizList = (user, theQuiz) => { // theQuiz.attempt should be the current attempt
+  const quizId = theQuiz.id;  
+  let quizIsListed = false;
+  let quizzes;
+  user.quizzes.forEach(exQuiz=>{
+    if (exQuiz.id === quizId) {
+      exQuiz.attempt = theQuiz.attempt;
+      exQuiz.correct = theQuiz.correct; // needed for reset, problem elsewhere?
+      exQuiz.completed = theQuiz.completed; // needed for reset
+      quizIsListed = true;
+      console.log('quizisListed, quizId', quizIsListed, quizId, exQuiz);
+    }
+  });
+  console.log('user b4, quizId, quizIsListed',quizId, quizIsListed, user);
+  if (quizIsListed) {
+    quizzes = [...user.quizzes];
+    console.log('NOT ADDING QUIZ !!')
+  } else {
+    quizzes = [...user.quizzes, theQuiz];
+    console.log('ADDING', user);
+  } 
+  console.log('updatedQuizList', quizzes);
+  return quizzes;
+} 
+
+// take (or add) quiz
 export const takeQuiz = (quiz, user, option, mode) => dispatch => {
   //const attempt = quiz.attempt;
   console.log('take quiz option', option, quiz);
