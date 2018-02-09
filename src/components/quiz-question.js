@@ -2,12 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm, Field } from 'redux-form';
-import Resources from './quiz-question-resources';
-import Comments  from './quiz-question-comments';
-import * as actionsUser from '../actions/users';
+// import Resources from './quiz-question-resources';
+// import Comments  from './quiz-question-comments';
+// import * as actionsUser from '../actions/users';
 import * as actionsMode from '../actions/mode';
 import * as actionsQuiz from '../actions/quiz';
-const deepAssign = require('deep-assign');
+// const deepAssign = require('deep-assign');
 
 export class Question extends React.Component {
 
@@ -21,7 +21,9 @@ export class Question extends React.Component {
       quizId: this.props.quiz.id,
       attempt: this.props.quiz.attempt,
       questionId: this.props.quiz.questions[currentIndex].id,
-      choices : formattedChoices
+      choices: formattedChoices,
+      index: currentIndex,
+      stickyIndex: currentIndex, // !!!!!!! FIX THIS !!!!!!!!
     };
   }
 
@@ -41,9 +43,8 @@ export class Question extends React.Component {
     const formattedChoiceObject = this.formatChoiceObject(choice, currentIndex);
     const nextIndex = this.calcNextIndex(this.props.quiz.currentIndex, this.props.quiz.questions.length );
     const mode = this.props.quiz.currentIndex === (this.props.quiz.questions.length - 1) ? 'results' : 'question' ;
-    const user = deepAssign({}, this.props.user);
     this.props.reset();   
-    this.props.dispatch(actionsUser.submitChoices(formattedChoiceObject, user, nextIndex, mode));
+    this.props.dispatch(actionsQuiz.submitChoices(this.props.user, this.props.quiz, nextIndex, mode, formattedChoiceObject));
   }  // refer to actions/users.js for format of values
 
   handleGotoQuestionButton(index) { // for skipping; index = 1 or -1
@@ -54,7 +55,7 @@ export class Question extends React.Component {
       this.props.dispatch(actionsQuiz.updateCurrentQuestion(this.props.quiz.currentIndex + index))
     } else if ( index === 1 && this.props.quiz.currentIndex === this.props.quiz.total-1) {
       this.props.reset();    
-      this.props.dispatch(actionsMode.gotoResults())
+      this.props.dispatch(actionsMode.changeMode('results', this.props.quiz))
     } else if ( index === 1 ) {
       this.props.reset();    
       this.props.dispatch(actionsQuiz.updateCurrentQuestion(nextIndex))
@@ -94,7 +95,7 @@ export class Question extends React.Component {
     return (
     <div className="question">
 
-      <p className="questionAsked">{this.props.quiz.currentIndex + 1}. {currQuestion.question}</p>
+      <p className="questionAsked">{currQuestion.stickyIndex + 1}. {currQuestion.question}</p>
       
       <form className="questionForm" onSubmit={this.props.handleSubmit(values =>
         this.handleSubmitButton(values, currentIndex)

@@ -5,11 +5,11 @@ import * as actionsMode from '../actions/mode';
 export function Landing(props) {
 
   const handleLoginButton = () => {
-    props.dispatch(actionsMode.gotoLogin());
+    props.dispatch(actionsMode.changeMode('login', props.quiz));
   }
 
   const handleAboutButton = () => {
-    props.dispatch(actionsMode.gotoAbout());
+    props.dispatch(actionsMode.changeMode('about', props.quiz));
   }  
   
     return (

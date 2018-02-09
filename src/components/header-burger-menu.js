@@ -13,19 +13,19 @@ export function BurgerMenu(props) {
   const handleLoginButton = option => {
     if (option === 'Logout') {
       const userReset = {
-        id: null,
+        id: '',
         firstName: '',
         lastName: '',
         username: '',
-        quizzes: [],
+        quizzes: [{id: ''}], // resetting to [] doesn't work
         badges: '',
         recent: '',
         authToken: ''
       };
-      props.dispatch(actionsMode.gotoLanding());
+      props.dispatch(actionsMode.changeMode('landing', props.quiz));
       props.dispatch(actionsUser.updateUserStore(userReset));
     } else {
-      props.dispatch(actionsMode.gotoLogin());
+      props.dispatch(actionsMode.changeMode('login', props.quiz));
     }
   }
 
@@ -34,23 +34,23 @@ export function BurgerMenu(props) {
 
   const handleDashboardButton = () => {
     if (isLoggedIn) {
-      props.dispatch(actionsMode.gotoDashboard())
+      props.dispatch(actionsMode.changeMode('dashboard', props.quiz))
     }
   }
   const dashboard = <li className={loggedInClass} onClick={()=>handleDashboardButton()}>Dashboard</li> ; 
 
   const profileText = isLoggedIn ? 'Profile' : 'Create Account' ;  
-  const handleProfileButton = () => props.dispatch(actionsMode.gotoProfile());    
+  const handleProfileButton = () => props.dispatch(actionsMode.changeMode('profile', props.quiz));    
   const profile = <li onClick={()=>handleProfileButton()}>{profileText}</li> ;
 
   const handleQuizListButton = () => {
     if (isLoggedIn) {
-      props.dispatch(actionsMode.gotoQuizlist())
+      props.dispatch(actionsMode.changeMode('quizlist', props.quiz))
     }
   };    
   const quizList = <li className={loggedInClass} onClick={()=>handleQuizListButton()}>List of All Quizzes</li> ;
 
-  const handleAboutButton = () => props.dispatch(actionsMode.gotoAbout());    
+  const handleAboutButton = () => props.dispatch(actionsMode.changeMode('about', props.quiz));    
   const about = <li onClick={()=>handleAboutButton()}>About</li> ;
 
     return (

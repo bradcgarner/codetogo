@@ -11,6 +11,10 @@ import QuizList from './components/quizlist';
 import Quiz from  './components/quiz';
 import Modal from  './components/modal';
 
+// REFACTOR: instead of this long switch, 
+// create an object Component[props.mode.view]
+// with all components keyed to view
+
 export function App(props) {
 
   const modal = props.mode.modal === 'open' ? <Modal /> : '' ;

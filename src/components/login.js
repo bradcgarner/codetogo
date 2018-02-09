@@ -14,7 +14,7 @@ export class Login extends React.Component {
   }
   
   handleCreateAccountButton() {
-    this.props.dispatch(actionsMode.gotoProfile());
+    this.props.dispatch(actionsMode.changeMode('profile', this.props.quiz));
   }
 
   render() {

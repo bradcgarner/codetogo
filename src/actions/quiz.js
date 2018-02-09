@@ -18,6 +18,13 @@ export const updateQuizScoreAndIndex = (score, indexCurrent) => ({
   indexCurrent,
 });
 
+export const CLEAR_USER_CACHE = 'CLEAR_USER_CACHE';
+export const clearUserCache = menu => ({
+  type: CLEAR_USER_CACHE,
+  cacheCorrect: null,
+  cacheCompleted: null,
+});
+
 
 // @@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@
 
@@ -47,91 +54,128 @@ export const takeQuiz = (quiz, user, option, mode) => dispatch => {
   console.log('user before update', user);
   let updatedUser = deepAssign({},user);
   const authToken = user.authToken;
-  const quizId = quiz.id;  
-  let thisQuiz = deepAssign({},quiz);
-  let fetchedQuestions = [];
-  let filterQuestions = false;
-  let originalLength;
-  let updatedQuiz = {};
+  const quizId = quiz.id; 
+  const userId = user.id; 
+  let attempt = 1;
+  // whereas 'next' is used by client, 'add' is used by server; i.e. 'want to add?'
+  let prior = user.quizzes.find(quiz=>quiz.id === quizId);
+  console.log('prior', prior);
+  let add = !prior ? 'add' : 'take' ;
+  console.log('next', next, 'add', add);
 
-  // CALCULATE THE QUIZ SETTINGS: 
-  // 1) ATTEMPT, 2) RESET CORRECT, 3) FILTER COMPLETED QUESTIONS
-  if ( option !== 'add' ) {
-    thisQuiz = calculateQuizSettings(thisQuiz, updatedUser);
-    filterQuestions = thisQuiz.filterQuestions;
-    delete thisQuiz.filterQuestions;    
-    console.log('take quiz (not add), filterQuestions tf', filterQuestions);
-    console.log('thisQuiz at end of take (not add)', thisQuiz); 
+
+  if ( add === 'add') {
+    let quizToAdd = Object.assign({}, quiz,
+      { attempt: attempt,
+        completed: 0,
+        correct: 0,
+      }
+    );
+    dispatch(actionsUser.addQuiz(quizToAdd));
+  } else {
+    let priorAttempt = attempt;
+    attempt = calcAttemptNum(quizId, user); 
+    if (priorAttempt !== attempt) {
+      dispatch(actionsUser.incrementAttempt(quiz.id, attempt));      
+    }   
   }
-
-  // add quiz to updated user if needed
-  updatedUser.quizzes = updateUserQuizList(updatedUser, thisQuiz); // thisQuiz.attempt should be the current attempt
-  console.log('updatedUser', updatedUser);
-  
-
-  // IF ONLY ADD, UPDATE USER STORE, AND END
-  if ( option === 'add' ) {
-    console.log('adding quiz, updatedUser', updatedUser);
-    return dispatch(actionsUser.updateUserData(updatedUser, authToken));    
-  }
-
-  // GET ALL QUESTIONS FOR THIS QUIZ FROM DATABASE
-  return fetch(`${REACT_APP_BASE_URL}/api/quizzes/${quizId}/questions`)
+  const url = `${REACT_APP_BASE_URL}/api/quizzes/${quizId}/users/${userId}/${add}/${attempt}/${next}`;
+  const headers = { 
+    "Content-Type": "application/json", 
+    "Authorization": "Bearer " + authToken,
+    "x-requested-with": "xhr"
+  };
+  const init = { 
+    method: 'PUT',
+    headers
+  };
+  // GET EVERYTING FOR THIS QUIZ FROM DATABASE, put b/c potentially modify user
+  return fetch(url, init)
     .then(res => {
       console.log(res);
       if (!res.ok) {
         return Promise.reject(res.statusText);
       }
-      return res.json();
-    })
 
-    // FILTER OUT COMPLETED QUESTIONS IF NEEDED
-    .then(questions => {
-      console.log('questions returned', questions);
-      originalLength = questions.length;
-      console.log('originalLength',originalLength);
-      if (filterQuestions  === true) {
-        const choiceObject = {};
-        console.log('attempt to fetch', thisQuiz.attempt);
-        return fetch(`${REACT_APP_BASE_URL}/api/choices/quizzes/${quizId}/users/${user.id}/${thisQuiz.attempt}`)
-          .then(res => {
-            if (!res.ok) {
-              return Promise.reject(res.statusText);
-            }
-            return res.json();
-          })
-          .then(choices=>{
-            console.log('choices fetched to use for filter',choices);
-            choices.forEach(choice=>{
-              choiceObject[choice.questionId] = true;
-            });
-            fetchedQuestions = questions.filter(question=>choiceObject[question.id] !== true);
-            console.log('fetchedQuestions after filter', fetchedQuestions);
-          })
+      return res.json(); 
+    })
+    .then(res=>{
+      if (next === 'take') {
+        console.log('quiz to load',res.quiz)
+        dispatch(loadQuiz(res.quiz));
+        return dispatch(actionsMode.changeMode('question', quiz));  
       } else {
-        fetchedQuestions = questions;
-      } // end if
-      return;
-    }) // end then
-
-    // UPDATE STORE
-    .then(()=>{
-      console.log('fetchedQuestions inside then', fetchedQuestions);
-      updatedQuiz = deepAssign({}, thisQuiz, {
-        questions: fetchedQuestions,
-        currentIndex: 0,  // always start at 0, which might be start of a filtered array
-        originalLength
-      });
-      console.log('update quiz store', updatedQuiz);
-      return dispatch(loadQuiz(updatedQuiz)); // updates state.quiz, but not state.quiz.questions
-    })
-    .then(()=>{
-      return dispatch(actionsUser.updateUserData(updatedUser, authToken)); // async
-    })
-    .then(()=>{
-      return dispatch(actionsMode.gotoQuestion());      
+        return;
+      }    
     })
     .catch(error => {
       dispatch(actionsMode.showModal(error));
     });
+};
+
+// @@@@@@@@@@  S U B M I T     C H O I C E S    @@@@@@@@@@@@@@
+
+export const submitChoices = (user, quiz, nextIndex, mode, choices) => dispatch => { 
+  // choices has this format { userId, quizId, attempt, questionId, choices (array), index, stickyIndex }
+  const preScoreUpdate = {
+    nextIndex: nextIndex,
+    completed: quiz.completed + 1,
+    pending: quiz.pending + 1
   };
+  dispatch(nextQuestion(preScoreUpdate));
+  
+  const url = `${REACT_APP_BASE_URL}/api/choices/`;
+  const headers = { 
+    "Content-Type": "application/json", 
+    "Authorization": "Bearer " + user.authToken,
+    "x-requested-with": "xhr"
+  };
+  const init = { 
+    method: 'POST',
+    headers,
+    body: JSON.stringify(choices),
+  };
+  console.log('init for submitChoices', init);
+
+  // POST CHOICE: SCORES, SAVES IN DB, RETURNS TRUE OR FALSE
+  return fetch(url, init)
+  .then(res => {
+    console.log('choices fetched (this user, this quiz, this attempt',res);
+    if (!res.ok) {
+      return Promise.reject(res.statusText);
+    }
+    return res.json();
+  })
+
+  // UPDATE COMPLETED & CORRECT THIS QUIZ
+  .then(res => { 
+
+    const quizCorrect = res.correct ? quiz.correct + 1 : quiz.correct ;
+    const pending = quiz.pending > 0 ? quiz.pending - 1 : 0 ; 
+    const postScoreUpdate = {
+      id: res.id,
+      quizId: res.quizId,
+      quizPending: pending,
+      quizCorrect: quizCorrect,
+      questionCorrect: res.correct,
+      questionId: res.questionId,  // used to confirm match in reducer
+      choices: res.choices,
+      index: choices.index,
+      attempt: res.attempt,
+      stickyIndex: choices.stickyIndex, // currently not using, might in future
+    };
+    console.log('postScoreUpdate',postScoreUpdate);
+    dispatch(scoreChoice(postScoreUpdate));
+  })
+
+  // ADVANCE TO SCORE IF AT END
+  .then(()=> {
+    if ( mode === 'results' ) { 
+      console.log('choices.quizId', choices.quizId, 'attempt', choices.attempt);
+      return dispatch(actionsMode.changeMode('results', quiz));
+    } 
+  })
+  .catch(error => {
+    dispatch(actionsMode.showModal(error));
+  });
+}
