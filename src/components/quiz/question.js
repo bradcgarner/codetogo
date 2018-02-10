@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm, Field } from 'redux-form';
-import * as actionsDisplay from '../actions/display';
-import * as actionsQuiz from '../actions/quiz';
+import * as actionsDisplay from '../../actions/display';
+import * as actionsQuiz from '../../actions/quiz';
 
 export class Question extends React.Component {
 

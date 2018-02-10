@@ -1,9 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import QuizLi from './quiz-li';
-import * as actionsDisplay from '../actions/display';
-const deepAssign = require('deep-assign');
-
+import ListItem from './listItem';
+import * as actionsDisplay from '../../actions/display';
 
 export function QuizList(props) {
 
@@ -16,7 +14,7 @@ export function QuizList(props) {
   const dashboardClass = props.user.id ? 'gotoQuizListButton' : 'gotoQuizListButton inactive' ;
 
   const quizLi = props.quiz.menuOfAllQuizzes.map((quiz, index)=>{
-    return <QuizLi key={index} index={index} li={deepAssign({},quiz)} />
+    return <ListItem key={index} index={index} li={Object.assign({},quiz)} />
   })
 
   const addButtonLabel = 'Go to My Dashboard';

@@ -2,8 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm, Field } from 'redux-form';
-import * as actionsUser from '../actions/user';
-const deepAssign = require('deep-assign');
+import * as actionsUser from '../../actions/user';
 
 export class Profile extends React.Component {
 
@@ -15,7 +14,7 @@ export class Profile extends React.Component {
       this.props.dispatch(actionsUser.updateUser(user, this.props.user.authToken));
     } else {
       console.log('create');      
-      const newValues = deepAssign(values);
+      const newValues = Object.assign(values);
       newValues.quizzes = [];
       newValues.recent = [];
       newValues.badges = [];
@@ -94,7 +93,7 @@ export class Profile extends React.Component {
 }
 
 const mapStateToProps = state => {
-  // const initialForm = deepAssign({}, state.user);
+  // const initialForm = Object.assign({}, state.user);
   // delete initialForm.recent;
   // delete initialForm.quizzes;
   // delete initialForm.badges;

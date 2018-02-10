@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Header from './components/header';
-import Landing from './components/landing';
-import About from './components/about';
-import Login from './components/login';
-import Profile from './components/profile';
-import Dashboard from './components/dashboard';
-import QuizMenu from './components/quizMenu';
-import Quiz from  './components/quiz';
-import Modal from  './components/modal';
+import Header from './components/header/header';
+import Landing from './components/landing/landing';
+import About from './components/landing/about';
+import Login from './components/user/login';
+import Profile from './components/user/profile';
+import Dashboard from './components/lists/dashboard';
+import QuizMenu from './components/lists/quizMenu';
+import Quiz from  './components/quiz/quiz';
+import Modal from  './components/display/modal';
 
 // REFACTOR: instead of this long switch, 
 // create an object Component[props.mode.view]

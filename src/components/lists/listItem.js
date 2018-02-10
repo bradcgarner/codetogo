@@ -1,10 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as actionsQuiz from '../actions/quiz';
-const deepAssign = require('deep-assign');
+import * as actionsQuiz from '../../actions/quiz';
 
-
-export function QuizLi(props) {
+export function ListItem(props) {
   
   const thisQuiz = props.li; // props.li is one of user.quizzes or menuOfAllQuizzes
   const id = thisQuiz.id;
@@ -13,7 +11,7 @@ export function QuizLi(props) {
   const difficulty= thisQuiz.difficulty || 1;
   const diffClass = `quizLiDifficulty diff${difficulty}`
   const name= thisQuiz.name || 'name';
-  const user = deepAssign({}, props.user);
+  const user = Object.assign({}, props.user);
   const mode = props.mode.view;
 
   const topLabelAttempt = (props.index === 0 && mode === 'dashboard') ? <div className="quizLiTopLabel">attempts</div> : '' ;
@@ -84,4 +82,4 @@ const mapStateToProps = state => ({
   mode: state.mode
 })
 
-export default connect(mapStateToProps)(QuizLi);
+export default connect(mapStateToProps)(ListItem);

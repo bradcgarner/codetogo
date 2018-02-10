@@ -1,9 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Badges from './dashboard-badges';
-import Recent  from './dashboard-recent';
-import QuizLi from './quiz-li';
-import * as actionsDisplay from '../actions/display';
+import ListItem from './listItem';
+import * as actionsDisplay from '../../actions/display';
 
 export class Dashboard extends React.Component {
 
@@ -17,14 +15,12 @@ export class Dashboard extends React.Component {
   
     const listHeader = quizzes ? 'My Quizzes' : '' ;
     const quizLi = quizzes.map((quiz, index)=>{
-      return <QuizLi key={index} index={index} li={Object.assign({},quiz)} />
+      return <ListItem key={index} index={index} li={Object.assign({},quiz)} />
     });
     const addButtonLabel = quizzes.length ? 'Add Another Quiz' : 'Add a Quiz';
 
     return (
       <div className="dashboard">
-        <Badges />
-        <Recent recent={recent}/>
         <h3 className="dashboardQuizListHeader">{listHeader}</h3>
         <ul className="quizUl">
           {quizLi}

@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm, Field } from 'redux-form';
-import * as actionsUser from '../actions/user';
-import * as actionsDisplay from '../actions/display';
+import * as actionsUser from '../../actions/user';
+import * as actionsDisplay from '../../actions/display';
 
 export class Login extends React.Component {
   
