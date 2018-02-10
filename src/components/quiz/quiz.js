@@ -1,20 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Question from './question';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import NoMatch from  '../display/nomatch';
 
 export class Quiz extends React.Component {
   
   render() {
-
-    const quizBody = this.props.mode.view === 'question' ? <Question /> : "<Results />" ;
     
     return (
-    <div className="quiz">
-
-      {quizBody}
-  
-    </div>
-  );
+      <Switch>
+        <main className="quiz">
+          <Route path = '*'  component={Question}/>
+          {/* <Route                 component={NoMatch}/> */}
+        </main>
+      </Switch>
+    );
   }
 }
 

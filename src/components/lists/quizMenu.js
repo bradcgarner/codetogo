@@ -13,7 +13,8 @@ export function QuizMenu(props) {
 
   const dashboardClass = props.user.id ? 'gotoQuizListButton' : 'gotoQuizListButton inactive' ;
 
-  const quizLi = props.quiz.menuOfAllQuizzes.map((quiz, index)=>{
+  const menuOfAllQuizzes = Array.isArray(props.general.menuOfAllQuizzes) ? props.general.menuOfAllQuizzes : [] ;
+  const quizLi = menuOfAllQuizzes.map((quiz, index)=>{
     return <ListItem key={index} index={index} li={Object.assign({},quiz)} />
   })
 
@@ -33,7 +34,9 @@ export function QuizMenu(props) {
 const mapStateToProps = state => ({
   user: state.user,
   quiz: state.quiz,
-  mode: state.mode
+  display: state.display,
+  general: state.general,
+  quizList: state.quizList,
 })
 
 export default connect(mapStateToProps)(QuizMenu);

@@ -1,6 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as actionsDisplay from '../../actions/display';
+import About from './about';
+import Home from './home';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import NoMatch from  '../display/nomatch';
 
 export function Landing(props) {
 
@@ -14,18 +18,12 @@ export function Landing(props) {
   
     return (
       <div className="landing">
-        <div className="landingCover">
-          <p className="landingLogo landingLogoTop">{`{()=>{}}`}</p>
-          <p className="landingLogo landingLogoMid">{`</>`}</p>
-          <p className="landingLogo landingLogoBot">{`~~~`}</p>
-          <h1 className="landingTitle">codeToGo.io</h1>
-        </div>
-        <div className="landingButtons">
-          <button className="enterButton" onClick={()=>handleLoginButton()}>Enter</button>
-          <button className="aboutButton"onClick={()=>handleAboutButton()}>About</button>
-        </div>
+        <Switch>
+          <Route path = '*' component={Home}/>
+          {/* <Route                  component={NoMatch}/> */}
+        </Switch>
+        <About/>
       </div>
-
     );
 }
 

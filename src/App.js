@@ -7,6 +7,7 @@ import User from './components/user/user';
 import Lists from './components/lists/lists';
 import Quiz from  './components/quiz/quiz';
 import Modal from  './components/display/modal';
+import NoMatch from  './components/display/nomatch';
 
 // REFACTOR: instead of this long switch, 
 // create an object Component[props.mode.view]
@@ -17,20 +18,18 @@ export function App(props) {
   const modal = props.display.modal ? <Modal /> : '' ;
 
   return (
-
     <BrowserRouter>
       <div className="App">
-      {/* <Header history={this.props.history} /> */}
-        <Switch>
-          <main className="main">
-            <Route path =       '/*'     component={Header}/>
-            <Route exact path = '/home'  component={Landing}/>
+        <main className="main">
+          <Switch>
+            <Route exact path = '/'      component={Landing}/>
             <Route path =       '/user'  component={User}/>
             <Route path =       '/lists' component={Lists}/>
             <Route path =       '/quiz'  component={Quiz}/>
-            <Redirect from = '*' to = '/home'/>
-          </main>
-        </Switch>
+            <Route                       component={NoMatch}/>
+          </Switch>
+          <Route path = '*'              component={Header}/>
+        </main>
       {modal}
     </div>
     </BrowserRouter>

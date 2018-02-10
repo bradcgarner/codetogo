@@ -7,7 +7,7 @@ import * as actionsQuiz from '../../actions/quiz';
 
 export class Question extends React.Component {
 
-  formatChoiceObject(choice, currentIndex){
+  formatChoiceObject(choice, indexCurrent){
     let formattedChoices = [];
     for ( let prop in choice ) {
       formattedChoices.push(prop);
@@ -16,15 +16,15 @@ export class Question extends React.Component {
       userId: this.props.user.id, // user must be logged in
       quizId: this.props.quiz.id,
       attempt: this.props.quiz.attempt,
-      questionId: this.props.quiz.questions[currentIndex].id,
+      questionId: this.props.quiz.questions[indexCurrent].id,
       choices: formattedChoices,
-      index: currentIndex,
-      stickyIndex: currentIndex, // !!!!!!! FIX THIS !!!!!!!!
+      index: indexCurrent,
+      stickyIndex: indexCurrent, // !!!!!!! FIX THIS !!!!!!!!
     };
   }
 
-  calcNextIndex (currentIndex, quizLength ) {
-    let nextIndex = currentIndex + 1;
+  calcNextIndex (indexCurrent, quizLength ) {
+    let nextIndex = indexCurrent + 1;
     if ( nextIndex < 0 ) {
       nextIndex = 0;
     } else if ( nextIndex > quizLength - 1 ) {
@@ -35,10 +35,10 @@ export class Question extends React.Component {
     return nextIndex;
   }
 
-  handleSubmitButton(choice, currentIndex) {
-    const formattedChoiceObject = this.formatChoiceObject(choice, currentIndex);
-    const nextIndex = this.calcNextIndex(this.props.quiz.currentIndex, this.props.quiz.questions.length );
-    const mode = this.props.quiz.currentIndex === (this.props.quiz.questions.length - 1) ? 'results' : 'question' ;
+  handleSubmitButton(choice, indexCurrent) {
+    const formattedChoiceObject = this.formatChoiceObject(choice, indexCurrent);
+    const nextIndex = this.calcNextIndex(this.props.quiz.indexCurrent, this.props.quiz.questions.length );
+    const mode = this.props.quiz.indexCurrent === (this.props.quiz.questions.length - 1) ? 'results' : 'question' ;
     this.props.reset();   
     this.props.dispatch(actionsQuiz.submitChoices(this.props.user, this.props.quiz, nextIndex, mode, formattedChoiceObject));
   }  // refer to actions/users.js for format of values
@@ -51,9 +51,9 @@ export class Question extends React.Component {
   
   render() {
 
-    const currentIndex = this.props.quiz.currentIndex ;
-    const currQuestion = this.props.quiz.questions[currentIndex];
-    const inputType = currQuestion.inputType; 
+    const indexCurrent = this.props.quiz.indexCurrent ;
+    const currQuestion = this.props.questions[indexCurrent];
+    const inputType = 'radio' // currQuestion.typeAnswer; 
     
     const options = currQuestion.answers.map((answer,index)=>{
       const optionName = inputType === 'radio' ? 'option' : `${answer.id}`;
@@ -72,7 +72,7 @@ export class Question extends React.Component {
       )
     });
 
-    const prevQuestionClass = this.props.quiz.currentIndex > 0 ?
+    const prevQuestionClass = this.props.quiz.indexCurrent > 0 ?
       'fa fa-hand-o-left smallIcon'  : 'fa fa-hand-o-left smallIcon inactive' ;
     const submitButtonClass = this.props.quiz.formIsEmpty===true ?  'submitButton inactive'  : 'submitButton' ;
     return (
@@ -81,7 +81,7 @@ export class Question extends React.Component {
       <p className="questionAsked">{currQuestion.stickyIndex + 1}. {currQuestion.question}</p>
       
       <form className="questionForm" onSubmit={this.props.handleSubmit(values =>
-        this.handleSubmitButton(values, currentIndex)
+        this.handleSubmitButton(values, indexCurrent)
       )}>
         {/* multiple choice options */}
         <ul className="questionOptions">
@@ -117,7 +117,8 @@ export class Question extends React.Component {
 const mapStateToProps = state => ({
   user: state.user,
   quiz: state.quiz,
-  mode: state.mode
+  display: state.display,
+  questions: state.questions,
 })
 
 export default compose(
