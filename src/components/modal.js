@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as actionsMode from '../actions/mode';
+import * as actionsDisplay from '../actions/display';
 
 export class Modal extends React.Component {
   
   handleCloseButton() {
-    this.props.dispatch(actionsMode.closeModal());
+    this.props.dispatch(actionsDisplay.closeModal());
   }
 
   render() {

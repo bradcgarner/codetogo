@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import QuizLi from './quiz-li';
-import * as actionsMode from '../actions/mode';
+import * as actionsDisplay from '../actions/display';
 const deepAssign = require('deep-assign');
 
 
@@ -9,7 +9,7 @@ export function QuizList(props) {
 
   const handleQuizlistButton = () => {
     if (props.user.id) {
-      props.dispatch(actionsMode.changeMode('dashboard', props.quiz));      
+      // props.dispatch(actionsDisplay.changeMode('dashboard', props.quiz));      
     }
   }
 

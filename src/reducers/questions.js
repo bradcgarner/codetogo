@@ -1,7 +1,7 @@
 import * as actions from '../actions/questions';
 import { initialQuestions } from './initialState';
 
-export const reducer = ( state = initialMode, action ) => {
+export const reducer = ( state = initialQuestions, action ) => {
 
   if ( action.type === actions.LOAD_QUESTIONS ) {
     return action.questions;

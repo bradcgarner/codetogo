@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm, Field } from 'redux-form';
-import * as actionsUser from '../actions/users';
+import * as actionsUser from '../actions/user';
 const deepAssign = require('deep-assign');
 
 export class Profile extends React.Component {
@@ -12,7 +12,7 @@ export class Profile extends React.Component {
     if (this.props.user.id) {
       console.log('update, not create');
       const user = Object.assign({},values,{id: this.props.user.id})
-      this.props.dispatch(actionsUser.updateUserProfile(user, this.props.user.authToken));
+      this.props.dispatch(actionsUser.updateUser(user, this.props.user.authToken));
     } else {
       console.log('create');      
       const newValues = deepAssign(values);

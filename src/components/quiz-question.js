@@ -2,12 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm, Field } from 'redux-form';
-// import Resources from './quiz-question-resources';
-// import Comments  from './quiz-question-comments';
-// import * as actionsUser from '../actions/users';
-import * as actionsMode from '../actions/mode';
+import * as actionsDisplay from '../actions/display';
 import * as actionsQuiz from '../actions/quiz';
-// const deepAssign = require('deep-assign');
 
 export class Question extends React.Component {
 
@@ -47,23 +43,10 @@ export class Question extends React.Component {
     this.props.dispatch(actionsQuiz.submitChoices(this.props.user, this.props.quiz, nextIndex, mode, formattedChoiceObject));
   }  // refer to actions/users.js for format of values
 
-  handleGotoQuestionButton(index) { // for skipping; index = 1 or -1
-    const nextIndex = this.calcNextIndex(this.props.quiz.currentIndex, this.props.quiz.questions.length );
-    if ( index === -1 && this.props.quiz.currentIndex > 0 )  {
-      console.log('go back')
-      this.props.reset();    
-      this.props.dispatch(actionsQuiz.updateCurrentQuestion(this.props.quiz.currentIndex + index))
-    } else if ( index === 1 && this.props.quiz.currentIndex === this.props.quiz.total-1) {
-      this.props.reset();    
-      this.props.dispatch(actionsMode.changeMode('results', this.props.quiz))
-    } else if ( index === 1 ) {
-      this.props.reset();    
-      this.props.dispatch(actionsQuiz.updateCurrentQuestion(nextIndex))
-    }
-  }
 
   handleInputChange() {
-    this.props.dispatch(actionsQuiz.toggleFormStatus(false)); // improve this to read from form
+    // change this to state
+    // this.props.dispatch(actionsQuiz.toggleFormStatus(false)); // improve this to read from form
   }
   
   render() {

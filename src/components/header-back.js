@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as actionsMode from '../actions/mode';
+import * as actionsDisplay from '../actions/display';
 
 export function Back(props) {
   

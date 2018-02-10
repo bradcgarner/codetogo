@@ -11,3 +11,19 @@ export const loadListOfAllQuizzes = listOfAllQuizzes => ({
   type: LOAD_LIST_OF_QUIZZES,
   listOfAllQuizzes,    
 });
+
+// @@@@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@@@@@@
+
+export const initialize = () => dispatch => {
+  const url = `${REACT_APP_BASE_URL}/api/initialize`;
+  const init = { 
+    method: 'GET',
+  };
+  return fetch(url, init) 
+  .then(initializationObject=>{
+    dispatch.loadListOfAllQuizzes(initializationObject.quizzes);
+  })
+  .catch(err=>{
+    dispatch.actionsDisplay.showModal(err);
+  });
+};

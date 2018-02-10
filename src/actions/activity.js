@@ -1,6 +1,7 @@
 // activity is breadcrumbs of user's activity
 
 import { REACT_APP_BASE_URL } from '../config';
+import * as actionsDisplay from './display';
 import 'whatwg-fetch';
 
 // this expects an array of all activity, used at login
@@ -20,7 +21,7 @@ export const addActivity = activity => ({
 // @@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@
 
 // get list of all quizzes; only once at load
-export const  logActivity = () => dispatch => { 
+export const  postActivity = () => dispatch => { 
   return fetch(`${REACT_APP_BASE_URL}/api/activity/`)
     .then(res => {
         if (!res.ok) {
@@ -32,6 +33,6 @@ export const  logActivity = () => dispatch => {
       return dispatch(addActivity(activity));
     })
     .catch(error => {
-      dispatch(actionsMode.showModal(error));        
+      dispatch(actionsDisplay.showModal(error));        
     });
 };

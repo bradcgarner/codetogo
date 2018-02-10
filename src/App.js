@@ -7,7 +7,7 @@ import About from './components/about';
 import Login from './components/login';
 import Profile from './components/profile';
 import Dashboard from './components/dashboard';
-import QuizList from './components/quizlist';
+import QuizMenu from './components/quizMenu';
 import Quiz from  './components/quiz';
 import Modal from  './components/modal';
 
@@ -34,7 +34,7 @@ export function App(props) {
       mode = <Dashboard />;
       break;
     case 'quizlist':
-      mode = <QuizList />;
+      mode = <QuizMenu />;
       break;
     case 'question':
       mode = <Quiz />;

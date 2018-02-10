@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as actionsMode from '../actions/mode';
-import * as actionsUser from '../actions/users';
+import * as actionsDisplay from '../actions/display';
+import * as actionsUser from '../actions/user';
 
 export function BurgerMenu(props) {
 
@@ -22,10 +22,10 @@ export function BurgerMenu(props) {
         recent: '',
         authToken: ''
       };
-      props.dispatch(actionsMode.changeMode('landing', props.quiz));
-      props.dispatch(actionsUser.updateUserStore(userReset));
+      // props.dispatch(actionsDisplay.changeMode('landing', props.quiz));
+      props.dispatch(actionsUser.updateUser(userReset));
     } else {
-      props.dispatch(actionsMode.changeMode('login', props.quiz));
+      // props.dispatch(actionsDisplay.changeMode('login', props.quiz));
     }
   }
 
@@ -34,23 +34,23 @@ export function BurgerMenu(props) {
 
   const handleDashboardButton = () => {
     if (isLoggedIn) {
-      props.dispatch(actionsMode.changeMode('dashboard', props.quiz))
+      // props.dispatch(actionsDisplay.changeMode('dashboard', props.quiz))
     }
   }
   const dashboard = <li className={loggedInClass} onClick={()=>handleDashboardButton()}>Dashboard</li> ; 
 
   const profileText = isLoggedIn ? 'Profile' : 'Create Account' ;  
-  const handleProfileButton = () => props.dispatch(actionsMode.changeMode('profile', props.quiz));    
+  const handleProfileButton = null ; // change this to a link
   const profile = <li onClick={()=>handleProfileButton()}>{profileText}</li> ;
 
   const handleQuizListButton = () => {
     if (isLoggedIn) {
-      props.dispatch(actionsMode.changeMode('quizlist', props.quiz))
+      // props.dispatch(actionsDisplay.changeMode('quizlist', props.quiz))
     }
   };    
   const quizList = <li className={loggedInClass} onClick={()=>handleQuizListButton()}>List of All Quizzes</li> ;
 
-  const handleAboutButton = () => props.dispatch(actionsMode.changeMode('about', props.quiz));    
+  const handleAboutButton = null; // change this to a link    
   const about = <li onClick={()=>handleAboutButton()}>About</li> ;
 
     return (

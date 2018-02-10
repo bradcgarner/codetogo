@@ -3,13 +3,12 @@ import { connect } from 'react-redux';
 import Badges from './dashboard-badges';
 import Recent  from './dashboard-recent';
 import QuizLi from './quiz-li';
-import * as actionsMode from '../actions/mode';
-const deepAssign = require('deep-assign');
+import * as actionsDisplay from '../actions/display';
 
 export class Dashboard extends React.Component {
 
   handleQuizlistButton(){
-    this.props.dispatch(actionsMode.changeMode('quizlist', this.props.quiz));
+    // this.props.dispatch(actionsDisplay.changeMode('quizMenu', this.props.quiz));
   }
 
   render() {
@@ -18,7 +17,7 @@ export class Dashboard extends React.Component {
   
     const listHeader = quizzes ? 'My Quizzes' : '' ;
     const quizLi = quizzes.map((quiz, index)=>{
-      return <QuizLi key={index} index={index} li={deepAssign({},quiz)} />
+      return <QuizLi key={index} index={index} li={Object.assign({},quiz)} />
     });
     const addButtonLabel = quizzes.length ? 'Add Another Quiz' : 'Add a Quiz';
 

@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as actionsMode from '../actions/mode';
+import * as actionsDisplay from '../actions/display';
 
 export function Landing(props) {
 
   const handleLoginButton = () => {
-    props.dispatch(actionsMode.changeMode('login', props.quiz));
+    // props.dispatch(actionsDisplay.changeMode('login', props.quiz));
   }
 
   const handleAboutButton = () => {
-    props.dispatch(actionsMode.changeMode('about', props.quiz));
+    // props.dispatch(actionsDisplay.changeMode('about', props.quiz));
   }  
   
     return (

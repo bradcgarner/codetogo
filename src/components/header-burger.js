@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as actionsMode from '../actions/mode';
+import * as actionsDisplay from '../actions/display';
 
 export function Burger(props) {
   
   const handleBurgerButton = () => {
-    props.dispatch(actionsMode.toggleBurger(props.mode.burger))
+    // props.dispatch(actionsDisplay.toggleBurger(props.mode.burger))
+    // change this to state
   }
   
     return (

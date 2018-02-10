@@ -1,7 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import StatusBar from './quiz-statusbar';
-// import QuizLiStatus from './quiz-li-status';
 import * as actionsQuiz from '../actions/quiz';
 const deepAssign = require('deep-assign');
 
@@ -29,7 +27,7 @@ export function QuizLi(props) {
   });
 
   const handleTakeQuizButton = next => {
-    props.dispatch(actionsQuiz.takeOrAddQuiz(thisQuiz, user, next))
+    props.dispatch(actionsQuiz.takeQuiz(thisQuiz, user, next))
   }
 
   const theQuiz = <div className="quizIdentifier">
@@ -56,10 +54,7 @@ export function QuizLi(props) {
   const statusBox = 
   <div className="statusIconWrapper">
     {topLabelScore}
-    <StatusBar 
-      quiz = {thisQuiz} // only included for debugging of the status bar on the QuizList
-      mode={'quizlist'}
-    />
+
   </div>;
 
   let statusBoxOrAddButton = addButton;

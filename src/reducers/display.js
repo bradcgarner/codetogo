@@ -1,7 +1,7 @@
 import * as actions from '../actions/display';
 import { initialDisplay } from './initialState';
 
-export const reducer = ( state = initialMode, action ) => { 
+export const reducer = ( state = initialDisplay, action ) => { 
   if ( action.type === actions.SHOW_MODAL ) {
     return {...state,
       modal: true,

@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm, Field } from 'redux-form';
-import * as actionsUser from '../actions/users';
-import * as actionsMode from '../actions/mode';
+import * as actionsUser from '../actions/user';
+import * as actionsDisplay from '../actions/display';
 
 export class Login extends React.Component {
   
@@ -14,7 +14,7 @@ export class Login extends React.Component {
   }
   
   handleCreateAccountButton() {
-    this.props.dispatch(actionsMode.changeMode('profile', this.props.quiz));
+    // this.props.dispatch(actionsDisplay.changeMode('profile', this.props.quiz));
   }
 
   render() {

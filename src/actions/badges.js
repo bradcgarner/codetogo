@@ -1,6 +1,7 @@
 // badges are earned by user; this is a list of the user's badges
 
 import { REACT_APP_BASE_URL } from '../config';
+import * as actionsDisplay from './display';
 import 'whatwg-fetch';
 
 // this expects an array of all badges, used at login
@@ -20,7 +21,7 @@ export const addbadge = badge => ({
 // @@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@
 
 // get list of all quizzes; only once at load
-export const logbadge = () => dispatch => { 
+export const postBadge = () => dispatch => { 
   return fetch(`${REACT_APP_BASE_URL}/api/badges/`)
     .then(res => {
         if (!res.ok) {
@@ -29,9 +30,10 @@ export const logbadge = () => dispatch => {
         return res.json();
     })
     .then(badges => {
-      return dispatch(addbadge(badge));
+      // check data type here first, needs to be array
+      return dispatch(addbadge(badges[0]));
     })
     .catch(error => {
-      dispatch(actionsMode.showModal(error));        
+      dispatch(actionsDisplay.showModal(error));        
     });
 };
