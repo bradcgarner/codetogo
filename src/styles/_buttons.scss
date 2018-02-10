@@ -1,0 +1,29 @@
+button {
+  color: $fontColorButton;  
+  background-color: $buttonBackgroundColor;
+  display: flex;  
+  text-align: center;
+  justify-content: center;
+  margin: 15px;
+  &:hover:not(.inactive) {
+    color: $fontColorDarkHover;
+    background-color: $buttonBackgroundColorHover;
+  }
+}
+.enterButton, .loginButton, .submitButton {
+  font-size: 35px;
+}
+.enterButton, .aboutButton, .loginButton, .createAccountButton {
+  width: $inputFieldWidth;
+}
+.aboutButton, .createAccountButton, .gotoQuizListButton, 
+.showNextOptionButton {
+  font-size: 20px;
+  min-height: 40px;
+}
+
+ .gotoQuizListButton,
+.checkAccuracyButton, .takeAnotherQuizButton, .submitButton {
+  min-width: 100px;
+  max-width: 200px;
+}

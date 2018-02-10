@@ -1,0 +1,65 @@
+/* @@@@@@@@@@@@@@ STATUS BAR @@@@@@@@@@@@ */
+
+.statusBarContainer, .statusIconContainer {  
+  display: flex;
+  justify-content: flex-start;
+  overflow: none;  
+  border: 1px solid $lines;
+}
+
+.statusBarAttempt { // quizLi only
+  display: flex;
+  width: 20px;
+  font-size: 90%;
+  color: lighten($fontColorMain, 15%);
+}
+.statusBox {
+  display: flex;
+}
+.statusBar { // each individual segment
+  width: 100%;
+  height: 100%;
+  display: flex;  
+  top: 0;
+  position: relative;
+  span {
+    display: flex;
+    color: $gray4;
+    font-size: 12px;
+    padding: 2px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: 100%;
+    min-width: 10px;
+  }
+  justify-content: flex-start;
+  align-items: center;
+  -webkit-transition: width 2s, -webkit-transform 2s;
+  transition: width 2s, transform 2s;
+}
+.statusBarSkipped {
+  @include linear-gradient(90deg, lighten($statusColorSkipped, 20%), darken($statusColorSkipped, 10%));
+}
+.statusBarIncorrect {
+  @include linear-gradient(90deg, lighten($statusColorIncorrect, 50%), lighten($statusColorIncorrect, 5%));
+}
+.statusBarCorrect {
+  @include linear-gradient(90deg, lighten($statusColorCorrect, 50%), lighten($statusColorCorrect, 1%));  
+}
+.statusBarJustOne {
+  @include linear-gradient(90deg, lighten($statusColorCurrent, 40%), darken($statusColorCurrent, 10%));
+}
+.statusBarCurrent {
+  background-color: $statusColorCurrent;
+}
+
+.statusBarContainer { // immediate parent is .question
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  height: 20px;  
+  -moz-box-shadow: 10px 10px 10px -8px $shadow;
+  -webkit-box-shadow: 10px 10px 10px -8px $shadow;
+  box-shadow: 10px 10px 10px -8px $shadow;
+}

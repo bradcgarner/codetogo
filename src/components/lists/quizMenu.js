@@ -11,22 +11,21 @@ export function QuizMenu(props) {
     }
   }
 
-  const dashboardClass = props.user.id ? 'gotoQuizListButton' : 'gotoQuizListButton inactive' ;
+  const gotoQuizListButton = props.user.id ? 'gotoQuizListButton' : 'gotoQuizListButton inactive' ;
 
   const menuOfAllQuizzes = Array.isArray(props.general.menuOfAllQuizzes) ? props.general.menuOfAllQuizzes : [] ;
-  const quizLi = menuOfAllQuizzes.map((quiz, index)=>{
+  const listItem = menuOfAllQuizzes.map((quiz, index)=>{
     return <ListItem key={index} index={index} li={Object.assign({},quiz)} />
   })
 
   const addButtonLabel = 'Go to My Dashboard';
   
     return (
-      <div className="quizlist">
-        <h3 className="quizListHeader">Select A Quiz</h3>
-        <ul className="quizUl">
-          {quizLi}
+      <div className="quizMenu quizListContainer">
+        <ul className="quizList">
+          {listItem}
         </ul>
-        <button className={dashboardClass} onClick={()=>handleQuizlistButton()}>{addButtonLabel}</button>
+        <button className={gotoQuizListButton} onClick={()=>handleQuizlistButton()}>{addButtonLabel}</button>
       </div>
     );
 }

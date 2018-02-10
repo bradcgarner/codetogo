@@ -1,0 +1,87 @@
+// .goToOptionButton { // not actually a button
+//   width: 100%;
+//   padding-top: 15px;
+//   color: $fontColorGoToOption;
+//   font-style: bold;
+//   font-size: 20px;
+//   display: inline-block;
+//   margin-bottom: 25px;  
+//   &:hover {
+//     color: $fontColorDarkHover;
+//   }
+// }
+
+.resultsOptions {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  overflow-y: hidden;
+  .showOptionParagraph p {
+    text-align: left;
+    max-width: 300px;
+    transition-property: all;
+    transition-duration: 1.5s;
+    transition-timing-function: cubic-bezier();  
+  }
+  button {
+    transition-property: all;
+    transition-duration: 1.5s;
+    transition-timing-function: cubic-bezier();
+  }
+  transition-property: all;
+  transition-duration: 1.5s;
+  transition-timing-function: cubic-bezier();
+}
+.hideOption {
+  max-height: 0;
+  border: none;
+  .showOptionParagraph p {
+    color: $coolwhite;    
+  }
+  button {
+    background-color: transparent;
+    border: none;
+    color: $coolwhite;
+  }
+}
+.showOption {
+  max-height: 200px;
+  border-bottom: 1px solid $linesLight;  
+  .showOptionParagraph p {
+    color: $fontColorMain;    
+  }    
+}
+
+
+.statusBarAttempt {
+  height: $quizLiHeight;
+  position: relative;
+  display: flex;
+  align-items: center;
+  .quizLiTopLabel {
+    left: 2px;
+  }
+}
+.statusIconWrapper {
+  width: 14%;
+  height: $quizLiHeight;
+  margin: 0;  
+  padding: 5px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  .quizLiTopLabel {
+    left: 12px;
+  }
+}
+.statusIconContainer {
+  width: 100%;
+  height: $quizLiHeight - 10;
+  -moz-box-shadow: 5px 5px 5px -4px $shadow;
+  -webkit-box-shadow: 5px 5px 5px -4px $shadow;
+  box-shadow: 5px 5px 5px -4px $shadow;
+  display: flex;
+  align-items: center;
+}

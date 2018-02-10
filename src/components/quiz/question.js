@@ -4,8 +4,15 @@ import { compose } from 'redux';
 import { reduxForm, Field } from 'redux-form';
 import * as actionsDisplay from '../../actions/display';
 import * as actionsQuiz from '../../actions/quiz';
+import Results from './results';
 
 export class Question extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      formIsEmpty: true,
+    }
+  }
 
   formatChoiceObject(choice, indexCurrent){
     let formattedChoices = [];
@@ -51,6 +58,8 @@ export class Question extends React.Component {
   
   render() {
 
+    let results = <Results/>;
+
     const indexCurrent = this.props.quiz.indexCurrent ;
     const currQuestion = this.props.questions[indexCurrent];
     const inputType = 'radio' // currQuestion.typeAnswer; 
@@ -72,42 +81,25 @@ export class Question extends React.Component {
       )
     });
 
-    const prevQuestionClass = this.props.quiz.indexCurrent > 0 ?
-      'fa fa-hand-o-left smallIcon'  : 'fa fa-hand-o-left smallIcon inactive' ;
-    const submitButtonClass = this.props.quiz.formIsEmpty===true ?  'submitButton inactive'  : 'submitButton' ;
+    const submitButtonClass = this.state.formIsEmpty===true ?  'submitButton inactive'  : 'submitButton' ;
     return (
     <div className="question">
 
-      <p className="questionAsked">{currQuestion.stickyIndex + 1}. {currQuestion.question}</p>
+      <p className="questionAsked">{currQuestion.question}</p>
       
       <form className="questionForm" onSubmit={this.props.handleSubmit(values =>
         this.handleSubmitButton(values, indexCurrent)
       )}>
         {/* multiple choice options */}
-        <ul className="questionOptions">
-          {options}
-        </ul>
+        <ul className="questionOptions"> {options} </ul>
 
         <div className="questionButtons">
-          {/* previous  */}
-          <i className={prevQuestionClass} 
-            onClick={()=>this.handleGotoQuestionButton(-1)}
-            aria-hidden="true">
-          < span className="faText">Previous</span>
-          </i>
-
-          {/* submit */}
           <button className={submitButtonClass} type="submit">Submit</button>
-
-          {/* next */}
-          <i className="fa fa-hand-o-right smallIcon" 
-            onClick={()=>this.handleGotoQuestionButton(1)}
-            aria-hidden="true">
-            <span className="faText">Skip</span>
-          </i>
         </div>
 
       </form>
+
+      {results}
   
     </div>
   );

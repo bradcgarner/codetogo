@@ -1,0 +1,46 @@
+// Tooltip container
+.tooltip { // add .tooltip to any element that has a child of .tooltipText
+  position: relative;
+  .tooltipText {
+    display: none;
+    font-size: 12px;
+    text-align: left;
+    padding: 15px;
+    border-radius: 15px 0 15px 15px;
+    table, tr, td {
+      border: 1px solid $linesLight;
+    }
+    td {
+      font-size: 12px;
+      padding: 2px 6px;
+    }
+    h4 {
+      margin-bottom: 4px;
+    }
+    p {
+      margin-top: 5px;
+    }
+    top: 110%;
+    right: 0;
+    width: 200px;
+    z-index: $liTooltipZIndex;    
+  }
+}
+.tooltip:hover {
+  .tooltipText {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+}
+.popover {
+  position: absolute;
+  background-color: $tooltipBackgroundColor;
+  color: $fontColorTooltip;
+  opacity: .94;
+  border: 1px solid $lines;
+  -moz-box-shadow: 7px 7px 7px -5px $shadow;
+  -webkit-box-shadow: 7px 7px 7px -5px $shadow;
+  box-shadow: 7px 7px 7px -5px $shadow;
+}

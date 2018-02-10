@@ -12,35 +12,19 @@ export class Header extends React.Component {
     this.props.dispatch(actionsGeneral.initialize());
   }
 
-
   render() {
-    let headerLabel = '';
     let username = this.props.user.id ? `${this.props.user.firstName}'s ` : 'New User\'s' ;
-  
-    if (this.props.match.url === 'landing') {
-      // do nothing
-  
-    } else if (this.props.match.url === 'login') {
-      headerLabel = 'Login';
-    } else if (this.props.match.url === 'about') {
-      headerLabel = 'About';
-    } else if (this.props.match.url === 'profile' && this.props.user.id ) {
-      headerLabel = `${username} Profile`;
-    } else if (this.props.match.url === 'profile' ) {
-      headerLabel = 'Create Account'
-    } else if (this.props.match.url === 'dashboard') {
-      headerLabel = `${username} Dashboard`
-    } else if (this.props.match.url === 'quizlist') {
-      headerLabel = 'Menu of Quizzes';
-    } else if (this.props.match.url === 'question') {
-      headerLabel = this.props.quiz.name;
-    } else if (this.props.match.url === 'results') {
-      headerLabel = this.props.quiz.name;
-    } else if (this.props.match.url === 'accuracy') {
-      // blank
-    } else if (this.props.match.url === 'answer') {
-      headerLabel = `See Key: ${this.props.quiz.name}`;
-    }
+    const path = this.props.match.url;
+    const headerLabel = 
+      path === 'landing' ? 'Welcome1' :
+      path === '/users/login' ? 'Login' :
+      path === '/users/profile' && this.props.user.id  ?  `${username} Profile` : 
+      path === '/users/profile'  ?  'Create Account' :
+      path === '/lists/dashboard' ? `${username} Dashboard` :
+      path === '/lists/quizmenu' ?  'Menu of Quizzes' : 
+      path === '/quiz' ?  this.props.quiz.name : 
+      path === 'answer' ?  `See Key: ${this.props.quiz.name}` :
+      'Welcome!';
   
       return (
         <header className="headerContainer">
@@ -58,7 +42,7 @@ export class Header extends React.Component {
 const mapStateToProps = state => ({
   user: state.user,
   quiz: state.quiz,
-  mode: state.mode
+  display: state.display
 })
 
 export default connect(mapStateToProps)(Header);

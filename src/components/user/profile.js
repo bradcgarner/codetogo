@@ -26,7 +26,7 @@ export class Profile extends React.Component {
     const buttonText = this.props.user.id ? 'Save Changes' : 'Create Account';
       return (
         <div className="profile">
-          <form id='profile' className="profileForm" onSubmit={this.props.handleSubmit(values => 
+          <form id='profile' className="profileForm userForm" onSubmit={this.props.handleSubmit(values => 
             this.handleSubmitButton(values)
           )}>
 
@@ -102,7 +102,7 @@ const mapStateToProps = state => {
   return {
     user: state.user,
     quiz: state.quiz,
-    mode: state.mode,
+    display: state.display,
     // initialValues: initialForm
   }
 }

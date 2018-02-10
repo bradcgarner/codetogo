@@ -1,0 +1,117 @@
+$white: white;
+// http://colorhunt.co/c/80102
+$gray1: #e9e9e5;
+$gray2: #d4d6c8;
+$gray3: #9a9b94;
+$gray4: #52524e;
+
+// exotel
+$blue1: #7f8de8;
+$blue2: #6172da;
+$blue3: #0098ff;
+
+$lightblue1: #ebf5ff;
+$lightblue2: #e6f2ff;
+$lightblue3: #ddedff;
+
+$coolwhite: #fafcff;
+
+$coolgray1: #cdddf9;
+$coolgray2: #77749f;
+$coolgray3: #4a487f;
+
+$pink1: #ff91a4;
+$pink2: #fd8e87;
+$pink2: #ffd1e8;
+
+$brown1: #c0637d;
+$brown2: #bd7781;
+$brown3: #a94d88;
+$brown4: #bc6a80;
+$brown5: #5c4a42;
+$brown6: #715c46;
+$brown7: #846d4b;
+
+$green1: #11b7a9;
+$yellow1: #FCF593;
+$yellow2: #FCD773; // original ffd763
+$yellow3: #FCC067;
+$yellow4: #FCAD58;
+$yellow5: #F39543;
+$black1: #1f1637;
+
+$backgroundColor: $gray1;
+$headerColor: $coolgray3;
+$buttonBackgroundColor: $coolgray1;
+$tooltipBackgroundColor: $lightblue1;
+$buttonBackgroundColorHover: darken($coolgray1, 3%);
+
+$fontColorLogo: $brown7;
+$fontColorLanding: $gray4;
+$fontColorMain: $gray4;
+$fontColorLabel: lighten($gray4, 30%);
+$fontColorIconHeader: $coolwhite;
+$fontColorCode: $brown3;
+$fontColorHeader: $coolwhite;
+$fontColorButton: darken($brown7, 15%);
+$formInsetColor: $coolwhite;
+$fontColorInactive: lighten($brown7, 25%);
+$fontColorCheck: $green1;
+$fontColorError: $brown3;
+$fontColorTooltip: $coolgray3;
+$fontColorGoToOption: $brown7;
+
+
+$fontcolorWhiteHover: $blue2;
+$fontColorDarkHover: $blue2;
+
+$statusColorSkipped: $yellow2;
+$statusColorCorrect: #6DF10E;
+$statusColorIncorrect: #9C4141;
+$statusColorCurrent: $gray2;
+
+$diff1Color: $yellow1;
+$diff2Color: $yellow2;
+$diff3Color: $yellow3;
+$diff4Color: $yellow4;
+$diff5Color: $yellow5;
+
+$lines: $gray4;
+$linesLight: lighten($gray3, 20%);
+$shadow: #999;
+$insetShadow: lighten($coolgray3, 30%);
+
+@mixin linear-gradient($deg,$start, $end) {
+  background: $start; /* For browsers that do not support gradients */        
+  background: -webkit-linear-gradient($deg,$start,$end); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient($deg, $start, $end); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient($deg, $start, $end); /* For Firefox 3.6 to 15 */
+  background: linear-gradient($deg, $start, $end); /* Standard syntax (must be last) */
+}
+
+$header-height: 50px;
+$listItemHeight: 25px;
+$inputFieldWidth: 250px;
+
+$portraitPhoneWide: 375px;
+$landscapePhone: 576px;
+$portraitTablet: 768px;
+$landscapeTablet: 992px;
+$laptopPlus: 1200px;
+
+$burgerIndex: 30;
+$headerZIndex: 50;
+$headerContentZIndex: 60;
+$modalMaskZIndex: 100;
+$modalZIndex: 101;
+$liTooltipZIndex: 200;
+
+
+$slide-speed: 1s;
+@mixin slide {
+	-webkit-transition: $slide-speed;
+	-moz-transition: $slide-speed;
+	-ms-transition: $slide-speed;
+	-o-transition: $slide-speed;
+	transition: $slide-speed;
+}

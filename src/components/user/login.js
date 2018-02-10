@@ -22,7 +22,7 @@ export class Login extends React.Component {
     const pwType = 'password' // allow to toggle this later
     return (
       <div className="login">
-        <form className="login" onSubmit={this.props.handleSubmit(values =>
+        <form className="loginForm userForm" onSubmit={this.props.handleSubmit(values =>
           this.handleSubmitButton(values)
         )}>
           <Field
@@ -62,7 +62,7 @@ const mapStateToProps = state => {
   return {
     user: state.user,
     quiz: state.quiz,
-    mode: state.mode,
+    display: state.display,
     initialValues: initialForm,  
   }
 }

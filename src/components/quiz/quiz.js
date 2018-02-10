@@ -9,12 +9,12 @@ export class Quiz extends React.Component {
   render() {
     
     return (
-      <main className="quiz">
+      <div className="quiz">
         <Switch>
           <Route exact path = '/quizzes'  component={Question}/>
           <Route                          component={NoMatch}/>
         </Switch>
-      </main>
+      </div>
     );
   }
 }
@@ -22,7 +22,7 @@ export class Quiz extends React.Component {
 const mapStateToProps = state => ({
   user: state.user,
   quiz: state.quiz,
-  mode: state.mode
+  display: state.display
 })
 
 export default connect(mapStateToProps)(Quiz);

@@ -6,18 +6,17 @@ export function ListItem(props) {
   
   const thisQuiz = props.li; // props.li is one of user.quizzes or menuOfAllQuizzes
   const id = thisQuiz.id;
-  const attempt = thisQuiz.attempt;
-  const category= thisQuiz.category || 'cat';
-  const difficulty= thisQuiz.difficulty || 1;
-  const diffClass = `quizLiDifficulty diff${difficulty}`
+  const category= thisQuiz.category || 'cat' ;
+  const difficulty= thisQuiz.difficulty || 1 ;
+  const score = thisQuiz.score || 0 ;
+  const listItemDifficulty = `listItemDifficulty diff${difficulty}`
   const name= thisQuiz.name || 'name';
   const user = Object.assign({}, props.user);
-  const mode = props.mode.view;
+  const mode = props.display.view;
 
-  const topLabelAttempt = (props.index === 0 && mode === 'dashboard') ? <div className="quizLiTopLabel">attempts</div> : '' ;
-  const topLabelDifficulty = props.index === 0 ? <div className="quizLiTopLabel">difficulty</div> : '' ;
-  const topLabelCategory = props.index === 0 ? <div className="quizLiTopLabel">category</div> : '' ;
-  const topLabelScore = props.index === 0 ? <div className="quizLiTopLabel">scores</div> : '' ;
+  const topLabelDifficulty = props.index === 0 ? <div className="listItemTopLabel listItemTopLabelDifficulty">difficulty</div> : '' ;
+  const topLabelCategory = props.index === 0 ? <div className="listItemTopLabel listItemTopLabelCategory">category</div> : '' ;
+  const topLabelScore = props.index === 0 ? <div className="listItemTopLabel listItemTopLabelScores">scores</div> : '' ;
 
   let isListed = false;
   props.user.quizzes.forEach(quiz=>{
@@ -27,51 +26,27 @@ export function ListItem(props) {
   const handleTakeQuizButton = next => {
     props.dispatch(actionsQuiz.takeQuiz(thisQuiz, user, next))
   }
-
-  const theQuiz = <div className="quizIdentifier">
-    <div className="quizLiName">{name}</div>
-    <div className={diffClass}>{difficulty}
-      {topLabelDifficulty}
-    </div>
-    <div className="quizLiCategory">{category}
-      {topLabelCategory}
-    </div>
-  </div>;
-      
-  let attemptInner = attempt >= 0 ? '#' + (attempt) : '' ;
-  let attemptNumber =  <div className="statusBarAttempt">{attemptInner}
-    {topLabelAttempt}
-  </div>
-        
-  const addButton =
-    <i className="fa fa-list-ul smallIcon" aria-hidden="true"onClick={()=>handleTakeQuizButton('add')}>
-    <span className="faText">Add</span>
-  </i> ;
-
-
-  const statusBox = 
-  <div className="statusIconWrapper">
-    {topLabelScore}
-
-  </div>;
-
-  let statusBoxOrAddButton = addButton;
-  if ( isListed && props.mode.view === 'dashboard' ) {
-    statusBoxOrAddButton = statusBox ;
-  } else if ( isListed ) {
-    statusBoxOrAddButton = <i className="fa fa-check smallIcon" aria-hidden="true"></i>
-  }
-
-  const takeButton = <i className="fa fa-hand-o-right smallIcon go" aria-hidden="true" onClick={()=>handleTakeQuizButton('take')}>
-    <span className="faText">Go!</span>
-  </i>;
   
   return (
-    <li className="quizLi">
-      {theQuiz}
-      {attemptNumber}
-      {statusBoxOrAddButton}
-      {takeButton}
+    <li className="listItem">
+      <div className="listItemName">{name}</div>
+      <div className={listItemDifficulty}>
+        {difficulty}
+        {topLabelDifficulty}
+      </div>
+      <div className="listItemCategory">
+        {category}
+        {topLabelCategory}
+      </div>
+      <div className="listItemScore">
+        {score}
+        {topLabelScore}
+      </div>;
+      <i className="fa fa-hand-o-right smallIcon go"
+        aria-hidden="true" 
+        onClick={()=>handleTakeQuizButton('take')}>
+        <span className="faText">Go!</span>
+      </i>
     </li>
   );
 }
@@ -79,7 +54,7 @@ export function ListItem(props) {
 const mapStateToProps = state => ({
   user: state.user,
   quiz: state.quiz,
-  mode: state.mode
+  display: state.display
 })
 
 export default connect(mapStateToProps)(ListItem);

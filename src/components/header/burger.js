@@ -5,7 +5,7 @@ import * as actionsDisplay from '../../actions/display';
 export function Burger(props) {
   
   const handleBurgerButton = () => {
-    // props.dispatch(actionsDisplay.toggleBurger(props.mode.burger))
+    // props.dispatch(actionsDisplay.toggleBurger(props.display.burger))
     // change this to state
   }
   
@@ -17,7 +17,7 @@ export function Burger(props) {
 const mapStateToProps = state => ({
   user: state.user,
   quiz: state.quiz,
-  mode: state.mode
+  display: state.display
 })
 
 export default connect(mapStateToProps)(Burger);

@@ -23,7 +23,7 @@ export class Modal extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  mode: state.mode,
+  display: state.display,
 })
 
 export default connect(mapStateToProps)(Modal);

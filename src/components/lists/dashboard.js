@@ -11,19 +11,17 @@ export class Dashboard extends React.Component {
 
   render() {
 
-    const {quizzes, recent} = this.props.user;
+    const quizList = this.props.quizList;
   
-    const listHeader = quizzes ? 'My Quizzes' : '' ;
-    const quizLi = quizzes.map((quiz, index)=>{
+    const listItem = quizList.map((quiz, index)=>{
       return <ListItem key={index} index={index} li={Object.assign({},quiz)} />
     });
-    const addButtonLabel = quizzes.length ? 'Add Another Quiz' : 'Add a Quiz';
+    const addButtonLabel = quizList.length ? 'Add Another Quiz' : 'Add a Quiz';
 
     return (
-      <div className="dashboard">
-        <h3 className="dashboardQuizListHeader">{listHeader}</h3>
-        <ul className="quizUl">
-          {quizLi}
+      <div className="dashboard quizListContainer">
+        <ul className="quizList">
+          {listItem}
         </ul>            
         <button className="gotoQuizListButton"onClick={()=>this.handleQuizlistButton()}>{addButtonLabel}</button>
       </div>
@@ -34,7 +32,7 @@ export class Dashboard extends React.Component {
 const mapStateToProps = state => ({
   user: state.user,
   quiz: state.quiz,
-  mode: state.mode
+  display: state.display
 })
 
 export default connect(mapStateToProps)(Dashboard);

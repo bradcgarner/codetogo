@@ -22,14 +22,14 @@ export function App(props) {
       <div className="App">
         <main className="main">
           <Switch>
-            <Route exact path = '/'      component={Landing}/>
-            <Route path =       '/users'  component={User}/>
-            <Route path =       '/lists' component={Lists}/>
-            <Route path =       '/quizzes'  component={Quiz}/>
-            <Route                       component={NoMatch}/>
+            <Route exact path ='/'        component={Landing}/>
+            <Route path =      '/users'   component={User}/>
+            <Route path =      '/lists'   component={Lists}/>
+            <Route path =      '/quizzes' component={Quiz}/>
+            <Route                        component={NoMatch}/>
           </Switch>
-          <Route path = '*'              component={Header}/>
         </main>
+        <Route path = '*'                 component={Header}/>
       {modal}
     </div>
     </BrowserRouter>

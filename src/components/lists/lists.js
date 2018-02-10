@@ -8,21 +8,25 @@ import NoMatch from  '../display/nomatch';
 
 export function Lists(props) {
 
+  const listHeader = this.props.url.match === '/lists/dashboard' ?
+    'My Quizzes' : 'Select A Quiz' ;
+
   return (
-    <main className="lists">
+    <div className="lists">
+      <h3 className="quizListHeader">{listHeader}</h3>
       <Switch>
         <Route exact path = '/lists/dashboard' component={Dashboard}/>
         <Route exact path = '/lists/quizmenu'  component={QuizMenu}/>
         <Route                                 component={NoMatch}/>
       </Switch>
-    </main>
+    </div>
   );
 }
 
 const mapStateToProps = state => ({
   user: state.user,
   quiz: state.quiz,
-  mode: state.mode
+  display: state.display
 })
 
 export default connect(mapStateToProps)(QuizMenu);

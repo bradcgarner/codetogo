@@ -1,0 +1,60 @@
+.user {
+
+}
+
+.login, .profile { 
+  text-align: center; 
+  max-height: 63vh;
+}
+.profileForm { // also .userForm
+
+}
+.loginForm { // also .userForm
+
+}
+.userForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  .profileInput {
+    font-size: 18px;
+    padding: 6px;
+    margin: 5px;
+    display: flex;
+    text-align: left;
+    width: $inputFieldWidth;
+    border: 1px solid $linesLight;
+    -moz-box-shadow: inset 3px 3px 3px -2px $insetShadow;
+    -webkit-box-shadow: inset 3px 3px 3px -2px $insetShadow;
+    box-shadow: inset 3px 3px 3px -2px $insetShadow;
+  }
+  .inputLabel {
+    margin-bottom: 15px;
+    margin-top: 0;
+    margin-left: 5px; // same as .profileInput
+    margin-right: 5px; // same as .profileInput
+    font-size: 12px;
+    padding-left: 6px;
+    display: flex;
+    width: $inputFieldWidth;
+    color: $fontColorLabel;
+  } 
+  .loginButtons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    .createAccountButton {
+      padding: 8px;
+      margin: 5px;
+      display: flex;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+}
+
+
+

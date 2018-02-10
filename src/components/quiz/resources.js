@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 export function Resources(props) {
   
   return (
-    <div className="">
+    <div className="resources">
       Resources
     </div>
   );

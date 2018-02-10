@@ -1,0 +1,81 @@
+.quiz { // immediate parent is main
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 90vh;
+  width: 90%;
+}
+
+.question {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  .questionAsked {
+    flex: 1;
+
+  }
+  .questionForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .questionOptions {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .questionAsked, .questionOptions {
+    margin-bottom: 20px;
+    padding: 10px;
+    width: 100%;
+    min-height: 30vh;
+    background-color: $formInsetColor;
+    border: 1px solid $linesLight;
+    -moz-box-shadow: inset 5px 5px 5px -4px $insetShadow;
+    -webkit-box-shadow: inset 5px 5px 5px -4px $insetShadow;
+    box-shadow: inset 5px 5px 5px -4px $insetShadow;
+  }
+  .questionButtons { // SEE ALSO '_buttons.scss'
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    .smallIcon {
+      font-size: 30px;
+      width: 65px;
+      .faText {
+        margin-top: 10px;
+      }
+    }
+    .submitButton {
+      margin-bottom: 0;
+    }
+    .nextButton {
+
+    }
+  }
+
+
+  .results {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    .reason {
+      
+    }
+    .resources {
+      
+    }
+    .feedback {
+      
+    }
+    .nextButton {
+      width: 250px;
+    }
+  }
+}
+

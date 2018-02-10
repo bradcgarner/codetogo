@@ -1,17 +1,16 @@
 
-Component          Route              Redirect    display.view
-App                                   /home
+Component     Route          Redirect      DOM
+App                          /home         .App
 |
-|_Landing          /home              /home       landing
-|_About            /home              /home       about (shows modal)
-|                  |
-|_User             /user
-| |_Login          |   /login         /user/login 
-| |_Profile        v   /profile       /user/login 
+|_Landing     /              /             .main.landing
+|_About       /              /             .main.landing.about
+|             |
+|_User        /users                       .main.user
+| |_Login     |   /login     /user/login   .main.user.login
+| |_Profile   v   /profile   /user/login   .main.user.profile
 |                      
-|_Lists            /lists              
-| |_Dashboard      |   /dashboard     /home 
-| |_QuizMenu       v   /quizmenu      /home 
+|_Lists       /lists                       .main.lists
+| |_Dashboard |   /dashboard /home         .main.lists.dashboard
+| |_QuizMenu  v   /quizmenu  /home         .main.lists.quizmenu
 |  
-|_Quiz             /quiz
- 
+|_Quiz        /quizzes                     .main.quiz

@@ -10,7 +10,7 @@ export function User(props) {
   
   return (
 
-    <div class='landing'>
+    <div class='user'>
       <Switch>
         <Route exact path = '/users/login'   component={Login}/>
         <Route exact path = '/users/profile' component={Profile}/>       
@@ -24,7 +24,7 @@ export function User(props) {
 const mapStateToProps = state => ({
   user: state.user,
   quiz: state.quiz,
-  mode: state.mode
+  display: state.display
 })
 
 export default connect(mapStateToProps)(User);

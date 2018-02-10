@@ -1,0 +1,45 @@
+.fa {
+  background-color: transparent;
+  color: $fontColorMain;
+  font-size: 24px;
+  display: flex;
+  margin: 5px;
+}
+
+.faText {
+  font-size: 11px; 
+  font-family: 'Oxygen', sans-serif;
+  margin: 0 5px;
+}
+
+.fa-list-ul {}
+
+.fa-hand-o-right {
+  display: flex;
+  justify-content: flex-end;
+  text-align: right;
+  flex-direction: column;
+  .faText {
+    margin-right: 0;
+    margin-top: 3px;
+  }
+}
+
+.fa-hand-o-left {
+  display: flex;
+  justify-content: flex-start;
+  text-align: left;
+  flex-direction: column;  
+  .faText {
+    margin-left: 0;
+    margin-top: 3px;    
+  }
+}
+
+.fa-check {
+  color: $fontColorCheck;
+}
+.smallIcon {
+  font-size: 80%;
+  margin-right: 5px;
+}

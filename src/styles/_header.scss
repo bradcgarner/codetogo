@@ -1,0 +1,78 @@
+.headerContainer { // class assigned to element <header>
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  padding: 15px 5px;
+  height: $header-height;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .burgerMenu {
+    padding: 20px;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    right: 0;
+    -webkit-transition: position 1s linear, -webkit-transform 1s linear;
+    transition: position 1s linear, transform 1s linear;
+    overflow: none;
+    @include slide;
+    z-index: $burgerIndex;
+    li {
+      margin-bottom: 10px;
+      &:hover:not(.inactive) {
+        color: $fontColorDarkHover;
+      }
+    }
+    border-radius: 0 0 6px 6px;
+  }
+  .burgerHide {
+    top: -400%;
+  }
+  .burgerShow {
+    top: 100%;
+  }
+
+  .header {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    position: absolute;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    top: 0;
+    left: 0;
+    z-index: $headerZIndex;
+    @include linear-gradient(60deg, lighten($headerColor, 10%), darken($headerColor, 10%));
+    -moz-box-shadow: 0px 4px 4px $shadow;
+    -webkit-box-shadow: 0px 4px 4px $shadow;
+    box-shadow: 0px 4px 4px $shadow;
+    .headerLabel { // h1
+      font-size: 24px;
+      color: $fontColorHeader;
+      width: 100%;
+    }
+    
+    .burgerIcon {
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      color: $fontColorIconHeader;
+      height: $header-height;
+      width: $header-height;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 0; 
+      &:hover {
+        color: $fontcolorWhiteHover; 
+      }
+    }
+  }
+}
+
