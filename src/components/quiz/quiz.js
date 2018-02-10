@@ -9,12 +9,12 @@ export class Quiz extends React.Component {
   render() {
     
     return (
-      <Switch>
-        <main className="quiz">
-          <Route path = '*'  component={Question}/>
-          {/* <Route                 component={NoMatch}/> */}
-        </main>
-      </Switch>
+      <main className="quiz">
+        <Switch>
+          <Route exact path = '/quizzes'  component={Question}/>
+          <Route                          component={NoMatch}/>
+        </Switch>
+      </main>
     );
   }
 }

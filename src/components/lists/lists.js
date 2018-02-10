@@ -9,13 +9,13 @@ import NoMatch from  '../display/nomatch';
 export function Lists(props) {
 
   return (
-    <Switch>
-      <main className="lists">
-        <Route path = '*' component={Dashboard}/>
-        <Route path = '8'  component={QuizMenu}/>
-        {/* <Route                           component={NoMatch}/> */}
-      </main>
-    </Switch>
+    <main className="lists">
+      <Switch>
+        <Route exact path = '/lists/dashboard' component={Dashboard}/>
+        <Route exact path = '/lists/quizmenu'  component={QuizMenu}/>
+        <Route                                 component={NoMatch}/>
+      </Switch>
+    </main>
   );
 }
 

@@ -19,8 +19,8 @@ export function Landing(props) {
     return (
       <div className="landing">
         <Switch>
-          <Route path = '*' component={Home}/>
-          {/* <Route                  component={NoMatch}/> */}
+          <Route exact path = '/' component={Home}/>
+          <Route                  component={NoMatch}/>
         </Switch>
         <About/>
       </div>

@@ -23,9 +23,9 @@ export function App(props) {
         <main className="main">
           <Switch>
             <Route exact path = '/'      component={Landing}/>
-            <Route path =       '/user'  component={User}/>
+            <Route path =       '/users'  component={User}/>
             <Route path =       '/lists' component={Lists}/>
-            <Route path =       '/quiz'  component={Quiz}/>
+            <Route path =       '/quizzes'  component={Quiz}/>
             <Route                       component={NoMatch}/>
           </Switch>
           <Route path = '*'              component={Header}/>

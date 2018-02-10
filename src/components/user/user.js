@@ -10,13 +10,13 @@ export function User(props) {
   
   return (
 
-    <Switch>
-      <div class='landing'>
-        <Route path = '*'   component={Login}/>
-        <Route path = '*' component={Profile}/>
-        {/* <Route                        component={NoMatch}/> */}
-      </div>
-    </Switch>
+    <div class='landing'>
+      <Switch>
+        <Route exact path = '/users/login'   component={Login}/>
+        <Route exact path = '/users/profile' component={Profile}/>       
+        <Route                               component={NoMatch}/>
+      </Switch>
+    </div>
   
   );
 }
