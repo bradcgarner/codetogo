@@ -9,7 +9,7 @@ export class Modal extends React.Component {
   }
 
   render() {
-    const message = `Sorry, ${this.props.mode.message}`;
+    const message = `Sorry, ${this.props.message}`;
 
     return (
       <div className="modalMask">

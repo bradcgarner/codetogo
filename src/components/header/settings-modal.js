@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as actionsDisplay from '../../actions/display';
 
-export function Modal(props) {
+export function SettingsModal(props) {
   
   const handleSettingsButton = () => {
-    props.dispatch(actionsMode.showModal(props.type))
+    props.dispatch(actionsDisplay.showModal(props.type))
   }
   
     return (
@@ -21,4 +21,4 @@ const mapStateToProps = state => ({
   mode: state.mode
 })
 
-export default connect(mapStateToProps)(Modal);
+export default connect(mapStateToProps)(SettingsModal);

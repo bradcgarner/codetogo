@@ -5,7 +5,7 @@ import * as actionsUser from '../../actions/user';
 
 export function BurgerMenu(props) {
 
-  const burgerMenuClass = props.mode.burger ? 'burgerMenu burgerShow popover' : 'burgerMenu burgerHide popover' ;  
+  const burgerMenuClass = props.burger ? 'burgerMenu burgerShow popover' : 'burgerMenu burgerHide popover' ;  
   
   const isLoggedIn = props.user.id ? true : false ;
   const loggedInClass = isLoggedIn ? '' : 'inactive' ;

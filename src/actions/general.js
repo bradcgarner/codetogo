@@ -24,6 +24,6 @@ export const initialize = () => dispatch => {
     dispatch.loadListOfAllQuizzes(initializationObject.quizzes);
   })
   .catch(err=>{
-    dispatch.actionsDisplay.showModal(err);
+    dispatch(actionsDisplay.showModal(err));
   });
 };

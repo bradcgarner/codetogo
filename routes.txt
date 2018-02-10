@@ -1,40 +1,17 @@
 
-Component               Route                        Redirect    display.view
-App                                                  /home
+Component          Route              Redirect    display.view
+App                                   /home
 |
-|_Landing               /home                        /home       landing
-|_About                 /home                        /home       about (shows modal)
-|                       |
-|User                   /user
-| |_UserLogin           |   /login                   /user/login 
-| |_UserCreate          |   /create                  /user/login 
-| |_UserDashboard       |   /dashboard               /user/login 
-|                       |
-|_MainApp               /app
-  |                         |
-  |_Input                   /input
-  |   |_InputConfigure      |    /configure
-  |   |_InputH2OStorms      v    /h2o/storms
-  |   |_InputH2OImport           /h2o/import
-  |   |_InputEt                  /et
-  |   |_InputProducts            /coverings
-  |   |                          |
-  |   |                          /configure
-  |   |_InputAsideConfigUnits    |         /units    /home       configGeneral
-  |   |_InputAsideConfigAreas    |         /areas    /home       configAreas
-  |   |                          |
-  |   |                          /h2o
-  |   |_InputAsideStorms         |  /storms          /home
-  |   |_InputAsideImport         |  /import          /home
-  |   |_InputAsideControlled     |  /controlled      /home
-  |   |                          |
-  |   |_InputAsideEt             /et                 /home       project.et[0]
-  |   |                          |
-  |   |_InputAsideCoverings ^    /products           /home       products      project.product[0]
-  |                         |
-  |_Output                  /output
-      |_OutputAnalysis             /analysis                     configGeneral
-      |_OutputGraphs               /graphs                       configGeneral
-      |                            |
-      |_OutputAsideAnalysis        /analysis         /home       project.analysis...
+|_Landing          /home              /home       landing
+|_About            /home              /home       about (shows modal)
+|                  |
+|_User             /user
+| |_Login          |   /login         /user/login 
+| |_Profile        v   /profile       /user/login 
+|                      
+|_Lists            /lists              
+| |_Dashboard      |   /dashboard     /home 
+| |_QuizMenu       v   /quizmenu      /home 
+|  
+|_Quiz             /quiz
  

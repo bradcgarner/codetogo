@@ -4,40 +4,41 @@ import * as actionsQuiz from '../../actions/quiz';
 import * as actionsGeneral from '../../actions/general';
 import Burger from './burger';
 import BurgerMenu from './burger-menu';
+import Back from './back';
+import SettingsModal from './settings-modal';
 
 export class Header extends React.Component {
   componentDidMount() {
     this.props.dispatch(actionsGeneral.initialize());
   }
 
- 
 
   render() {
     let headerLabel = '';
     let username = this.props.user.id ? `${this.props.user.firstName}'s ` : 'New User\'s' ;
   
-    if (this.props.mode.view === 'landing') {
+    if (this.props.match.url === 'landing') {
       // do nothing
   
-    } else if (this.props.mode.view === 'login') {
+    } else if (this.props.match.url === 'login') {
       headerLabel = 'Login';
-    } else if (this.props.mode.view === 'about') {
+    } else if (this.props.match.url === 'about') {
       headerLabel = 'About';
-    } else if (this.props.mode.view === 'profile' && this.props.user.id ) {
+    } else if (this.props.match.url === 'profile' && this.props.user.id ) {
       headerLabel = `${username} Profile`;
-    } else if (this.props.mode.view === 'profile' ) {
+    } else if (this.props.match.url === 'profile' ) {
       headerLabel = 'Create Account'
-    } else if (this.props.mode.view === 'dashboard') {
+    } else if (this.props.match.url === 'dashboard') {
       headerLabel = `${username} Dashboard`
-    } else if (this.props.mode.view === 'quizlist') {
+    } else if (this.props.match.url === 'quizlist') {
       headerLabel = 'Menu of Quizzes';
-    } else if (this.props.mode.view === 'question') {
+    } else if (this.props.match.url === 'question') {
       headerLabel = this.props.quiz.name;
-    } else if (this.props.mode.view === 'results') {
+    } else if (this.props.match.url === 'results') {
       headerLabel = this.props.quiz.name;
-    } else if (this.props.mode.view === 'accuracy') {
+    } else if (this.props.match.url === 'accuracy') {
       // blank
-    } else if (this.props.mode.view === 'answer') {
+    } else if (this.props.match.url === 'answer') {
       headerLabel = `See Key: ${this.props.quiz.name}`;
     }
   

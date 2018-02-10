@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import ListItem from './listItem';
 import * as actionsDisplay from '../../actions/display';
 
-export function QuizList(props) {
+export function QuizMenu(props) {
 
   const handleQuizlistButton = () => {
     if (props.user.id) {
@@ -36,4 +36,4 @@ const mapStateToProps = state => ({
   mode: state.mode
 })
 
-export default connect(mapStateToProps)(QuizList);
+export default connect(mapStateToProps)(QuizMenu);
