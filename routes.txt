@@ -10,7 +10,5 @@ App                          /home         .App
 | |_Profile   v   /profile   /user/login   .main.user.profile
 |                      
 |_Lists       /lists                       .main.lists
-| |_Dashboard |   /dashboard /home         .main.lists.dashboard
-| |_QuizMenu  v   /quizmenu  /home         .main.lists.quizmenu
 |  
 |_Quiz        /quizzes                     .main.quiz

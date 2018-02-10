@@ -24,8 +24,8 @@ export function App(props) {
           <Switch>
             <Route exact path ='/'        component={Landing}/>
             <Route path =      '/users'   component={User}/>
-            <Route path =      '/lists'   component={Lists}/>
-            <Route path =      '/quizzes' component={Quiz}/>
+            <Route exact path ='/lists'   component={Lists}/>
+            <Route exact path ='/quizzes' component={Quiz}/>
             <Route                        component={NoMatch}/>
           </Switch>
         </main>

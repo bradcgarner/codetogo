@@ -1,51 +1,51 @@
 .landing { // immediate parent is main
   text-align: center; 
   max-height: 63vh;
-}
 
-.landingCover {
-  width: 100%;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  .landingLogo {
-
+  .landingTop {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .landingLogo {
+  
+    }
+    .landingLogoTop {
+      font-size: 65px;
+      color: darken($fontColorLogo, 5%);
+    }
+    .landingLogoMid {
+      margin-top: 10px;
+      font-size: 30px;
+      color: lighten($fontColorLogo, 7%);
+    }
+    .landingLogoBot {
+      font-size: 60px;
+      color: darken($fontColorLogo, 5%);
+      margin-bottom: 30px;
+    }
+    .landingTitle {
+      font-size: 35px;
+      color: $fontColorLanding;
+      font-family: 'Archivo Black', sans-serif;
+      margin: 15px 0;
+    }
   }
-  .landingLogoTop {
-    font-size: 65px;
-    color: darken($fontColorLogo, 5%);
-  }
-  .landingLogoMid {
-    margin-top: 10px;
-    font-size: 30px;
-    color: lighten($fontColorLogo, 7%);
-  }
-  .landingLogoBot {
-    font-size: 60px;
-    color: darken($fontColorLogo, 5%);
-    margin-bottom: 30px;
-  }
-  .landingTitle {
-    font-size: 35px;
-    color: $fontColorLanding;
-    font-family: 'Archivo Black', sans-serif;
-    margin: 15px 0;
-  }
-}
-
-.landingButtons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  .enterButton {
-    min-height: 55px;
-
-  }
-  .aboutButton {
-
+  
+  .landingButtons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    .enterButton {
+      min-height: 55px;
+  
+    }
+    .aboutButton {
+  
+    }
   }
 }

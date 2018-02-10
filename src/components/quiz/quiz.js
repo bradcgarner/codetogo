@@ -1,28 +1,115 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Question from './question';
-import { Switch, Route, Redirect } from 'react-router-dom';
-import NoMatch from  '../display/nomatch';
+import { compose } from 'redux';
+import { reduxForm, Field } from 'redux-form';
+import * as actionsDisplay from '../../actions/display';
+import * as actionsQuiz from '../../actions/quiz';
+import Results from './results';
 
 export class Quiz extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      formIsEmpty: true,
+      showingAnswer: false,
+    }
+  }
+
+  handleFormStatusChange() {
+    this.setState({formIsEmpty: false});
+  }
+
+  formatChoice(choice, indexCurrent){
+    let formattedChoices = [];
+    for ( let prop in choice ) {
+      formattedChoices.push(prop);
+    }
+    return {
+      userId: this.props.user.id, // user must be logged in
+      quizId: this.props.quiz.id,
+      attempt: this.props.quiz.attempt,
+      questionId: this.props.quiz.questions[indexCurrent].id,
+      choices: formattedChoices,
+      index: indexCurrent,
+    };
+  }
+
+  calcNextIndex (indexCurrent, quizLength ) {
+
+    
+  }
+
+  handleSubmitButton(choice, indexCurrent) {
+    if(!(this.state.formIsEmpty)) {
+      const formattedChoice = this.formatChoice(choice, indexCurrent);
+      const nextIndex = this.calcNextIndex(this.props.quiz.indexCurrent, this.props.quiz.questions.length );
+      // validate before proceeding
+      this.setState({showingAnswer: true});
+      this.props.dispatch(actionsQuiz.submitChoices(this.props.user, this.props.quiz, nextIndex, formattedChoice));
+    }  
+  } 
+
+  handleNextButton() {
+    if(this.state.showingAnswer){
+      this.setState({showingAnswer: false, formIsEmpty: true})
+      this.props.reset();   
+      this.props.dispatch(actionsQuiz.updateQuizIndex(1));
+    }
+  }
   
   render() {
+
+    let results = this.state.showingAnswer ? <Results/> : null ;
+
+    const indexCurrent = this.props.quiz.indexCurrent || 0; // REMOVE THIS!!!!!!
+    const currQuestion = this.props.questions[indexCurrent];
+    const typeAnswer = currQuestion.typeAnswer // currQuestion.typeAnswer; 
     
+    const options = currQuestion.answers.map((answer,index)=>{
+      const optionName = typeAnswer === 'radio' ? 'option' : `${answer.id}`;
+      return (
+        <div key={index}>
+          <Field 
+            name={optionName} 
+            id={answer.id}
+            component='input'
+            type={typeAnswer}
+            value={answer.id}
+            onChange={()=>this.handleFormStatusChange()}
+          />
+          <label htmlFor={answer.id}>{answer.option}</label>
+        </div>
+      )
+    });
+
+    const submitButtonClass =this.state.formIsEmpty  ===true ? 'submitButton inactive' : 'submitButton' ;
+    const nextButtonClass   =this.state.showingAnswer===true ? 'submitButton inactive' : 'submitButton' ;
     return (
-      <div className="quiz">
-        <Switch>
-          <Route exact path = '/quizzes'  component={Question}/>
-          <Route                          component={NoMatch}/>
-        </Switch>
-      </div>
-    );
+    <div className="quiz">
+      <p className="questionAsked">{currQuestion.question}</p>
+      <form className="questionForm" onSubmit={this.props.handleSubmit(values =>
+        this.handleSubmitButton(values, indexCurrent)
+      )}>
+        <ul className="questionOptions"> {options} </ul>
+        <div className="questionButtons">
+          <button className={submitButtonClass} type="submit">Submit</button>
+          <button className={nextButtonClass} type="button" onClick={()=>this.handleNextButton()}>Next</button>
+        </div>
+      </form>
+      {results}
+    </div>
+  );
   }
 }
 
 const mapStateToProps = state => ({
   user: state.user,
   quiz: state.quiz,
-  display: state.display
+  display: state.display,
+  questions: state.questions,
 })
 
-export default connect(mapStateToProps)(Quiz);
+export default compose(
+  connect(mapStateToProps),
+  reduxForm({form:'question'}) // in the state we'll have state.form.login
+)(Quiz);

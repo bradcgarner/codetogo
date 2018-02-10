@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm, Field } from 'redux-form';
+import { Link } from 'react-router-dom';
 import * as actionsUser from '../../actions/user';
 import * as actionsDisplay from '../../actions/display';
 
@@ -9,12 +10,11 @@ export class Login extends React.Component {
   
   handleSubmitButton(values) {
     console.log('values submitted at login', values);
-    this.props.dispatch(actionsUser.login(values));
-    this.props.reset();   
-  }
-  
-  handleCreateAccountButton() {
-    // this.props.dispatch(actionsDisplay.changeMode('profile', this.props.quiz));
+    this.props.dispatch(actionsUser.login(values))
+    .then(()=>{
+      this.props.reset();   
+      this.props.history.push('/lists/dashboard'); // make conditional to take to menu if nothing on dashboard
+    })
   }
 
   render() {
@@ -47,7 +47,9 @@ export class Login extends React.Component {
           <label className="inputLabel center" htmlFor="password">Password</label>
           <div className="loginButtons">
             <button type="submit" className="loginButton clearfix">Login</button>
-            <button className="createAccountButton" onClick={e=>this.handleCreateAccountButton()}>Create Account</button>
+            <Link to='/users/profile'>
+              <button className="createAccountButton">Create Account</button>
+            </Link>
           </div>
         </form>
 

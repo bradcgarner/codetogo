@@ -2,14 +2,6 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  min-height: 90vh;
-  width: 90%;
-}
-
-.question {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   width: 100%;
   .questionAsked {
     flex: 1;

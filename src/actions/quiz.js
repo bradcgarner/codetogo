@@ -11,10 +11,15 @@ export const loadQuiz = quiz => ({
   quiz
 });
 
-export const UPDATE_QUIZ_SCORE_AND_INDEX = 'UPDATE_QUIZ_SCORE_AND_INDEX';
-export const updateQuizScoreAndIndex = (score, indexCurrent) => ({
-  type: UPDATE_QUIZ_SCORE_AND_INDEX,
+export const UPDATE_QUIZ_SCORE = 'UPDATE_QUIZ_SCORE';
+export const updateQuizScore = score => ({
+  type: UPDATE_QUIZ_SCORE,
   score,
+});
+
+export const UPDATE_QUIZ_INDEX = 'UPDATE_QUIZ_INDEX';
+export const updateQuizIndex = indexCurrent => ({
+  type: UPDATE_QUIZ_INDEX,
   indexCurrent,
 });
 
