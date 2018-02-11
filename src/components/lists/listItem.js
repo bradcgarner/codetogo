@@ -6,12 +6,11 @@ export function ListItem(props) {
   
   const thisQuiz = props.li; // props.li is one of user.quizzes or menuOfAllQuizzes
   const id = thisQuiz.id;
-  const category= thisQuiz.category || 'cat' ;
-  const difficulty= thisQuiz.difficulty || 1 ;
+  const category = thisQuiz.category || 'cat' ;
+  const difficulty = thisQuiz.difficulty || 1 ;
   const score = thisQuiz.score || 0 ;
   const listItemDifficulty = `listItemDifficulty diff${difficulty}`
-  const name= thisQuiz.name || 'name';
-  const user = Object.assign({}, props.user);
+  const name = thisQuiz.name || 'name';
   const mode = props.display.view;
 
   const topLabelDifficulty = props.index === 0 ? <div className="listItemTopLabel listItemTopLabelDifficulty">difficulty</div> : '' ;
@@ -19,12 +18,14 @@ export function ListItem(props) {
   const topLabelScore = props.index === 0 ? <div className="listItemTopLabel listItemTopLabelScores">scores</div> : '' ;
 
   let isListed = false;
-  props.user.quizzes.forEach(quiz=>{
-    if (quiz.id===id) { isListed = true }
-  });
+  if (Array.isArray(props.quizList)) {
+    props.quizList.forEach(quiz=>{
+      if (quiz.id===id) { isListed = true }
+    });
+  }
 
   const handleTakeQuizButton = next => {
-    props.dispatch(actionsQuiz.takeQuiz(thisQuiz, user, next))
+    props.dispatch(actionsQuiz.takeQuiz(thisQuiz, props.user, next))
   }
   
   return (
@@ -53,7 +54,7 @@ export function ListItem(props) {
 
 const mapStateToProps = state => ({
   user: state.user,
-  quiz: state.quiz,
+  quizList: state.quizList,
   display: state.display
 })
 
