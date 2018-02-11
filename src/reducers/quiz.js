@@ -7,12 +7,10 @@ export const reducer = ( state = initialQuiz, action ) => {
     return action.quiz;
   }
   if ( action.type === actions.UPDATE_QUIZ_SCORE ) {
-    return {
-      ...state, 
-      score: action.score, 
-    };
+    const score = state.score - action.scorePrior + action.scoreNew;
+    return { ...state, score: score };
   }
-  if ( action.type === actions.UPDATE_QUIZ_INDEX ) {
+  if ( action.type === actions.UPDATE_QUIZ_INDEX_CURRENT ) {
     return {
       ...state, 
       indexCurrent: action.indexCurrent

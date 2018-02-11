@@ -4,6 +4,7 @@ import { compose } from 'redux';
 import { reduxForm, Field } from 'redux-form';
 import * as actionsDisplay from '../../actions/display';
 import * as actionsQuiz from '../../actions/quiz';
+import * as actionsQuestion from '../../actions/questions';
 import Results from './results';
 
 export class Quiz extends React.Component {
@@ -24,14 +25,7 @@ export class Quiz extends React.Component {
     for ( let prop in choice ) {
       formattedChoices.push(prop);
     }
-    return {
-      userId: this.props.user.id, // user must be logged in
-      quizId: this.props.quiz.id,
-      attempt: this.props.quiz.attempt,
-      questionId: this.props.quiz.questions[indexCurrent].id,
-      choices: formattedChoices,
-      index: indexCurrent,
-    };
+    return formattedChoices;
   }
 
   calcNextIndex (indexCurrent, quizLength ) {
@@ -42,10 +36,14 @@ export class Quiz extends React.Component {
   handleSubmitButton(choice, indexCurrent) {
     if(!(this.state.formIsEmpty)) {
       const formattedChoice = this.formatChoice(choice, indexCurrent);
-      const nextIndex = this.calcNextIndex(this.props.quiz.indexCurrent, this.props.quiz.questions.length );
       // validate before proceeding
       this.setState({showingAnswer: true});
-      this.props.dispatch(actionsQuiz.submitChoices(this.props.user, this.props.quiz, nextIndex, formattedChoice));
+      this.props.dispatch(actionsQuestion.answerQuestion = (
+        this.props.quiz.questions, 
+        indexCurrent, 
+        formattedChoice, 
+        this.props.user.id,
+        this.props.user.authToken));
     }  
   } 
 
@@ -53,7 +51,7 @@ export class Quiz extends React.Component {
     if(this.state.showingAnswer){
       this.setState({showingAnswer: false, formIsEmpty: true})
       this.props.reset();   
-      this.props.dispatch(actionsQuiz.updateQuizIndex(1));
+      this.props.dispatch(actionsQuiz.updateQuizIndexCurrent(1));
     }
   }
   

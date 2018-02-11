@@ -15,15 +15,20 @@ export const loadListOfAllQuizzes = listOfAllQuizzes => ({
 // @@@@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@@@@@@
 
 export const initialize = () => dispatch => {
+  
+  dispatch(actionsDisplay.showLoading());
+  
   const url = `${REACT_APP_BASE_URL}/api/initialize`;
   const init = { 
     method: 'GET',
   };
   return fetch(url, init) 
   .then(initializationObject=>{
-    dispatch.loadListOfAllQuizzes(initializationObject.quizzes);
+    dispatch(loadListOfAllQuizzes(initializationObject.quizzes));
+    return dispatch(actionsDisplay.closeLoading());
   })
   .catch(err=>{
+    dispatch(actionsDisplay.closeLoading());
     // dispatch(actionsDisplay.showModal(err));
   });
 };

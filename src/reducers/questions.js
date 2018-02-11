@@ -10,9 +10,10 @@ export const reducer = ( state = initialQuestions, action ) => {
   if ( action.type === actions.UPDATE_QUESTION ) {
     const existingQuestion = {
       ...state.questions[action.index],
-      answers:   action.answers   || state.questions[action.index].answers, 
-      score:     action.score     || state.questions[action.index].score,
       indexNext: action.indexNext || state.questions[action.index].indexNext,
+      answers:   action.answers   || state.questions[action.index].answers, 
+      correct:   action.correct   || state.questions[action.index].correct, 
+      score:     action.score     || state.questions[action.index].score,
     }
     if (action.index === 0){
       const remainingQuestions = state.questions.slice(1,state.questions.length);

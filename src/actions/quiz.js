@@ -12,14 +12,15 @@ export const loadQuiz = quiz => ({
 });
 
 export const UPDATE_QUIZ_SCORE = 'UPDATE_QUIZ_SCORE';
-export const updateQuizScore = score => ({
+export const updateQuizScore = (scorePrior, scoreNew) => ({
   type: UPDATE_QUIZ_SCORE,
-  score,
+  scorePrior,
+  scoreNew,
 });
 
-export const UPDATE_QUIZ_INDEX = 'UPDATE_QUIZ_INDEX';
-export const updateQuizIndex = indexCurrent => ({
-  type: UPDATE_QUIZ_INDEX,
+export const UPDATE_QUIZ_INDEX_CURRENT = 'UPDATE_QUIZ_INDEX_CURRENT';
+export const updateQuizIndexCurrent = indexCurrent => ({
+  type: UPDATE_QUIZ_INDEX_CURRENT,
   indexCurrent,
 });
 
@@ -27,6 +28,9 @@ export const updateQuizIndex = indexCurrent => ({
 
 // get list of all quizzes; only once at load
 export const  getQuiz = idQuiz => dispatch => { 
+  
+  dispatch(actionsDisplay.showLoading());
+  
   return fetch(`${REACT_APP_BASE_URL}/api/quizzes/${idQuiz}`)
     .then(quizFound => {
         if (!quizFound.ok) {
@@ -47,11 +51,12 @@ export const  getQuiz = idQuiz => dispatch => {
 // take quiz
 export const takeQuiz = (idQuiz, idUser, authToken) => dispatch => {
   
+  dispatch(actionsDisplay.showLoading());
+  
   const url = `${REACT_APP_BASE_URL}/api/quizzes/${idQuiz}/users/${idUser}`;
   const headers = { 
     "Content-Type": "application/json", 
     "Authorization": "Bearer " + authToken,
-    "x-requested-with": "xhr"
   };
   const init = { 
     method: 'PUT',
@@ -68,47 +73,12 @@ export const takeQuiz = (idQuiz, idUser, authToken) => dispatch => {
       return res.json(); 
     })
     .then(res=>{
-   
+  
         dispatch(loadQuiz(res.quiz));
-     
+        return dispatch(actionsDisplay.closeLoading());
     })
     .catch(error => {
+      dispatch(actionsDisplay.closeLoading());
       dispatch(actionsDisplay.showModal(error));
     });
 };
-
-// @@@@@@@@@@  S U B M I T     C H O I C E S    @@@@@@@@@@@@@@
-
-export const submitChoices = (user, quiz, nextIndex, mode, choices) => dispatch => { 
-  // choices has this format { userId, quizId, attempt, questionId, choices (array), index, stickyIndex }
-
-  
-  const url = `${REACT_APP_BASE_URL}/api/choices/`;
-  const headers = { 
-    "Content-Type": "application/json", 
-    "Authorization": "Bearer " + user.authToken,
-    "x-requested-with": "xhr"
-  };
-  const init = { 
-    method: 'POST',
-    headers,
-    body: JSON.stringify(choices),
-  };
-  console.log('init for submitChoices', init);
-
-  // POST CHOICE: SCORES, SAVES IN DB, RETURNS TRUE OR FALSE
-  return fetch(url, init)
-  .then(res => {
-    console.log('choices fetched (this user, this quiz, this attempt',res);
-    if (!res.ok) {
-      return Promise.reject(res.statusText);
-    }
-    return res.json();
-  })
-
-
-
-  .catch(error => {
-    dispatch(actionsDisplay.showModal(error));
-  });
-}

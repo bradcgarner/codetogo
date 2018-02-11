@@ -18,12 +18,12 @@ export const closeModal = message => ({
 })
 
 export const SHOW_LOADING = 'SHOW_LOADING';
-export const showLoading = status => ({
+export const showLoading = () => ({
   type: SHOW_LOADING,
 })
 
 export const CLOSE_LOADING = 'CLOSE_LOADING';
-export const closeLoading = status => ({
+export const closeLoading = () => ({
   type: CLOSE_LOADING,
 })
 

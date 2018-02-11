@@ -17,6 +17,9 @@ export const loadUser = user => ({
 // @@@@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@@@@@@
 
 export const login = (credentials) => dispatch => {
+  
+  dispatch(actionsDisplay.showLoading());
+  
   const url = `${REACT_APP_BASE_URL}/api/auth/login`;
   const init = { 
     method: 'POST',
@@ -35,7 +38,9 @@ export const login = (credentials) => dispatch => {
     dispatch(loadUser(userFound.user));
     dispatch(actionsActivity.loadActivity(userFound.activity));
     dispatch(actionsBadges.loadBadges(userFound.badges));
-    return dispatch(actionsQuizList.loadQuizList(userFound.quizList));
+    dispatch(actionsQuizList.loadQuizList(userFound.quizList));
+    return dispatch(actionsDisplay.closeLoading());
+
   })
   .catch(error => {
    dispatch(actionsDisplay.showModal(error));
@@ -44,6 +49,9 @@ export const login = (credentials) => dispatch => {
 
 // create new user
 export const createUser = credentials => dispatch => { //credential should include   username, password, firstName, lastName  
+  
+  dispatch(actionsDisplay.showLoading());
+  
   const url = `${REACT_APP_BASE_URL}/api/users`;
   const headers = { 'Content-Type': 'application/json' };
   const init = { 
@@ -64,15 +72,20 @@ export const createUser = credentials => dispatch => { //credential should inclu
     dispatch(loadUser(userFound.user));
     dispatch(actionsActivity.loadActivity([]));
     dispatch(actionsBadges.loadBadges([]));
-    return dispatch(actionsQuizList.loadQuizList([]));
+    dispatch(actionsQuizList.loadQuizList([]));
+    return dispatch(actionsDisplay.closeLoading());
   })
   .catch(error => {
+    dispatch(actionsDisplay.closeLoading());
     dispatch(actionsDisplay.showModal(error));
   });
 }
 
 //update user core profile: username, password, firstName, lastName
 export const updateUser = (credentials, authToken) => dispatch => { //credentials MAY include username, password, firstName, lastName
+  
+  dispatch(actionsDisplay.showLoading());
+  
   const url = `${REACT_APP_BASE_URL}/api/users/${credentials.id}`;
   const headers = { 
     "Content-Type": "application/json", 
@@ -94,10 +107,12 @@ export const updateUser = (credentials, authToken) => dispatch => { //credential
   }) 
   .then(userUpdated => { 
     userUpdated.authToken = authToken;
-    return dispatch(loadUser(userUpdated));
+    dispatch(loadUser(userUpdated));
+    return dispatch(actionsDisplay.closeLoading());
     // let user know profile is updated
   })
   .catch(error => {
+    dispatch(actionsDisplay.closeLoading());
     dispatch(actionsDisplay.showModal(error));
   });
 }

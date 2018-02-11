@@ -22,6 +22,7 @@ export const addbadge = badge => ({
 
 // get list of all quizzes; only once at load
 export const postBadge = () => dispatch => { 
+
   return fetch(`${REACT_APP_BASE_URL}/api/badges/`)
     .then(res => {
         if (!res.ok) {

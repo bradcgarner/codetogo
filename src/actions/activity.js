@@ -22,6 +22,7 @@ export const addActivity = activity => ({
 
 // get list of all quizzes; only once at load
 export const  postActivity = () => dispatch => { 
+  
   return fetch(`${REACT_APP_BASE_URL}/api/activity/`)
     .then(res => {
         if (!res.ok) {
