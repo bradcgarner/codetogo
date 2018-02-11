@@ -13,7 +13,7 @@ export class Login extends React.Component {
     this.props.dispatch(actionsUser.login(values))
     .then(()=>{
       this.props.reset();   
-      this.props.history.push('/lists/dashboard'); // make conditional to take to menu if nothing on dashboard
+      this.props.history.push('/lists'); // make conditional to take to menu if nothing on dashboard
     })
   }
 

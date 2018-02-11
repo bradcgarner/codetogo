@@ -1,4 +1,5 @@
-// quizList is the list of the users quizzes
+// quizList is the list of the USER's quizzes
+// do not confuse with general.menuOfAllQuizzes, which includes everything
 
 import { REACT_APP_BASE_URL } from '../config';
 import * as actionsDisplay from './display';

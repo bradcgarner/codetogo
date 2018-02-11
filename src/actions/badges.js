@@ -21,18 +21,30 @@ export const addbadge = badge => ({
 // @@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@
 
 // get list of all quizzes; only once at load
-export const postBadge = () => dispatch => { 
+export const postBadge = (badge, authToken) => dispatch => { 
 
-  return fetch(`${REACT_APP_BASE_URL}/api/badges/`)
-    .then(res => {
-        if (!res.ok) {
-          return Promise.reject(res.statusText);
+  const url = `${REACT_APP_BASE_URL}/api/badges`;
+  const headers = { 
+    "Content-Type": "application/json", 
+    "Authorization": "Bearer " + authToken,
+  };
+  const init = { 
+    method: 'PUT',
+    body: JSON.stringify(badge),
+    headers
+  };
+  console.log('url', url, 'init', init);
+
+  return fetch(url, init)
+    .then(badgeAdded => {
+        if (!badgeAdded.ok) {
+          return Promise.reject(badgeAdded.statusText);
         }
-        return res.json();
+        return badgeAdded.json();
     })
-    .then(badges => {
+    .then(badge => {
       // check data type here first, needs to be array
-      return dispatch(addbadge(badges[0]));
+      return dispatch(addbadge(badge));
     })
     .catch(error => {
       dispatch(actionsDisplay.showModal(error));        

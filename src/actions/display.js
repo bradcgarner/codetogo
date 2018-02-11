@@ -8,7 +8,8 @@ import 'whatwg-fetch';
 export const SHOW_MODAL = 'SHOW_MODAL';
 export const showModal = message => ({
   type: SHOW_MODAL,
-  message,   
+  message, 
+  loading: false,  
 })
 
 export const CLOSE_MODAL = 'CLOSE_MODAL';

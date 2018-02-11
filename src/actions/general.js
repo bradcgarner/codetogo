@@ -6,10 +6,10 @@ import * as actionsUser from './user';
 import 'whatwg-fetch';
   
 // used at app initialization, not updated
-export const LOAD_LIST_OF_QUIZZES = 'LOAD_LIST_OF_QUIZZES';
-export const loadListOfAllQuizzes = listOfAllQuizzes => ({
-  type: LOAD_LIST_OF_QUIZZES,
-  listOfAllQuizzes,    
+export const LOAD_MENU_OF_QUIZZES = 'LOAD_MENU_OF_QUIZZES';
+export const loadMenuOfAllQuizzes = menuOfAllQuizzes => ({
+  type: LOAD_MENU_OF_QUIZZES,
+  menuOfAllQuizzes,    
 });
 
 // @@@@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@@@@@@
@@ -24,11 +24,16 @@ export const initialize = () => dispatch => {
   };
   return fetch(url, init) 
   .then(initializationObject=>{
-    dispatch(loadListOfAllQuizzes(initializationObject.quizzes));
+    if (!initializationObject.ok) { 
+      return Promise.reject(initializationObject.statusText);
+    }
+    return initializationObject.json();
+  })
+  .then(initializationObject=>{
+    dispatch(loadMenuOfAllQuizzes(initializationObject.quizzes));
     return dispatch(actionsDisplay.closeLoading());
   })
   .catch(err=>{
-    dispatch(actionsDisplay.closeLoading());
-    // dispatch(actionsDisplay.showModal(err));
+    dispatch(actionsDisplay.showModal(err));
   });
 };

@@ -10,7 +10,7 @@ export function User(props) {
   
   return (
 
-    <div class='user'>
+    <div className='user'>
       <Switch>
         <Route exact path = '/users/login'   component={Login}/>
         <Route exact path = '/users/profile' component={Profile}/>       

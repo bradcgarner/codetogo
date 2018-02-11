@@ -6,6 +6,7 @@ export const reducer = ( state = initialDisplay, action ) => {
     return {...state,
       modal: true,
       message: action.message,
+      loading: action.loading,  
     };
   }
   if ( action.type === actions.CLOSE_MODAL ) {

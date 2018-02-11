@@ -134,7 +134,6 @@ export const answerQuestion = (questions, indexCurrent, choices, idUser, authTok
 
     })
     .catch(error => {
-      dispatch(actionsDisplay.closeLoading());
       dispatch(actionsDisplay.showModal(error));
     });
   };

@@ -16,14 +16,16 @@ export const loadUser = user => ({
 
 // @@@@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@@@@@@
 
-export const login = (credentials) => dispatch => {
+export const login = credentials => dispatch => {
   
   dispatch(actionsDisplay.showLoading());
   
   const url = `${REACT_APP_BASE_URL}/api/auth/login`;
+  const headers = {'Content-Type': 'application/json'};
   const init = { 
     method: 'POST',
     body: JSON.stringify(credentials),
+    headers
   };
   console.log('init', init);
   return fetch(url, init) 
@@ -48,7 +50,7 @@ export const login = (credentials) => dispatch => {
 }
 
 // create new user
-export const createUser = credentials => dispatch => { //credential should include   username, password, firstName, lastName  
+export const createUser = newUser => dispatch => { //credential should include   username, password, firstName, lastName  
   
   dispatch(actionsDisplay.showLoading());
   
@@ -56,12 +58,12 @@ export const createUser = credentials => dispatch => { //credential should inclu
   const headers = { 'Content-Type': 'application/json' };
   const init = { 
     method: 'POST',
-    body: JSON.stringify(credentials),
+    body: JSON.stringify(newUser),
     headers
   };
   console.log('init', init);
   return fetch(url, init)
-  .then(userFound=>{ //response user api repr firstName, lastName, username, id
+  .then(userFound=>{ 
     if (!userFound.ok) { 
       return Promise.reject(userFound.statusText);
     }
@@ -76,24 +78,23 @@ export const createUser = credentials => dispatch => { //credential should inclu
     return dispatch(actionsDisplay.closeLoading());
   })
   .catch(error => {
-    dispatch(actionsDisplay.closeLoading());
     dispatch(actionsDisplay.showModal(error));
   });
 }
 
 //update user core profile: username, password, firstName, lastName
-export const updateUser = (credentials, authToken) => dispatch => { //credentials MAY include username, password, firstName, lastName
+export const updateUser = (userToUpdate, authToken) => dispatch => { //credentials MAY include username, password, firstName, lastName
   
   dispatch(actionsDisplay.showLoading());
   
-  const url = `${REACT_APP_BASE_URL}/api/users/${credentials.id}`;
+  const url = `${REACT_APP_BASE_URL}/api/users/${userToUpdate.id}`;
   const headers = { 
     "Content-Type": "application/json", 
     "Authorization": "Bearer " + authToken,
   };
   const init = { 
     method: 'PUT',
-    body: JSON.stringify(credentials),
+    body: JSON.stringify(userToUpdate),
     headers
   };
   console.log('url', url, 'init', init);
@@ -112,7 +113,6 @@ export const updateUser = (credentials, authToken) => dispatch => { //credential
     // let user know profile is updated
   })
   .catch(error => {
-    dispatch(actionsDisplay.closeLoading());
     dispatch(actionsDisplay.showModal(error));
   });
 }

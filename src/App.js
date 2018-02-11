@@ -36,10 +36,16 @@ export function App(props) {
   );
 }
 
+// remove after testing; this component does not need all these props!
 const mapStateToProps = state => ({
-  user: state.user,
+  activity: state.activity, 
+  badges: state.badges,
+  display: state.display,
+  general: state.general,
+  questions: state.questions,
   quiz: state.quiz,
-  display: state.display
+  quizList: state.quizList,
+  user: state.user,
 })
 
 export default connect(mapStateToProps)(App);

@@ -1,6 +1,8 @@
 import * as actions from '../actions/badges';
 import { initialBadges } from './initialState';
 
+// store.badges is an array, not an object with properties
+
 export const reducer = ( state = initialBadges, action ) => {
   // this expects an array of all badges, used at login
   if ( action.type === actions.LOAD_BADGES ) {

@@ -1,6 +1,8 @@
 import * as actions from '../actions/activity';
 import { initialActivity } from './initialState';
 
+// store.activity is an array, not an object with properties
+
 export const reducer = ( state = initialActivity, action ) => {
   // this expects an array of all activity, used at login
   if ( action.type === actions.LOAD_ACTIVITY ) {

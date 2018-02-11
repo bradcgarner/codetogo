@@ -21,14 +21,26 @@ export const addActivity = activity => ({
 // @@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@
 
 // get list of all quizzes; only once at load
-export const  postActivity = () => dispatch => { 
+export const  postActivity = (activity, authToken) => dispatch => { 
   
-  return fetch(`${REACT_APP_BASE_URL}/api/activity/`)
-    .then(res => {
-        if (!res.ok) {
-          return Promise.reject(res.statusText);
+  const url = `${REACT_APP_BASE_URL}/api/activity`;
+  const headers = { 
+    "Content-Type": "application/json", 
+    "Authorization": "Bearer " + authToken,
+  };
+  const init = { 
+    method: 'PUT',
+    body: JSON.stringify(activity),
+    headers
+  };
+  console.log('url', url, 'init', init);
+
+  return fetch(url, init)
+    .then(activityAdded => {
+        if (!activityAdded.ok) {
+          return Promise.reject(activityAdded.statusText);
         }
-        return res.json();
+        return activityAdded.json();
     })
     .then(activity => {
       return dispatch(addActivity(activity));

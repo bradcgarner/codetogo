@@ -3,6 +3,7 @@
 import { REACT_APP_BASE_URL } from '../config';
 import * as actionsDisplay from './display';
 import * as actionsUser from './user';
+import * as actionsQuestions from './questions';
 import 'whatwg-fetch';
 
 export const LOAD_QUIZ = 'LOAD_QUIZ';
@@ -48,8 +49,8 @@ export const  getQuiz = idQuiz => dispatch => {
 
 // ~~~~~~~~~~~~ HELPERS TO TAKE QUIZ ~~~~~~~~~~~~
 
-// take quiz
-export const takeQuiz = (idQuiz, idUser, authToken) => dispatch => {
+export const takeQuiz = (idQuiz, idUser, option, authToken) => dispatch => {
+  // option = 'add' or 'take'.  In either instance, UI assumes user will take quiz right away.
   
   dispatch(actionsDisplay.showLoading());
   
@@ -59,26 +60,24 @@ export const takeQuiz = (idQuiz, idUser, authToken) => dispatch => {
     "Authorization": "Bearer " + authToken,
   };
   const init = { 
-    method: 'PUT',
+    method: option === 'add' ? 'PUT' : 'GET',
     headers
   };
-  // GET EVERYTING FOR THIS QUIZ FROM DATABASE, put b/c potentially modify user
+  // GET EVERYTING FOR THIS QUIZ FROM DATABASE, put b/c modifies user (via subcollection)
   return fetch(url, init)
-    .then(res => {
-      console.log(res);
-      if (!res.ok) {
-        return Promise.reject(res.statusText);
+    .then(quizReturned => {
+      console.log(quizReturned);
+      if (!quizReturned.ok) {
+        return Promise.reject(quizReturned.statusText);
       }
-
-      return res.json(); 
+      return quizReturned.json(); 
     })
-    .then(res=>{
-  
-        dispatch(loadQuiz(res.quiz));
-        return dispatch(actionsDisplay.closeLoading());
+    .then(quizReturned=>{
+      dispatch(loadQuiz(quizReturned.quiz));
+      dispatch(actionsQuestions.loadQuestions(quizReturned.questions));
+      return dispatch(actionsDisplay.closeLoading());
     })
     .catch(error => {
-      dispatch(actionsDisplay.closeLoading());
       dispatch(actionsDisplay.showModal(error));
     });
 };

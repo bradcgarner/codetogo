@@ -7,6 +7,5 @@ export const reducer = ( state = initialUser, action ) => {
   if ( action.type === actions.LOAD_USER ) {
     return action.user;
   }
-  
   return state;
 }

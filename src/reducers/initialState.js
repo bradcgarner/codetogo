@@ -26,7 +26,7 @@ export const initialDisplay = {  // store.mode
 };
 
 export const initialGeneral = {
-  listOfAllQuizzes: [], // menu of all quizzes in the database, loads at 1st visit to <QuizList />. Array does not store questions.
+  menuOfAllQuizzes: [], // menu of all quizzes in the database, loads at 1st visit to <QuizList />. Array does not store questions.
 };
 
 export const initialQuestions = [ // all questions this quiz, parsed out individually using "current" as the index
