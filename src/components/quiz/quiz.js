@@ -16,7 +16,7 @@ export class Quiz extends React.Component {
     }
   }
 
-  handleFormStatusChange() {
+  markFormAsTouched() {
     this.setState({formIsEmpty: false});
   }
 
@@ -56,7 +56,9 @@ export class Quiz extends React.Component {
     const nullQuiz = {answers: null, question: null, typeAnswer: null, typeQuestion: null}
 
     const indexCurrent = this.props.quiz.indexCurrent
-    const currQuestion = indexCurrent ? this.props.quiz[indexCurrent] : nullQuiz ;
+    const currQuestion = typeof indexCurrent === 'number' ?
+      this.props.questions[indexCurrent] : nullQuiz ;
+    console.log('indexCurrent',indexCurrent,'currQuestion',currQuestion)
     const typeAnswer = currQuestion.typeAnswer 
     
     const options = Array.isArray(currQuestion.answers) ? 
@@ -70,7 +72,7 @@ export class Quiz extends React.Component {
             component='input'
             type={typeAnswer}
             value={answer.id}
-            onChange={()=>this.handleFormStatusChange()}
+            onChange={()=>this.markFormAsTouched()}
           />
           <label htmlFor={answer.id}>{answer.option}</label>
         </div>
@@ -98,13 +100,13 @@ export class Quiz extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.user,
-  quiz: state.quiz,
   display: state.display,
+  quiz: state.quiz,
   questions: state.questions,
+  user: state.user,
 })
 
 export default compose(
   connect(mapStateToProps),
-  reduxForm({form:'question'}) // in the state we'll have state.form.login
+  reduxForm({form:'quiz'}) // in the state we'll have state.form.login
 )(Quiz);
