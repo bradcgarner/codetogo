@@ -8,10 +8,11 @@ export class Lists extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      goToMenu: true,
-      goToDashboard: false,
+      goToMenu: false,
+      goToDashboard: true,
       menu: true,
       dashboard: false,
+      isLoggedIn: this.props.user.id ? true : false ,
     }
   }
 
@@ -27,31 +28,50 @@ export class Lists extends React.Component {
   }
   render() {
 
-    const listHeader = this.props.match.url === '/lists/dashboard' ?
-      'My Quizzes' : 'Select A Quiz' ;
+    const listHeader = this.state.dashboard ? 'My Quizzes' : 'Select A Quiz' ;
+    const score      = this.state.dashboard ? 'Score'      : '' ;
+
+    const goToMenuClass      = this.state.goToMenu      ? 'goToMenuButton' : 'goToMenuButton inactive' ;
+    const goToDashboardClass = this.state.goToDashboard ? 'goToDashboardButton' : 'goToDashboardButton inactive' ;
 
     const quizList = this.state.menu ? this.props.general.menuOfAllQuizzes : this.props.quizList ;
     const quizListArray = Array.isArray(quizList) ? quizList : [] ;
     const listItems = quizListArray.map((quiz, index)=>{
-      return <ListItem key={index} index={index} li={quiz} />
+      return <ListItem key={index} index={index} quiz={quiz} dashboard={this.state.dashboard} isLoggedIn={this.state.isLoggedIn}/>
     });
     const goToMenuLabel = quizListArray.length ? 'Add Another Quiz' : 'Add a Quiz';
 
-    const goToMenuClass = this.state.goToMenu ? 'goToMenuButton' : 'goToMenuButton inactive' ;
-    const goToDashboardClass = this.state.goToDashboard ? 'goToDashboardButton' : 'goToDashboardButton inactive' ;
+    const listSelectionButtons = this.state.isLoggedIn ?
+      <div className='listSelectionButtons'>
+        <button className={goToDashboardClass}
+          onClick={()=>this.goToDashboard()}>Go To My Dashboard</button>
+        <button className={goToMenuClass}
+          onClick={()=>this.goToMenu()}>{goToMenuLabel}</button>
+      </div> : null ;
 
     return (
       <div className="lists">
         <h3 className="quizListHeader">{listHeader}</h3>
-        <ul className="quizList">
-          {listItems}
-        </ul> 
-        <div className='listSelectionButtons'>
-          <button className={goToDashboardClass}
-            onClick={()=>this.goToDashboard()}>Go To My Dashboard</button>
-          <button className={goToMenuClass}
-            onClick={()=>this.goToMenu()}>{goToMenuLabel}</button>
-        </div>
+        <table className="quizList">
+          <col style={{width: "50%"}}/> {/*name*/}
+          <col style={{width: "21%"}}/> {/*cat*/}
+          <col style={{width: "21%"}}/> {/*diff*/}
+          <col style={{width: "20%"}}/> {/*score*/}
+          <col style={{width: "8%"}}/>  {/*go*/}
+        <thead>
+            <tr>
+              <th style={{textAlign: "left"}}>Quiz</th>
+              <th style={{textAlign: "left"}}>Category</th>
+              <th>Difficulty</th>
+              <th>{score}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {listItems}
+          </tbody>
+        </table> 
+        {listSelectionButtons}
       </div>
     );
   };

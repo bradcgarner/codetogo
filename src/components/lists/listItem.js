@@ -4,51 +4,47 @@ import * as actionsQuiz from '../../actions/quiz';
 
 export function ListItem(props) {
   
-  const thisQuiz = props.li; // props.li is one of user.quizzes or menuOfAllQuizzes
-  const id = thisQuiz.id;
-  const category = thisQuiz.category || 'cat' ;
-  const difficulty = thisQuiz.difficulty || 1 ;
-  const score = thisQuiz.score || 0 ;
-  const listItemDifficulty = `listItemDifficulty diff${difficulty}`
-  const name = thisQuiz.name || 'name';
-  const mode = props.display.view;
-
-  const topLabelDifficulty = props.index === 0 ? <div className="listItemTopLabel listItemTopLabelDifficulty">difficulty</div> : '' ;
-  const topLabelCategory = props.index === 0 ? <div className="listItemTopLabel listItemTopLabelCategory">category</div> : '' ;
-  const topLabelScore = props.index === 0 ? <div className="listItemTopLabel listItemTopLabelScores">scores</div> : '' ;
-
+  const thisQuiz = props.quiz; // props.li is one of user.quizzes or menuOfAllQuizzes
+  const difficultyClass = `listItemDifficulty diff${thisQuiz.difficulty}`
+  const scoreClass = props.dashboard ? 'listItemScore' : 'hidden' ;
+  const takeQuizOption = props.dashboard ? 'take' : 'add' ;
+  
   let isListed = false;
-  if (Array.isArray(props.quizList)) {
+  if (!props.dashboard && Array.isArray(props.quizList)) {
     props.quizList.forEach(quiz=>{
-      if (quiz.id===id) { isListed = true }
+      if (quiz.id===thisQuiz.id) { isListed = true }
     });
   }
+  // USE ISLISTED FOR FORMATTING!
 
   const handleTakeQuizButton = next => {
-    props.dispatch(actionsQuiz.takeQuiz(thisQuiz, props.user, next))
+    props.dispatch(actionsQuiz.takeQuiz(thisQuiz.id, props.useridUser, takeQuizOption, props.user.authToken))
   }
+  const takeQuizButton = props.isLoggedIn ?
+    <i className="fa fa-hand-o-right smallIcon go"
+      aria-hidden="true" 
+      onClick={()=>handleTakeQuizButton('take')}>
+        <span className="faText">Go!</span>
+    </i> : null ;
   
   return (
-    <li className="listItem">
-      <div className="listItemName">{name}</div>
-      <div className={listItemDifficulty}>
-        {difficulty}
-        {topLabelDifficulty}
-      </div>
-      <div className="listItemCategory">
-        {category}
-        {topLabelCategory}
-      </div>
-      <div className="listItemScore">
-        {score}
-        {topLabelScore}
-      </div>;
-      <i className="fa fa-hand-o-right smallIcon go"
-        aria-hidden="true" 
-        onClick={()=>handleTakeQuizButton('take')}>
-        <span className="faText">Go!</span>
-      </i>
-    </li>
+    <tr className="listItem">
+      <td>{thisQuiz.name}</td>
+      <td>
+        {thisQuiz.category}
+      </td>
+      <td style={{textAlign: "center"}}>
+        <div className={difficultyClass}>
+          {thisQuiz.difficulty}
+        </div>
+      </td>
+      <td className={scoreClass}  style={{textAlign: "center"}}>
+        {thisQuiz.score}
+      </td>
+      <td className="listItemGo">
+        {takeQuizButton}
+      </td>
+    </tr>
   );
 }
 
