@@ -4,6 +4,7 @@ import { REACT_APP_BASE_URL } from '../config';
 import * as actionsDisplay from './display';
 import * as actionsUser from './user';
 import * as actionsQuestions from './questions';
+import * as actionsQuizList from './quizList';
 import 'whatwg-fetch';
 
 export const LOAD_QUIZ = 'LOAD_QUIZ';
@@ -73,11 +74,21 @@ export const takeQuiz = (idQuiz, idUser, option, authToken) => dispatch => {
       return quizReturned.json(); 
     })
     .then(quizReturned=>{
+      console.log('quizReturned',quizReturned)
       dispatch(loadQuiz(quizReturned.quiz));
+      if(option === 'add') {
+        dispatch(actionsQuizList.addQuiz(quizReturned.quiz));
+      }
       dispatch(actionsQuestions.loadQuestions(quizReturned.questions));
       return dispatch(actionsDisplay.closeLoading());
     })
-    .catch(error => {
+    .catch(err => {
+      console.log(err);
+      // const errJson = err.json();
+      const error = typeof err === 'string' ? err :
+      typeof err === 'object' && err.message ? err.message :
+      // typeof errJson === 'object' && errJson.message ? errJson.message :
+      'something went wrong';
       dispatch(actionsDisplay.showModal(error));
     });
 };

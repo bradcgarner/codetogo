@@ -18,7 +18,10 @@ export function ListItem(props) {
   // USE ISLISTED FOR FORMATTING!
 
   const handleTakeQuizButton = next => {
-    props.dispatch(actionsQuiz.takeQuiz(thisQuiz.id, props.useridUser, takeQuizOption, props.user.authToken))
+    props.dispatch(actionsQuiz.takeQuiz(thisQuiz.id, props.user.id, takeQuizOption, props.user.authToken))
+    .then(()=>{
+      props.history.push('/quizzes');
+    })
   }
   const takeQuizButton = props.isLoggedIn ?
     <i className="fa fa-hand-o-right smallIcon go"

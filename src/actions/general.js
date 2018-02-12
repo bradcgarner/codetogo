@@ -33,7 +33,10 @@ export const initialize = () => dispatch => {
     dispatch(loadMenuOfAllQuizzes(initializationObject.quizzes));
     return dispatch(actionsDisplay.closeLoading());
   })
-  .catch(err=>{
-    dispatch(actionsDisplay.showModal(err));
+  .catch(err => {
+    const error = typeof err === 'string' ? err :
+      typeof err === 'object' && err.message ? err.message :
+      'something went wrong';
+    dispatch(actionsDisplay.showModal(error));
   });
 };

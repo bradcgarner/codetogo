@@ -4,6 +4,7 @@ import { initialQuestions } from './initialState';
 export const reducer = ( state = initialQuestions, action ) => {
 
   if ( action.type === actions.LOAD_QUESTIONS ) {
+    console.log('action.questions',action.questions)
     return action.questions;
   }
 

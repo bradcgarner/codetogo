@@ -133,7 +133,10 @@ export const answerQuestion = (questions, indexCurrent, choices, idUser, authTok
       return dispatch(actionsDisplay.closeLoading());
 
     })
-    .catch(error => {
+    .catch(err => {
+      const error = typeof err === 'string' ? err :
+        typeof err === 'object' && err.message ? err.message :
+        'something went wrong';
       dispatch(actionsDisplay.showModal(error));
     });
   };

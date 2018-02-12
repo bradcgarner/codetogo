@@ -45,7 +45,10 @@ export const  postActivity = (activity, authToken) => dispatch => {
     .then(activity => {
       return dispatch(addActivity(activity));
     })
-    .catch(error => {
+    .catch(err => {
+      const error = typeof err === 'string' ? err :
+        typeof err === 'object' && err.message ? err.message :
+        'something went wrong';
       dispatch(actionsDisplay.showModal(error));        
     });
 };

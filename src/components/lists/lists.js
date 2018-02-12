@@ -9,11 +9,28 @@ export class Lists extends React.Component {
     super(props);
     this.state = {
       goToMenu: false,
-      goToDashboard: true,
+      goToDashboard: false,
       menu: true,
       dashboard: false,
-      isLoggedIn: this.props.user.id ? true : false ,
+      isLoggedIn: false ,
     }
+  }
+
+  componentDidMount(){
+    if(this.props.user.id) {
+      this.setState({ isLoggedIn: true });
+      if(Array.isArray(this.props.quizList)) {
+        if(this.props.quizList.length > 0) {
+          this.setState({
+            dashboard: true,
+            menu: false,
+            goToMenu: true,
+            goToDashboard: false,
+          });
+        }
+      }
+    }
+    
   }
 
   goToDashboard() {
@@ -37,7 +54,14 @@ export class Lists extends React.Component {
     const quizList = this.state.menu ? this.props.general.menuOfAllQuizzes : this.props.quizList ;
     const quizListArray = Array.isArray(quizList) ? quizList : [] ;
     const listItems = quizListArray.map((quiz, index)=>{
-      return <ListItem key={index} index={index} quiz={quiz} dashboard={this.state.dashboard} isLoggedIn={this.state.isLoggedIn}/>
+      return <ListItem
+        key={index} 
+        index={index} 
+        quiz={quiz} 
+        dashboard={this.state.dashboard} 
+        isLoggedIn={this.state.isLoggedIn}
+        history={this.props.history}
+      />
     });
     const goToMenuLabel = quizListArray.length ? 'Add Another Quiz' : 'Add a Quiz';
 
@@ -53,18 +77,13 @@ export class Lists extends React.Component {
       <div className="lists">
         <h3 className="quizListHeader">{listHeader}</h3>
         <table className="quizList">
-          <col style={{width: "50%"}}/> {/*name*/}
-          <col style={{width: "21%"}}/> {/*cat*/}
-          <col style={{width: "21%"}}/> {/*diff*/}
-          <col style={{width: "20%"}}/> {/*score*/}
-          <col style={{width: "8%"}}/>  {/*go*/}
         <thead>
             <tr>
-              <th style={{textAlign: "left"}}>Quiz</th>
-              <th style={{textAlign: "left"}}>Category</th>
-              <th>Difficulty</th>
-              <th>{score}</th>
-              <th></th>
+              <th style={{textAlign: "left", width: "50%"}}>Quiz</th>
+              <th style={{textAlign: "left", width: "21%"}}>Category</th>
+              <th style={{width: "21%"}}>Difficulty</th>
+              <th style={{width: "20%"}}>{score}</th>
+              <th style={{width: "8%"}}>&nbsp;</th>
             </tr>
           </thead>
           <tbody>

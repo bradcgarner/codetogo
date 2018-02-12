@@ -44,7 +44,10 @@ export const login = credentials => dispatch => {
     return dispatch(actionsDisplay.closeLoading());
 
   })
-  .catch(error => {
+  .catch(err => {
+    const error = typeof err === 'string' ? err :
+      typeof err === 'object' && err.message ? err.message :
+      'something went wrong';
    dispatch(actionsDisplay.showModal(error));
   });
 }
@@ -77,7 +80,10 @@ export const createUser = newUser => dispatch => { //credential should include  
     dispatch(actionsQuizList.loadQuizList([]));
     return dispatch(actionsDisplay.closeLoading());
   })
-  .catch(error => {
+  .catch(err => {
+    const error = typeof err === 'string' ? err :
+      typeof err === 'object' && err.message ? err.message :
+      'something went wrong';
     dispatch(actionsDisplay.showModal(error));
   });
 }
@@ -112,7 +118,10 @@ export const updateUser = (userToUpdate, authToken) => dispatch => { //credentia
     return dispatch(actionsDisplay.closeLoading());
     // let user know profile is updated
   })
-  .catch(error => {
+  .catch(err => {
+    const error = typeof err === 'string' ? err :
+      typeof err === 'object' && err.message ? err.message :
+      'something went wrong';
     dispatch(actionsDisplay.showModal(error));
   });
 }

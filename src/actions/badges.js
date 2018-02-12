@@ -46,7 +46,10 @@ export const postBadge = (badge, authToken) => dispatch => {
       // check data type here first, needs to be array
       return dispatch(addbadge(badge));
     })
-    .catch(error => {
+    .catch(err => {
+      const error = typeof err === 'string' ? err :
+        typeof err === 'object' && err.message ? err.message :
+        'something went wrong';
       dispatch(actionsDisplay.showModal(error));        
     });
 };

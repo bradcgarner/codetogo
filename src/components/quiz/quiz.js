@@ -28,11 +28,6 @@ export class Quiz extends React.Component {
     return formattedChoices;
   }
 
-  calcNextIndex (indexCurrent, quizLength ) {
-
-    
-  }
-
   handleSubmitButton(choice, indexCurrent) {
     if(!(this.state.formIsEmpty)) {
       const formattedChoice = this.formatChoice(choice, indexCurrent);
@@ -58,12 +53,14 @@ export class Quiz extends React.Component {
   render() {
 
     let results = this.state.showingAnswer ? <Results/> : null ;
+    const nullQuiz = {answers: null, question: null, typeAnswer: null, typeQuestion: null}
 
-    const indexCurrent = this.props.quiz.indexCurrent || 0; // REMOVE THIS!!!!!!
-    const currQuestion = this.props.questions[indexCurrent];
-    const typeAnswer = currQuestion.typeAnswer // currQuestion.typeAnswer; 
+    const indexCurrent = this.props.quiz.indexCurrent
+    const currQuestion = indexCurrent ? this.props.quiz[indexCurrent] : nullQuiz ;
+    const typeAnswer = currQuestion.typeAnswer 
     
-    const options = currQuestion.answers.map((answer,index)=>{
+    const options = Array.isArray(currQuestion.answers) ? 
+      currQuestion.answers.map((answer,index)=>{
       const optionName = typeAnswer === 'radio' ? 'option' : `${answer.id}`;
       return (
         <div key={index}>
@@ -78,7 +75,7 @@ export class Quiz extends React.Component {
           <label htmlFor={answer.id}>{answer.option}</label>
         </div>
       )
-    });
+    }) : null ;
 
     const submitButtonClass =this.state.formIsEmpty  ===true ? 'submitButton inactive' : 'submitButton' ;
     const nextButtonClass   =this.state.showingAnswer===true ? 'submitButton inactive' : 'submitButton' ;
