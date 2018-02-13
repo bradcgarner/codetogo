@@ -28,84 +28,14 @@ export const updateQuestion = (index, indexNext, answers, correct, score) => ({
   score, 
 });
 
-// ~~~~~~~~~~~~ HELPERS  ~~~~~~~~~~~~
-
-const calcScore = (scorePrior, correct) => {
-  const score = (typeof scorePrior === 'number' && scorePrior >=2) ? scorePrior : 2 ;
-  const changeFactor = correct ? Math.ceil(Math.sqrt(scorePrior)) : Math.ceil(scorePrior/2) ;
-  if(correct) return Math.ceil(score + changeFactor);
-  return changeFactor;
-};
-
-const calcPositions = (length, score, correct) => {
-  if(score < 2) return 2;
-  const variantLo = Math.floor(Math.random() * 3);
-  const variantHi = Math.ceil(length * 0.1);
-  const randomAdder = correct ?
-    Math.ceil(Math.random() * variantHi) : 
-    Math.ceil(Math.random() * variantLo) ;
-  const maxPositions = length - randomAdder - 1;
-  if(!correct && score > length/2) return Math.ceil(length/2) + variantLo;
-  if(!correct) return score + variantLo;
-  if(score > maxPositions) return maxPositions;
-  return score;
-};
-
-const findIndex = (questions, indexCurrent, positions) => {
-  let indexNext;
-  for (let i=0; i < positions; i++) {
-    indexNext = questions[indexCurrent].indexNext
-  }
-  if (indexNext <= 1) return 2;
-  return indexNext;
-};
-
 // @@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@
 
-export const answerQuestion = (questions, indexCurrent, choices, idUser, authToken) => dispatch => {
+export const answerQuestion = (answerObject, authToken) => dispatch => {
   // console.log('in answerQuestion questions', questions);
   // console.log('indexCurrent', indexCurrent, choices, 'choices', 'idUser', idUser);
   dispatch(actionsDisplay.showLoading());
   
-  const idQuestion = questions[indexCurrent].id;
-  const idQuiz = questions[indexCurrent].idQuiz;
-  const scorePrior = questions[indexCurrent].score;
-  console.log('scorePrior',scorePrior)
-  const scoreIfTrue  = calcScore(questions[indexCurrent].score, true);  
-  console.log('scoreIfTrue',scoreIfTrue)
-  const positionsIfTrue  = calcPositions(questions.length, scoreIfTrue,  true);
-  console.log('positionsIfTrue',positionsIfTrue)
-  const indexInsertAfterIfTrue  = findIndex(questions, indexCurrent, positionsIfTrue);
-  console.log('indexInsertAfterIfTrue',indexInsertAfterIfTrue)
-  
-  const scoreIfFalse = calcScore(questions[indexCurrent].score, false);
-  console.log('scoreIfFalse',scoreIfFalse)
-  const positionsIfFalse = calcPositions(questions.length, scoreIfFalse, false);
-  console.log('positionsIfFalse',positionsIfFalse)
-  const indexInsertAfterIfFalse = findIndex(questions, indexCurrent, positionsIfFalse);
-  console.log('indexInsertAfterIfFalse',indexInsertAfterIfFalse)
-
-  const indexInsertBeforeIfTrue  = questions[indexInsertAfterIfTrue].indexNext;
-  const indexInsertBeforeIfFalse = questions[indexInsertAfterIfFalse].indexNext;
-
-  const request = {
-    idQuestion,
-    idUser,
-    idQuiz,
-    choices,
-    scoreIfTrue,
-    scoreIfFalse,
-    indexCurrent,
-    scorePrior: questions[indexCurrent].score,
-    indexNextPrior: questions[indexCurrent].indexNext,
-    indexInsertAfterIfTrue,
-    indexInsertAfterIfFalse,
-    indexInsertBeforeIfTrue,
-    indexInsertBeforeIfFalse
-  };
-  // console.log('request', request)
-
-  const url = `${REACT_APP_BASE_URL}/api/questions/${idQuestion}`;
+  const url = `${REACT_APP_BASE_URL}/api/questions/${answerObject.idQuestion}`;
   const headers = { 
     'Content-Type': 'application/json', 
     'Authorization': 'Bearer ' + authToken,
@@ -113,7 +43,7 @@ export const answerQuestion = (questions, indexCurrent, choices, idUser, authTok
   const init = { 
     method: 'PUT',
     headers,
-    body: JSON.stringify(request)
+    body: JSON.stringify(answerObject)
   };
 
   // GET ALL QUESTIONS FOR THIS QUIZ FROM DATABASE
@@ -139,11 +69,11 @@ export const answerQuestion = (questions, indexCurrent, choices, idUser, authTok
         indexRedirectNext
       } = answerReturned;
 
-      dispatch(updateQuestion(indexCurrent, indexNextNew, answers, correct, scoreNew));
+      dispatch(updateQuestion(answerObject.indexCurrent, indexNextNew, answers, correct, scoreNew));
       dispatch(updateQuestion(indexRedirect, indexRedirectNext));
       dispatch(updateQuestion(indexInsertAfter, indexInsertAfterNext));
-      dispatch(actionsQuiz.updateQuizScore(scorePrior, scoreNew));
-      dispatch(actionsQuizList.updateQuizListScore(idQuiz, scorePrior, scoreNew));
+      dispatch(actionsQuiz.updateQuizScore(answerObject.scorePrior, scoreNew));
+      dispatch(actionsQuizList.updateQuizListScore(answerObject.idQuiz, answerObject.scorePrior, scoreNew));
       return dispatch(actionsDisplay.closeLoading());
 
     })

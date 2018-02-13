@@ -49,6 +49,26 @@
     }
   }
 
+  .spacedRepContainer {
+    display: flex;
+    flex-direction: column;
+  }
+  .spacedRepGraphic{
+    width: 100%;
+    .cell {
+      border: 1px solid #333;
+      text-align: center;
+    }
+    .currentCell {
+      border: 2px solid black;
+    }
+    .priorCell {
+      background-color: #ccc;
+    }
+    .nextCell {
+      background-color: #4d4; 
+    }
+  }
 
   .results {
     display: flex;

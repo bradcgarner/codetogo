@@ -460,6 +460,20 @@ button {
         margin-top: 10px; }
     .quiz .questionButtons .submitButton {
       margin-bottom: 0; }
+  .quiz .spacedRepContainer {
+    display: flex;
+    flex-direction: column; }
+  .quiz .spacedRepGraphic {
+    width: 100%; }
+    .quiz .spacedRepGraphic .cell {
+      border: 1px solid #333;
+      text-align: center; }
+    .quiz .spacedRepGraphic .currentCell {
+      border: 2px solid black; }
+    .quiz .spacedRepGraphic .priorCell {
+      background-color: #ccc; }
+    .quiz .spacedRepGraphic .nextCell {
+      background-color: #4d4; }
   .quiz .results {
     display: flex;
     flex-direction: column;

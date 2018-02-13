@@ -6,7 +6,7 @@ import * as actionsDisplay from '../../actions/display';
 import * as actionsQuiz from '../../actions/quiz';
 import * as actionsQuestion from '../../actions/questions';
 import Results from './results';
-import Table from './table';
+import SpacedRepGraphic from './spaced-rep-graphic';
 
 export class Quiz extends React.Component {
   constructor(props){
@@ -21,6 +21,47 @@ export class Quiz extends React.Component {
     this.setState({formIsEmpty: false});
   }
 
+  calcScore(scorePrior, correct) {
+    const score = (typeof scorePrior === 'number' && scorePrior >=2) ? scorePrior : 2 ;
+    const changeFactor = correct ? Math.ceil(Math.sqrt(scorePrior)) : Math.ceil(scorePrior/2) ;
+    if(correct) return Math.ceil(score + changeFactor);
+    return changeFactor;
+  };
+  
+  calcPositions(score, correct) {
+    if(score < 2) return 2;
+    const variantLo = Math.floor(Math.random() * 3);
+    const variantHi = Math.ceil(this.props.questions.length * 0.1);
+    const randomAdder = correct ?
+      Math.ceil(Math.random() * variantHi) : 
+      Math.ceil(Math.random() * variantLo) ;
+    const maxPositions = this.props.questions.length - randomAdder - 1;
+    if(!correct && score > this.props.questions.length/2) {
+      return Math.ceil(this.props.questions.length/2) + variantLo;
+    }
+    if(!correct) return score + variantLo;
+    if(score > maxPositions) return maxPositions;
+    return score;
+  };
+
+  findIndex(positions){
+    console.log('findIndex', positions);
+    if(Array.isArray(this.props.questions) && this.props.user.id){
+      let indexNext = this.props.questions[this.props.quiz.indexCurrent].indexNext;
+      let label = `${positions} positions (${indexNext}`;
+      console.log('indexNext start', indexNext)
+      for (let i=0; i < positions -1; i++) {
+        indexNext = this.props.questions[indexNext].indexNext;
+        label += `->${indexNext}`;
+        console.log(i, 'indexNext', indexNext)
+      }
+      if (indexNext < 0) return {label: 'OOPS! Corrected negative to 0', indexNext: 0};
+      label +=')';
+      return {label, indexNext};
+    }
+    return {label: 'Sorry, either no questions or not logged in', indexNext: 0};
+  };
+
   formatChoice(choices){
     let formattedChoices = [];
     for ( let prop in choices ) {
@@ -29,17 +70,14 @@ export class Quiz extends React.Component {
     return formattedChoices;
   }
 
-  handleSubmitButton(choices, indexCurrent) {
-    console.log('submitting', choices, indexCurrent)
+  handleSubmitButton(choices, request) {
+    console.log('submitting', choices, request)
     if(this.state.formIsEmpty) return;
     const formattedChoices = this.formatChoice(choices);
-    // validate before proceeding
     this.setState({showingAnswer: true});
+    const answerObject = {...request, choices: formattedChoices}
     this.props.dispatch(actionsQuestion.answerQuestion(
-      this.props.questions, 
-      indexCurrent, 
-      formattedChoices, 
-      this.props.user.id,
+      answerObject, 
       this.props.user.authToken)); 
   } 
 
@@ -84,11 +122,53 @@ export class Quiz extends React.Component {
       <button className={nextButtonClass} type="button" onClick={()=>this.handleNextButton(currQuestion.indexNext)}>Next</button>
       : <button className={submitButtonClass} type="submit">Submit</button> ;
     
+    const scoreIfTrue  = this.calcScore(currQuestion.score, true);
+    const scoreIfFalse = this.calcScore(currQuestion.score, false);
+    const positionsIfTrue  = this.calcPositions(scoreIfTrue,  true);
+    const positionsIfFalse = this.calcPositions(scoreIfFalse, false);
+    console.log(' t r u e')
+    const indexInsertAfterIfTrue  = this.findIndex(positionsIfTrue).indexNext;
+    const indexInsertAfterIfTrueLabel  = this.findIndex(positionsIfTrue).label;
+    console.log('***',indexInsertAfterIfTrue)
+    console.log(' f a l s e')
+    const indexInsertAfterIfFalse = this.findIndex(positionsIfFalse).indexNext;
+    const indexInsertAfterIfFalseLabel = this.findIndex(positionsIfFalse).label;
+    console.log('***',indexInsertAfterIfFalse)
+    console.log(' ')
+    let indexInsertBeforeIfTrue, indexInsertBeforeIfFalse;
+    if (Array.isArray(this.props.questions) && this.props.user.id) {
+      indexInsertBeforeIfTrue = this.props.questions[indexInsertAfterIfTrue].indexNext ;
+      indexInsertBeforeIfFalse = this.props.questions[indexInsertAfterIfFalse].indexNext ;
+    }
+
+    const scoringObject = {
+      indexCurrent,
+      scorePrior: currQuestion.score,
+      indexNextPrior: currQuestion.indexNext,
+      scoreIfTrue,
+      scoreIfFalse,
+      positionsIfTrue,
+      positionsIfFalse,
+      indexInsertAfterIfTrue,
+      indexInsertAfterIfTrueLabel,
+      indexInsertAfterIfFalse,
+      indexInsertAfterIfFalseLabel,
+      indexInsertBeforeIfTrue,
+      indexInsertBeforeIfFalse,
+    };
+
+    const request = {
+      ...scoringObject,
+      idQuestion: currQuestion.id,
+      idUser: this.props.user.id,
+      idQuiz: this.props.quiz.id,
+    };
+
     return (
     <div className="quiz">
       <p className="questionAsked">{currQuestion.question}</p>
       <form className="questionForm" onSubmit={this.props.handleSubmit(values =>
-        this.handleSubmitButton(values, indexCurrent)
+        this.handleSubmitButton(values, request)
       )}>
         <ul className="questionOptions"> {options} </ul>
         <div className="questionButtons">
@@ -96,7 +176,7 @@ export class Quiz extends React.Component {
         </div>
       </form>
       {results}
-      <Table/>
+      <SpacedRepGraphic scoringObject={scoringObject}/>
     </div>
   );
   }
