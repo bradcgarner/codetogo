@@ -8,29 +8,21 @@ export const reducer = ( state = initialQuestions, action ) => {
   }
 
   if ( action.type === actions.UPDATE_QUESTION ) {
-    console.log('updateQuestion', action)
-    const indexNext = action.indexNext ? action.indexNext : state.questions[action.index].indexNext;
-    const answers   = action.answers   ? action.answers   : state.questions[action.index].answers; 
-    const correct   = action.correct   ? action.correct   : state.questions[action.index].correct; 
-    const score     = action.score     ? action.score     : state.questions[action.index].score;
-    const existingQuestion = { ...state.questions[action.index], indexNext, answers, correct, score };
-    console.log('existingQuestion', existingQuestion)
+    const indexNext = action.indexNext ? action.indexNext : state[action.index].indexNext;
+    const answers   = action.answers   ? action.answers   : state[action.index].answers; 
+    const correct   = action.correct   ? action.correct   : state[action.index].correct; 
+    const score     = action.score     ? action.score     : state[action.index].score;
+    const existingQuestion = { ...state[action.index], indexNext, answers, correct, score };
     if (action.index === 0){
-      console.log('beginning')
-      const remainingQuestions = state.questions.slice(1,state.questions.length);
-      console.log([existingQuestion, ...remainingQuestions]);
+      const remainingQuestions = state.slice(1,state.length);
       return [existingQuestion, ...remainingQuestions];
     }
-    if (action.index === state.questions.length -1){
-      console.log('end')
-      const remainingQuestions = state.questions.slice(0,state.questions.length-1);
-      console.log( [...remainingQuestions, existingQuestion]);
+    if (action.index === state.length -1){
+      const remainingQuestions = state.slice(0,state.length-1);
       return [...remainingQuestions, existingQuestion];
     }
-    console.log('middle')
-    const remainingQuestionsFront = state.questions.slice(0,action.index);
-    const remainingQuestionsBack = state.questions.slice(action.index,state.questions.length);
-    console.log([...remainingQuestionsFront, existingQuestion, ...remainingQuestionsBack]);
+    const remainingQuestionsFront = state.slice(0,action.index);
+    const remainingQuestionsBack = state.slice(action.index,state.length);
     return [...remainingQuestionsFront, existingQuestion, ...remainingQuestionsBack];
   }
 

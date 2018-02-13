@@ -6,6 +6,7 @@ import * as actionsDisplay from '../../actions/display';
 import * as actionsQuiz from '../../actions/quiz';
 import * as actionsQuestion from '../../actions/questions';
 import Results from './results';
+import Table from './table';
 
 export class Quiz extends React.Component {
   constructor(props){
@@ -95,6 +96,7 @@ export class Quiz extends React.Component {
         </div>
       </form>
       {results}
+      <Table/>
     </div>
   );
   }

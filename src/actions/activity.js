@@ -33,7 +33,7 @@ export const  postActivity = (activity, authToken) => dispatch => {
     body: JSON.stringify(activity),
     headers
   };
-  console.log('url', url, 'init', init);
+  // console.log('url', url, 'init', init);
 
   return fetch(url, init)
     .then(activityAdded => {

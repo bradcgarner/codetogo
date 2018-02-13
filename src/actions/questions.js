@@ -30,21 +30,25 @@ export const updateQuestion = (index, indexNext, answers, correct, score) => ({
 
 // ~~~~~~~~~~~~ HELPERS  ~~~~~~~~~~~~
 
-const calcScore = (scorePrior, correct, multIfTrue = 2, multIfFalse = 0.5) => {
+const calcScore = (scorePrior, correct) => {
   const score = (typeof scorePrior === 'number' && scorePrior >=2) ? scorePrior : 2 ;
-  if (correct) return Math.floor(score * multIfTrue);
-  return Math.ceil(score * multIfFalse);
+  const changeFactor = correct ? Math.ceil(Math.sqrt(scorePrior)) : Math.ceil(scorePrior/2) ;
+  if(correct) return Math.ceil(score + changeFactor);
+  return changeFactor;
 };
 
 const calcPositions = (length, score, correct) => {
-  console.log('calcPositions length', length, 'score', score, 'correct', correct);
-  if(!correct && score < length - 1) return score;
-  if(!correct) return length - 1;
-  const pct = !correct ? 0 : Math.ceil(length * 0.1);
-  const randomAdder = Math.floor(Math.random() * pct);
-  const rawPositions = score + randomAdder;
-  if(rawPositions < length - 1) return rawPositions;
-  return length - 1;
+  if(score < 2) return 2;
+  const variantLo = Math.floor(Math.random() * 3);
+  const variantHi = Math.ceil(length * 0.1);
+  const randomAdder = correct ?
+    Math.ceil(Math.random() * variantHi) : 
+    Math.ceil(Math.random() * variantLo) ;
+  const maxPositions = length - randomAdder - 1;
+  if(!correct && score > length/2) return Math.ceil(length/2) + variantLo;
+  if(!correct) return score + variantLo;
+  if(score > maxPositions) return maxPositions;
+  return score;
 };
 
 const findIndex = (questions, indexCurrent, positions) => {
@@ -59,8 +63,8 @@ const findIndex = (questions, indexCurrent, positions) => {
 // @@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@
 
 export const answerQuestion = (questions, indexCurrent, choices, idUser, authToken) => dispatch => {
-  console.log('in answerQuestion questions', questions);
-  console.log('indexCurrent', indexCurrent, choices, 'choices', 'idUser', idUser);
+  // console.log('in answerQuestion questions', questions);
+  // console.log('indexCurrent', indexCurrent, choices, 'choices', 'idUser', idUser);
   dispatch(actionsDisplay.showLoading());
   
   const idQuestion = questions[indexCurrent].id;
@@ -99,7 +103,7 @@ export const answerQuestion = (questions, indexCurrent, choices, idUser, authTok
     indexInsertBeforeIfTrue,
     indexInsertBeforeIfFalse
   };
-  console.log('request', request)
+  // console.log('request', request)
 
   const url = `${REACT_APP_BASE_URL}/api/questions/${idQuestion}`;
   const headers = { 
@@ -115,14 +119,14 @@ export const answerQuestion = (questions, indexCurrent, choices, idUser, authTok
   // GET ALL QUESTIONS FOR THIS QUIZ FROM DATABASE
   return fetch(url, init)
     .then(answerReturned => {
-      console.log('answerReturned',answerReturned);
+      // console.log('answerReturned',answerReturned);
       if (!answerReturned.ok) {
         return Promise.reject(answerReturned.statusText);
       }
       return answerReturned.json();
     })
     .then(answerReturned=>{
-      console.log('answerReturned',answerReturned);
+      // console.log('answerReturned',answerReturned);
       const {
         answers,
         correct,
