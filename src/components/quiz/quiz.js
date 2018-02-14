@@ -4,7 +4,7 @@ import { compose } from 'redux';
 import { reduxForm, Field } from 'redux-form';
 import * as actionsDisplay from '../../actions/display';
 import * as actionsQuiz from '../../actions/quiz';
-import * as actionsQuestion from '../../actions/questions';
+import * as actionsQuestions from '../../actions/questions';
 import Results from './results';
 import SpacedRepGraphic from './spaced-rep-graphic';
 
@@ -45,15 +45,15 @@ export class Quiz extends React.Component {
   };
 
   findIndex(positions){
-    console.log('findIndex', positions);
+    // console.log('findIndex', positions);
     if(Array.isArray(this.props.questions) && this.props.user.id){
       let indexNext = this.props.questions[this.props.quiz.indexCurrent].indexNext;
       let label = `${positions} positions (${indexNext}`;
-      console.log('indexNext start', indexNext)
+      // console.log('indexNext start', indexNext)
       for (let i=0; i < positions -1; i++) {
         indexNext = this.props.questions[indexNext].indexNext;
         label += `->${indexNext}`;
-        console.log(i, 'indexNext', indexNext)
+        // console.log(i, 'indexNext', indexNext)
       }
       if (indexNext < 0) return {label: 'OOPS! Corrected negative to 0', indexNext: 0};
       label +=')';
@@ -71,12 +71,13 @@ export class Quiz extends React.Component {
   }
 
   handleSubmitButton(choices, request) {
-    console.log('submitting', choices, request)
+    // console.log('enter submitting', choices, request)
     if(this.state.formIsEmpty) return;
     const formattedChoices = this.formatChoice(choices);
     this.setState({showingAnswer: true});
     const answerObject = {...request, choices: formattedChoices}
-    this.props.dispatch(actionsQuestion.answerQuestion(
+    console.log('submitting', answerObject);
+    this.props.dispatch(actionsQuestions.answerQuestion(
       answerObject, 
       this.props.user.authToken)); 
   } 
@@ -126,15 +127,15 @@ export class Quiz extends React.Component {
     const scoreIfFalse = this.calcScore(currQuestion.score, false);
     const positionsIfTrue  = this.calcPositions(scoreIfTrue,  true);
     const positionsIfFalse = this.calcPositions(scoreIfFalse, false);
-    console.log(' t r u e')
+    // console.log(' t r u e')
     const indexInsertAfterIfTrue  = this.findIndex(positionsIfTrue).indexNext;
     const indexInsertAfterIfTrueLabel  = this.findIndex(positionsIfTrue).label;
-    console.log('***',indexInsertAfterIfTrue)
-    console.log(' f a l s e')
+    // console.log('***',indexInsertAfterIfTrue)
+    // console.log(' f a l s e')
     const indexInsertAfterIfFalse = this.findIndex(positionsIfFalse).indexNext;
     const indexInsertAfterIfFalseLabel = this.findIndex(positionsIfFalse).label;
-    console.log('***',indexInsertAfterIfFalse)
-    console.log(' ')
+    // console.log('***',indexInsertAfterIfFalse)
+    // console.log(' ')
     let indexInsertBeforeIfTrue, indexInsertBeforeIfFalse;
     if (Array.isArray(this.props.questions) && this.props.user.id) {
       indexInsertBeforeIfTrue = this.props.questions[indexInsertAfterIfTrue].indexNext ;

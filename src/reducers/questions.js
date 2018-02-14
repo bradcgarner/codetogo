@@ -15,14 +15,24 @@ export const reducer = ( state = initialQuestions, action ) => {
     const existingQuestion = { ...state[action.index], indexNext, answers, correct, score };
     if (action.index === 0){
       const remainingQuestions = state.slice(1,state.length);
+      // console.log('update first question', remainingQuestions.length, remainingQuestions)
+      // console.log('existing question', existingQuestion)
+      // console.log(' ')
       return [existingQuestion, ...remainingQuestions];
     }
     if (action.index === state.length -1){
       const remainingQuestions = state.slice(0,state.length-1);
+      // console.log('update last question', remainingQuestions.length, remainingQuestions)
+      // console.log('existing question', existingQuestion)
+      // console.log(' ')
       return [...remainingQuestions, existingQuestion];
     }
     const remainingQuestionsFront = state.slice(0,action.index);
-    const remainingQuestionsBack = state.slice(action.index,state.length);
+    const remainingQuestionsBack = state.slice(action.index+1,state.length);
+    // console.log('update middle question', remainingQuestionsFront.length, remainingQuestionsFront)
+    // console.log('update middle question', remainingQuestionsBack.length, remainingQuestionsBack)
+    // console.log('existing question', existingQuestion)
+    // console.log(' ')
     return [...remainingQuestionsFront, existingQuestion, ...remainingQuestionsBack];
   }
 

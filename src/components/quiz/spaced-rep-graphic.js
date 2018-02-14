@@ -19,39 +19,50 @@ export function SpacedRepGraphic(props) {
     indexInsertBeforeIfFalse
   } = props.scoringObject;
 
-  const indexRow = props.questions.map((question, index)=>{
-    const cellClass = question.index === indexCurrent ? 'cell currentCell priorCell' : 
-    question.index === indexNextPrior ? 'cell nextCell' : 'cell' ;
-    return <td key={index} className={cellClass}>{question.index}</td>
-  });
- 
-  const indexNextRow = props.questions.map((question, index)=>{
-    const cellClass = question.index === indexCurrent ? 'cell currentCell nextCell' : 
-    question.indexNext === indexCurrent ? 'cell priorCell' : 'cell' ;
-    return <td key={index} className={cellClass}>{question.indexNext}</td>
+  const questionObjectArray = props.questions.map((question, index)=>{
+    const falseScore     = question.index === indexCurrent ? 'false' : 'transparent' ;
+    const trueScore      = question.index === indexCurrent ? 'true' : 'transparent' ;
+    const indexClass     = question.index === indexCurrent ? 'questionConstant currentQuestion priorQuestion' : 
+                           question.index === indexNextPrior ? 'questionConstant nextQuestion' : 'questionConstant' ;
+    const indexNextClass = question.index === indexCurrent ? 'cell currentQuestion nextQuestion' : 
+                           question.indexNext === indexCurrent ? 'questionConstant priorQuestion' : 'questionConstant' ;
+    const indexNextTrue  = question.index === indexCurrent ? indexInsertBeforeIfTrue :
+                           question.index === indexInsertAfterIfTrue ? indexCurrent : 
+                           question.indexNext === indexCurrent ? indexNextPrior : null ;
+    const indexNextFalse = question.index === indexCurrent ? indexInsertBeforeIfFalse :
+                           question.index === indexInsertAfterIfFalse ? indexCurrent : 
+                           question.indexNext === indexCurrent ? indexNextPrior : null ;
+    
+    return <div key={index} className='spacedRepObject'>
+      <div className={falseScore}    >{scoreIfFalse}</div>
+      <div className={trueScore}     >{scoreIfTrue}</div>
+      <div className={indexClass}    >{question.index}</div>
+      <div className={indexNextClass}>{question.indexNext}</div>
+      <div className='true'          >{indexNextTrue}</div>
+      <div className='false'         >{indexNextFalse}</div>
+    </div>
   });
  
   return (
     <div className='spacedRepContainer'>
-      <table className='spacedRepGraphic'>
-        <tbody>
-          <tr>{indexRow}</tr>
-          <tr>{indexNextRow}</tr>
-        </tbody>
-      </table>
-      <div>indexCurrent {indexCurrent}</div>
-      <div>indexNext {indexNextPrior}</div>
-      <div>score {scorePrior}</div>
-      <br/>
-      <div>scoreIfTrue {scoreIfTrue}</div>
-      <div>positionsIfTrue {positionsIfTrue}</div>
-      <div>indexInsertAfterIfTrue {indexInsertAfterIfTrue} {indexInsertAfterIfTrueLabel}</div>
-      <div>indexInsertBeforeIfTrue {indexInsertBeforeIfTrue}</div>
-      <br/>
-      <div>scoreIfFalse {scoreIfFalse}</div>
-      <div>positionsIfFalse {positionsIfFalse}</div>
-      <div>indexInsertAfterIfFalse {indexInsertAfterIfFalse} {indexInsertAfterIfFalseLabel}</div>
-      <div>indexInsertBeforeIfFalse {indexInsertBeforeIfFalse}</div>
+      <div className='spacedRepObjectContainer'>
+        {questionObjectArray}
+      </div>
+      <div className='spacedRepStats'>
+        <div>quiz score now {props.quiz.score}</div>
+        <div>question score = {scorePrior}</div>
+        {/* <br/>
+        <div>indexCurrent = {indexCurrent}</div>
+        <div>indexNext = {indexNextPrior}</div> */}
+        <br/>
+        <div>scoreIfTrue {scoreIfTrue}</div>
+        <div>indexInsertAfterIfTrue = {indexInsertAfterIfTrue}: {indexInsertAfterIfTrueLabel}</div>
+        <div>indexInsertBeforeIfTrue = {indexInsertBeforeIfTrue}</div>
+        <br/>
+        <div>scoreIfFalse = {scoreIfFalse}</div>
+        <div>indexInsertAfterIfFalse = {indexInsertAfterIfFalse}: {indexInsertAfterIfFalseLabel}</div>
+        <div>indexInsertBeforeIfFalse = {indexInsertBeforeIfFalse}</div>
+      </div>
     </div>
     );
 }

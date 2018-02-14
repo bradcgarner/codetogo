@@ -11,7 +11,7 @@ export const reducer = ( state = initialQuiz, action ) => {
     return { ...state, score: score };
   }
   if ( action.type === actions.UPDATE_QUIZ_INDEX_CURRENT ) {
-    console.log('UPDATE_QUIZ_INDEX_CURRENT', action)
+    // console.log('UPDATE_QUIZ_INDEX_CURRENT', action)
     return {
       ...state, 
       indexCurrent: action.indexCurrent

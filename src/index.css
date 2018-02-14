@@ -461,19 +461,41 @@ button {
     .quiz .questionButtons .submitButton {
       margin-bottom: 0; }
   .quiz .spacedRepContainer {
-    display: flex;
-    flex-direction: column; }
-  .quiz .spacedRepGraphic {
+    flex-direction: column;
     width: 100%; }
-    .quiz .spacedRepGraphic .cell {
+  .quiz .spacedRepStats {
+    flex-direction: column;
+    width: 100%; }
+  .quiz .spacedRepObjectContainer {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-between; }
+  .quiz .spacedRepObject {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 2px;
+    width: 2em; }
+    .quiz .spacedRepObject .questionConstant, .quiz .spacedRepObject .currentQuestion, .quiz .spacedRepObject .priorQuestion, .quiz .spacedRepObject .nextQuestion, .quiz .spacedRepObject .false, .quiz .spacedRepObject .true, .quiz .spacedRepObject .transparent {
+      width: 100%;
+      height: 20px;
+      text-align: center;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center; }
+    .quiz .spacedRepObject .questionConstant {
       border: 1px solid #333;
       text-align: center; }
-    .quiz .spacedRepGraphic .currentCell {
+    .quiz .spacedRepObject .currentQuestion {
       border: 2px solid black; }
-    .quiz .spacedRepGraphic .priorCell {
+    .quiz .spacedRepObject .priorQuestion {
       background-color: #ccc; }
-    .quiz .spacedRepGraphic .nextCell {
+    .quiz .spacedRepObject .nextQuestion {
       background-color: #4d4; }
+    .quiz .spacedRepObject .false {
+      color: red; }
+    .quiz .spacedRepObject .true {
+      color: green; }
   .quiz .results {
     display: flex;
     flex-direction: column;
@@ -623,5 +645,8 @@ main {
 
 .hidden {
   display: none; }
+
+.transparent {
+  color: transparent; }
 
 /*# sourceMappingURL=index.css.map */
