@@ -433,7 +433,8 @@ button {
   .quiz .questionForm {
     display: flex;
     flex-direction: column;
-    justify-content: space-between; }
+    justify-content: space-between;
+    width: 100%; }
   .quiz .questionOptions {
     flex: 1;
     display: flex;
@@ -449,6 +450,8 @@ button {
     -moz-box-shadow: inset 5px 5px 5px -4px #9c9ac6;
     -webkit-box-shadow: inset 5px 5px 5px -4px #9c9ac6;
     box-shadow: inset 5px 5px 5px -4px #9c9ac6; }
+  .quiz .questionTextInput {
+    height: 1.5em; }
   .quiz .questionButtons {
     display: flex;
     flex-direction: row;

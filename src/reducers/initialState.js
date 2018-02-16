@@ -62,7 +62,7 @@ export const initialQuiz = { // store.quiz - single current quiz, loads when use
   total: 3,
   score: 0,
   indexCurrent: 0,
-  showingAnswers: true,
+  showingAnswers: false,
   nextState: {},
 };
 
