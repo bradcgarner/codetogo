@@ -113,19 +113,25 @@ export class Quiz extends React.Component {
     return {label: 'Sorry, either no questions or not logged in', indexNext: 0};
   };
 
-  formatChoice(choices){
+  formatChoice(choices, typeAnswer){
     // converts object with properties into an array with all choices. Used even if only 1 choice made.
     let formattedChoices = [];
     for ( let prop in choices ) {
-      formattedChoices.push(choices[prop]);
+      if (typeAnswer === 'checkbox') {
+        formattedChoices.push(prop);
+      } else {
+        formattedChoices.push(choices[prop]);
+      }
     }
     return formattedChoices;
   }
 
-  handleSubmitButton(choices, scoringObject) {
-    // console.log('enter submitting', choices, request)
+  handleSubmitButton(choices, scoringObject, typeAnswer) {
+    console.log('enter submitting choices', choices);
+    console.log('enter submitting scoringObject', scoringObject);
     if(this.state.formIsEmpty) return;
-    const formattedChoices = this.formatChoice(choices);
+    const formattedChoices = this.formatChoice(choices, typeAnswer);
+    console.log('formattedChoices', formattedChoices);
     const answerObject = {...scoringObject, choices: formattedChoices}
     console.log('submitting', answerObject);
     this.props.dispatch(actionsQuestions.answerQuestion(
@@ -266,7 +272,7 @@ export class Quiz extends React.Component {
           name={'textInput'} 
           id={'textInput'}
           component='input'
-          // type={typeAnswer}
+          placeholder='type your answer here'
           // value={answer.id}
           onChange={()=>this.markFormAsTouched()} /> :
       <div className="questionOptions">{optionsList}</div> 
@@ -296,7 +302,7 @@ export class Quiz extends React.Component {
     <div className="quiz">
       <p className="questionAsked">{this.props.questions[this.props.quiz.indexCurrent].question}</p>
       <form className="questionForm" onSubmit={this.props.handleSubmit(values =>
-        this.handleSubmitButton(values, this.state.scoringObject)
+        this.handleSubmitButton(values, this.state.scoringObject, question.typeAnswer)
       )}>
         {options}
         <div className="questionButtons">
