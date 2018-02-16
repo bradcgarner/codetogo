@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 export function SpacedRepGraphic(props) {
-
   const {
     indexCurrent,
     indexNextPrior,
@@ -18,6 +17,7 @@ export function SpacedRepGraphic(props) {
     indexInsertBeforeIfTrue,
     indexInsertBeforeIfFalse
   } = props.scoringObject;
+  console.log('spacedRepGraphic indexCurrent', indexCurrent)
 
   const questionObjectArray = props.questions.map((question, index)=>{
     const falseScore     = question.index === indexCurrent ? 'false' : 'transparent' ;

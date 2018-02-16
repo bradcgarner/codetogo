@@ -45,7 +45,7 @@ export const answerQuestion = (answerObject, authToken) => dispatch => {
     headers,
     body: JSON.stringify(answerObject)
   };
-  console.log('answerQuestion init', init)
+  // console.log('answerQuestion init', init)
   // GET ALL QUESTIONS FOR THIS QUIZ FROM DATABASE
   return fetch(url, init)
     .then(answerReturned => {
@@ -68,12 +68,12 @@ export const answerQuestion = (answerObject, authToken) => dispatch => {
         indexRedirectNext
       } = answerReturned;
 
-      console.log(' ')
-      console.log('update current index', answerObject.indexCurrent, 'next new', indexNextNew, 'answers', answers, 'correct', correct, 'scoreNew', scoreNew)
+      // console.log(' ')
+      // console.log('update current index', answerObject.indexCurrent, 'next new', indexNextNew, 'answers', answers, 'correct', correct, 'scoreNew', scoreNew)
       dispatch(updateQuestion(answerObject.indexCurrent, indexNextNew, answers, correct, scoreNew));
-      console.log('update redirect', 'index', indexRedirect, 'next', indexRedirectNext)
+      // console.log('update redirect', 'index', indexRedirect, 'next', indexRedirectNext)
       dispatch(updateQuestion(indexRedirect, indexRedirectNext));
-      console.log('update after', 'index', indexInsertAfter, 'next', answerObject.indexCurrent)
+      // console.log('update after', 'index', indexInsertAfter, 'next', answerObject.indexCurrent)
       dispatch(updateQuestion(indexInsertAfter, answerObject.indexCurrent));
       dispatch(actionsQuiz.updateQuizScore(answerObject.scorePrior, scoreNew));
       dispatch(actionsQuizList.updateQuizListScore(answerObject.idQuiz, answerObject.scorePrior, scoreNew));

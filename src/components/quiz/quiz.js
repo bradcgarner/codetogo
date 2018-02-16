@@ -12,9 +12,84 @@ export class Quiz extends React.Component {
   constructor(props){
     super(props);
     this.state = {
+      quiz: this.props.quiz,
+      questions: this.props.questions,
+      indexCurrent: this.props.quiz.indexCurrent,
+      question: typeof this.props.quiz.indexCurrent === 'number' ? 
+        this.props.questions[this.props.quiz.indexCurrent] : 
+        {answers: null, question: null, typeAnswer: null, typeQuestion: null} ,
       formIsEmpty: true,
       showingAnswer: false,
     }
+  }
+
+  componentDidMount() {
+    // componentDidMount should run only once
+    console.log('componentDidMount');
+    this.setState({ indexNext: this.state.question.indexNext })
+    this.updateScoringObject(this.props.questions, this.props.quiz.indexCurrent, this.props.questions[this.props.quiz.indexCurrent]);
+  }
+
+  updateScoringObject(questions, indexCurrent, question){
+    console.log('updateScoringObject indexCurrent', indexCurrent);
+    const scoreIfTrue  = this.calcScore(question.score, true);
+    const scoreIfFalse = this.calcScore(question.score, false);
+
+    const positionsIfTrue  = this.calcPositions(questions, scoreIfTrue,  true);
+    const positionsIfFalse = this.calcPositions(questions, scoreIfFalse, false);
+    // console.log(' t r u e')
+    const indexInsertAfterIfTrue  = this.findIndex(questions, indexCurrent, positionsIfTrue).indexNext;
+    const indexInsertAfterIfTrueLabel  = this.findIndex(questions, indexCurrent, positionsIfTrue).label;
+    // console.log('***',indexInsertAfterIfTrue)
+    // console.log(' f a l s e')
+    const indexInsertAfterIfFalse = this.findIndex(questions, indexCurrent, positionsIfFalse).indexNext;
+    const indexInsertAfterIfFalseLabel = this.findIndex(questions, indexCurrent, positionsIfFalse).label;
+    // console.log('***',indexInsertAfterIfFalse)
+    // console.log(' ')
+    const indexInsertBeforeIfTrue  = (Array.isArray(questions) && this.props.user.id) ? questions[indexInsertAfterIfTrue ].indexNext : null;
+    const indexInsertBeforeIfFalse = (Array.isArray(questions) && this.props.user.id) ? questions[indexInsertAfterIfFalse].indexNext : null;
+
+    this.setState({
+      scoringObject:{
+        idQuestion: question.id,
+        idUser: this.props.user.id,
+        idQuiz: this.props.quiz.id,
+        indexCurrent,
+        scorePrior: question.score,
+        indexNextPrior: question.indexNext,
+        scoreIfTrue,
+        scoreIfFalse,
+        positionsIfTrue,
+        positionsIfFalse,
+        indexInsertAfterIfTrue,
+        indexInsertAfterIfTrueLabel,
+        indexInsertAfterIfFalse,
+        indexInsertAfterIfFalseLabel,
+        indexInsertBeforeIfTrue,
+        indexInsertBeforeIfFalse,
+      }
+    });
+  }
+
+  updateQuestion(index) {
+    console.log('update question to:');
+    console.log('quiz', this.props.quiz);
+    console.log('questions', this.props.questions);
+    console.log('indexCurrent', this.props.quiz.indexCurrent);
+    console.log('this.state.indexNext', this.state.indexNext);
+    console.log('indexNext', this.props.questions[this.state.indexNext].indexNext);
+    console.log('question', this.props.questions[this.props.quiz.indexCurrent]);
+    this.setState({
+      quiz: this.props.quiz,
+      questions: this.props.questions,
+      indexCurrent: this.state.indexNext,
+      indexNext: this.props.questions[this.state.indexNext].indexNext,
+      question: typeof this.props.quiz.indexCurrent === 'number' ? 
+        this.props.questions[this.props.quiz.indexCurrent] : 
+        {answers: null, question: null, typeAnswer: null, typeQuestion: null} ,
+      formIsEmpty: true,
+      showingAnswer: false,
+    });
   }
 
   markFormAsTouched() {
@@ -22,36 +97,39 @@ export class Quiz extends React.Component {
   }
 
   calcScore(scorePrior, correct) {
+    // calculates theoretical correct and incorrect scores, then sends both scores to the back end, back end grades (correct/incorrect) and uses one of the scores sent to it
     const score = (typeof scorePrior === 'number' && scorePrior >=2) ? scorePrior : 2 ;
     const changeFactor = correct ? Math.ceil(Math.sqrt(scorePrior)) : Math.ceil(scorePrior/2) ;
     if(correct) return Math.ceil(score + changeFactor);
     return changeFactor;
   };
   
-  calcPositions(score, correct) {
+  calcPositions(questions, score, correct) {
+    // calculates theoretical positions based on prior score correct/incorrect. Only a helper function before findIndex()
     if(score < 2) return 2;
     const variantLo = Math.floor(Math.random() * 3);
-    const variantHi = Math.ceil(this.props.questions.length * 0.1);
+    const variantHi = Math.ceil(questions.length * 0.1);
     const randomAdder = correct ?
       Math.ceil(Math.random() * variantHi) : 
       Math.ceil(Math.random() * variantLo) ;
-    const maxPositions = this.props.questions.length - randomAdder - 1;
-    if(!correct && score > this.props.questions.length/2) {
-      return Math.ceil(this.props.questions.length/2) + variantLo;
+    const maxPositions = questions.length - randomAdder - 1;
+    if(!correct && score > questions.length/2) {
+      return Math.ceil(questions.length/2) + variantLo;
     }
     if(!correct) return score + variantLo;
     if(score > maxPositions) return maxPositions;
     return score;
   };
 
-  findIndex(positions){
+  findIndex(questions, indexCurrent, positions){
+    // calculates theoretical index based on positions moved. Submit sends theoretical indices to server, and server uses one of the indices sent.
     // console.log('findIndex', positions);
-    if(Array.isArray(this.props.questions) && this.props.user.id){
-      let indexNext = this.props.questions[this.props.quiz.indexCurrent].indexNext;
+    if(Array.isArray(questions) && this.props.user.id){
+      let indexNext = questions[indexCurrent].indexNext;
       let label = `${positions} positions (${indexNext}`;
       // console.log('indexNext start', indexNext)
       for (let i=0; i < positions -1; i++) {
-        indexNext = this.props.questions[indexNext].indexNext;
+        indexNext = questions[indexNext].indexNext;
         label += `->${indexNext}`;
         // console.log(i, 'indexNext', indexNext)
       }
@@ -63,6 +141,7 @@ export class Quiz extends React.Component {
   };
 
   formatChoice(choices){
+    // converts object with properties into an array with all choices. Used even if only 1 choice made.
     let formattedChoices = [];
     for ( let prop in choices ) {
       formattedChoices.push(choices[prop]);
@@ -70,12 +149,14 @@ export class Quiz extends React.Component {
     return formattedChoices;
   }
 
-  handleSubmitButton(choices, request) {
+  handleSubmitButton(choices, scoringObject) {
     // console.log('enter submitting', choices, request)
     if(this.state.formIsEmpty) return;
     const formattedChoices = this.formatChoice(choices);
-    this.setState({showingAnswer: true});
-    const answerObject = {...request, choices: formattedChoices}
+    this.setState({
+      showingAnswer: true
+    });
+    const answerObject = {...scoringObject, choices: formattedChoices}
     console.log('submitting', answerObject);
     this.props.dispatch(actionsQuestions.answerQuestion(
       answerObject, 
@@ -83,93 +164,61 @@ export class Quiz extends React.Component {
   } 
 
   handleNextButton(indexNext) {
+    console.log('handleNext indexNext', indexNext);
     if(this.state.showingAnswer){
-      this.setState({showingAnswer: false, formIsEmpty: true})
-      this.props.reset();   
+      console.log('updateQuizIndexCurrent ... store')
+      console.log('current index before', this.props.quiz.indexCurrent, 'store')
       this.props.dispatch(actionsQuiz.updateQuizIndexCurrent(indexNext));
+      console.log('current index after', this.props.quiz.indexCurrent, 'store')
+      console.log('reset')
+      this.props.reset();   
+      console.log('updateQuestion')
+      this.updateQuestion();
+      console.log('updateScoringObject')
+      this.updateScoringObject(this.props.questions, indexNext, this.props.questions[indexNext])
+    } else {
+      console.log('not showing answer', this.state.showingAnswer)
     }
   }
-  
-  render() {
-    let results = this.state.showingAnswer ? <Results/> : null ;
-    const nullQuiz = {answers: null, question: null, typeAnswer: null, typeQuestion: null}
 
-    const indexCurrent = this.props.quiz.indexCurrent
-    const currQuestion = typeof indexCurrent === 'number' ?
-      this.props.questions[indexCurrent] : nullQuiz ;
-    const typeAnswer = currQuestion.typeAnswer 
-    
-    const options = Array.isArray(currQuestion.answers) ? 
-      currQuestion.answers.map((answer,index)=>{
-      const optionName = typeAnswer === 'radio' ? 'option' : `${answer.id}`;
-      return (
-        <div key={index}>
-          <Field 
-            name={optionName} 
-            id={answer.id}
-            component='input'
-            type={typeAnswer}
-            value={answer.id}
-            onChange={()=>this.markFormAsTouched()}
-          />
-          <label htmlFor={answer.id}>{answer.option}</label>
-        </div>
-      )
-    }) : null ;
+  render() {
+    const results = this.state.showingAnswer ? <Results/> : null ;
+    const typeAnswer = this.state.question.typeAnswer;
+    const options = Array.isArray(this.state.question.answers) ? 
+      this.state.question.answers.map((answer,index)=>{
+        const optionName = typeAnswer === 'radio' ? 'option' : `${answer.id}`;
+        return (
+          <div key={index}>
+            <Field 
+              name={optionName} 
+              id={answer.id}
+              component='input'
+              type={typeAnswer}
+              value={answer.id}
+              onChange={()=>this.markFormAsTouched()}
+            />
+            <label htmlFor={answer.id}>{answer.option}</label>
+          </div>
+        )
+      }) 
+    : null ;
 
     const submitButtonClass = this.state.formIsEmpty   ? 'submitButton inactive' : 'submitButton' ;
     const nextButtonClass   = this.state.showingAnswer ? 'submitButton inactive' : 'submitButton' ;
     const button = this.state.showingAnswer ? 
-      <button className={nextButtonClass} type="button" onClick={()=>this.handleNextButton(currQuestion.indexNext)}>Next</button>
+      <button className={nextButtonClass} type="button" onClick={()=>this.handleNextButton(this.state.indexNext)}>Next</button>
       : <button className={submitButtonClass} type="submit">Submit</button> ;
-    
-    const scoreIfTrue  = this.calcScore(currQuestion.score, true);
-    const scoreIfFalse = this.calcScore(currQuestion.score, false);
-    const positionsIfTrue  = this.calcPositions(scoreIfTrue,  true);
-    const positionsIfFalse = this.calcPositions(scoreIfFalse, false);
-    // console.log(' t r u e')
-    const indexInsertAfterIfTrue  = this.findIndex(positionsIfTrue).indexNext;
-    const indexInsertAfterIfTrueLabel  = this.findIndex(positionsIfTrue).label;
-    // console.log('***',indexInsertAfterIfTrue)
-    // console.log(' f a l s e')
-    const indexInsertAfterIfFalse = this.findIndex(positionsIfFalse).indexNext;
-    const indexInsertAfterIfFalseLabel = this.findIndex(positionsIfFalse).label;
-    // console.log('***',indexInsertAfterIfFalse)
-    // console.log(' ')
-    let indexInsertBeforeIfTrue, indexInsertBeforeIfFalse;
-    if (Array.isArray(this.props.questions) && this.props.user.id) {
-      indexInsertBeforeIfTrue = this.props.questions[indexInsertAfterIfTrue].indexNext ;
-      indexInsertBeforeIfFalse = this.props.questions[indexInsertAfterIfFalse].indexNext ;
-    }
-
-    const scoringObject = {
-      indexCurrent,
-      scorePrior: currQuestion.score,
-      indexNextPrior: currQuestion.indexNext,
-      scoreIfTrue,
-      scoreIfFalse,
-      positionsIfTrue,
-      positionsIfFalse,
-      indexInsertAfterIfTrue,
-      indexInsertAfterIfTrueLabel,
-      indexInsertAfterIfFalse,
-      indexInsertAfterIfFalseLabel,
-      indexInsertBeforeIfTrue,
-      indexInsertBeforeIfFalse,
-    };
-
-    const request = {
-      ...scoringObject,
-      idQuestion: currQuestion.id,
-      idUser: this.props.user.id,
-      idQuiz: this.props.quiz.id,
-    };
+    const spacedRepGraphic = this.state.scoringObject ?
+      <SpacedRepGraphic
+      scoringObject={this.state.scoringObject}
+      quiz={this.state.quiz}
+      questions={this.state.questions}/> : null ;
 
     return (
     <div className="quiz">
-      <p className="questionAsked">{currQuestion.question}</p>
+      <p className="questionAsked">{this.state.question.question}</p>
       <form className="questionForm" onSubmit={this.props.handleSubmit(values =>
-        this.handleSubmitButton(values, request)
+        this.handleSubmitButton(values, this.state.scoringObject)
       )}>
         <ul className="questionOptions"> {options} </ul>
         <div className="questionButtons">
@@ -177,7 +226,7 @@ export class Quiz extends React.Component {
         </div>
       </form>
       {results}
-      <SpacedRepGraphic scoringObject={scoringObject}/>
+      {spacedRepGraphic}
     </div>
   );
   }

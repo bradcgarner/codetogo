@@ -21,6 +21,7 @@ export const reducer = ( state = initialDisplay, action ) => {
     };
   }
   if ( action.type === actions.CLOSE_LOADING ) {
+    console.log('close loading');
     return {...state,
       loading: false,
     };
