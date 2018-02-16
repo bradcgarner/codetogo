@@ -41,7 +41,7 @@ export const initialQuestions = [ // all questions this quiz, parsed out individ
       option: '',
       id: 0,
     }],
-    typeAnswer: 'checkbox',
+    typeAnswer: 'checkbox', // radio || text
     source: 'google',
     reason: 'because',
     difficulty: 5,
@@ -62,6 +62,8 @@ export const initialQuiz = { // store.quiz - single current quiz, loads when use
   total: 3,
   score: 0,
   indexCurrent: 0,
+  showingAnswers: true,
+  nextState: {},
 };
 
 export const initialQuizList = [

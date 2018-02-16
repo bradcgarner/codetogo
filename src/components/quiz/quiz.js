@@ -4,6 +4,7 @@ import { compose } from 'redux';
 import { reduxForm, Field } from 'redux-form';
 import * as actionsDisplay from '../../actions/display';
 import * as actionsQuiz from '../../actions/quiz';
+import * as actionsQuizList from '../../actions/quizList';
 import * as actionsQuestions from '../../actions/questions';
 import Results from './results';
 import SpacedRepGraphic from './spaced-rep-graphic';
@@ -12,26 +13,21 @@ export class Quiz extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      quiz: this.props.quiz,
-      questions: this.props.questions,
-      indexCurrent: this.props.quiz.indexCurrent,
-      question: typeof this.props.quiz.indexCurrent === 'number' ? 
-        this.props.questions[this.props.quiz.indexCurrent] : 
-        {answers: null, question: null, typeAnswer: null, typeQuestion: null} ,
       formIsEmpty: true,
-      showingAnswer: false,
     }
   }
 
   componentDidMount() {
     // componentDidMount should run only once
     console.log('componentDidMount');
-    this.setState({ indexNext: this.state.question.indexNext })
-    this.updateScoringObject(this.props.questions, this.props.quiz.indexCurrent, this.props.questions[this.props.quiz.indexCurrent]);
+    this.updateScoringObject(this.props.questions, 
+      this.props.quiz.indexCurrent, 
+      this.props.questions[this.props.quiz.indexCurrent]);
   }
 
   updateScoringObject(questions, indexCurrent, question){
-    console.log('updateScoringObject indexCurrent', indexCurrent);
+    console.log('start updateScoringObject: indexCurrent', indexCurrent, 
+      'questions', questions, 'question', question);
     const scoreIfTrue  = this.calcScore(question.score, true);
     const scoreIfFalse = this.calcScore(question.score, false);
 
@@ -48,48 +44,27 @@ export class Quiz extends React.Component {
     // console.log(' ')
     const indexInsertBeforeIfTrue  = (Array.isArray(questions) && this.props.user.id) ? questions[indexInsertAfterIfTrue ].indexNext : null;
     const indexInsertBeforeIfFalse = (Array.isArray(questions) && this.props.user.id) ? questions[indexInsertAfterIfFalse].indexNext : null;
+    
+    const scoringObject = {
+      idQuestion: question.id,
+      idUser: this.props.user.id,
+      idQuiz: this.props.quiz.id,
+      indexCurrent,
+      scorePrior: question.score,
+      indexNextPrior: question.indexNext,
+      scoreIfTrue,
+      scoreIfFalse,
+      positionsIfTrue,
+      positionsIfFalse,
+      indexInsertAfterIfTrue,
+      indexInsertAfterIfTrueLabel,
+      indexInsertAfterIfFalse,
+      indexInsertAfterIfFalseLabel,
+      indexInsertBeforeIfTrue,
+      indexInsertBeforeIfFalse,
+    };
 
-    this.setState({
-      scoringObject:{
-        idQuestion: question.id,
-        idUser: this.props.user.id,
-        idQuiz: this.props.quiz.id,
-        indexCurrent,
-        scorePrior: question.score,
-        indexNextPrior: question.indexNext,
-        scoreIfTrue,
-        scoreIfFalse,
-        positionsIfTrue,
-        positionsIfFalse,
-        indexInsertAfterIfTrue,
-        indexInsertAfterIfTrueLabel,
-        indexInsertAfterIfFalse,
-        indexInsertAfterIfFalseLabel,
-        indexInsertBeforeIfTrue,
-        indexInsertBeforeIfFalse,
-      }
-    });
-  }
-
-  updateQuestion(index) {
-    console.log('update question to:');
-    console.log('quiz', this.props.quiz);
-    console.log('questions', this.props.questions);
-    console.log('indexCurrent', this.props.quiz.indexCurrent);
-    console.log('this.state.indexNext', this.state.indexNext);
-    console.log('indexNext', this.props.questions[this.state.indexNext].indexNext);
-    console.log('question', this.props.questions[this.props.quiz.indexCurrent]);
-    this.setState({
-      quiz: this.props.quiz,
-      questions: this.props.questions,
-      indexCurrent: this.state.indexNext,
-      indexNext: this.props.questions[this.state.indexNext].indexNext,
-      question: typeof this.props.quiz.indexCurrent === 'number' ? 
-        this.props.questions[this.props.quiz.indexCurrent] : 
-        {answers: null, question: null, typeAnswer: null, typeQuestion: null} ,
-      formIsEmpty: true,
-      showingAnswer: false,
-    });
+    this.setState({ scoringObject: {...scoringObject} });
   }
 
   markFormAsTouched() {
@@ -112,7 +87,7 @@ export class Quiz extends React.Component {
     const randomAdder = correct ?
       Math.ceil(Math.random() * variantHi) : 
       Math.ceil(Math.random() * variantLo) ;
-    const maxPositions = questions.length - randomAdder - 1;
+    const maxPositions = questions.length - randomAdder - 2;
     if(!correct && score > questions.length/2) {
       return Math.ceil(questions.length/2) + variantLo;
     }
@@ -153,9 +128,6 @@ export class Quiz extends React.Component {
     // console.log('enter submitting', choices, request)
     if(this.state.formIsEmpty) return;
     const formattedChoices = this.formatChoice(choices);
-    this.setState({
-      showingAnswer: true
-    });
     const answerObject = {...scoringObject, choices: formattedChoices}
     console.log('submitting', answerObject);
     this.props.dispatch(actionsQuestions.answerQuestion(
@@ -163,29 +135,116 @@ export class Quiz extends React.Component {
       this.props.user.authToken)); 
   } 
 
-  handleNextButton(indexNext) {
+  advanceQuestion(indexNext) {
+    const nextState = {...this.props.quiz.nextState};
+
     console.log('handleNext indexNext', indexNext);
-    if(this.state.showingAnswer){
-      console.log('updateQuizIndexCurrent ... store')
-      console.log('current index before', this.props.quiz.indexCurrent, 'store')
-      this.props.dispatch(actionsQuiz.updateQuizIndexCurrent(indexNext));
-      console.log('current index after', this.props.quiz.indexCurrent, 'store')
-      console.log('reset')
+    if(this.props.quiz.showingAnswers){
       this.props.reset();   
-      console.log('updateQuestion')
-      this.updateQuestion();
-      console.log('updateScoringObject')
-      this.updateScoringObject(this.props.questions, indexNext, this.props.questions[indexNext])
+      console.log('updateQuestion, nextState', nextState)
+      console.log('questions before updating', this.props.questions)
+      console.log('question indices before updating',
+        this.props.questions[nextState.indexCurrent].index,
+        this.props.questions[nextState.indexCurrent].indexNext, '//',
+        this.props.questions[nextState.indexRedirect].index,
+        this.props.questions[nextState.indexRedirect].indexNext, '//',
+        this.props.questions[nextState.indexInsertAfter].index,
+        this.props.questions[nextState.indexInsertAfter].indexNext
+      );
+
+      this.props.dispatch(actionsQuiz.toggleShowAnswers(false));
+      this.props.dispatch(actionsQuiz.updateQuizIndexCurrent(indexNext));
+      this.props.dispatch(actionsQuiz.updateQuizScore(
+        nextState.scorePrior, 
+        nextState.scoreNew));
+      this.props.dispatch(actionsQuizList.updateQuizListScore(
+        nextState.idQuiz, 
+        nextState.scorePrior, 
+        nextState.scoreNew));
+        
+      this.props.dispatch(actionsQuestions.updateQuestion(
+        nextState.indexCurrent, 
+        nextState.indexNextNew, 
+        nextState.scoreNew));
+      this.props.dispatch(actionsQuestions.updateQuestion(
+        nextState.indexRedirect, 
+        nextState.indexRedirectNext));
+      this.props.dispatch(actionsQuestions.updateQuestion(
+        nextState.indexInsertAfter, 
+        nextState.indexCurrent));
+
+      this.setState({ formIsEmpty: true });
+
     } else {
-      console.log('not showing answer', this.state.showingAnswer)
+      console.log('not showing answer', this.props.quiz.showingAnswers)
     }
   }
 
+  handleNextButton(indexNext) {
+    return new Promise((resolve, reject)=>{
+      this.advanceQuestion(indexNext);
+      resolve();
+    })
+    .then(()=>{
+      const nextState = {...this.props.quiz.nextState};
+      console.log('questions after updating', this.props.questions)
+      console.log('question indices after updating',
+        this.props.questions[nextState.indexCurrent].index,
+        this.props.questions[nextState.indexCurrent].indexNext, '//',
+        this.props.questions[nextState.indexRedirect].index,
+        this.props.questions[nextState.indexRedirect].indexNext, '//',
+        this.props.questions[nextState.indexInsertAfter].index,
+        this.props.questions[nextState.indexInsertAfter].indexNext
+      );
+      if(this.props.questions[nextState.indexCurrent].indexNext !== nextState.indexNextNew) {
+        let i = 1;
+        while(this.props.questions[nextState.indexCurrent].indexNext !== nextState.indexNextNew && i<=10) {
+          console.log(`try again #${i} current question`);
+          this.props.dispatch(actionsQuestions.updateQuestion(
+            nextState.indexCurrent, 
+            nextState.indexNextNew, 
+            nextState.scoreNew));
+          i++;
+        }
+        if(i>10) console.log('ERROR DID NOT UPDATE CURRENT QUESTION')
+      }
+      if(this.props.questions[nextState.indexRedirect].indexNext !== nextState.indexRedirectNext) {
+        let i = 1;
+        while(this.props.questions[nextState.indexRedirect].indexNext !== nextState.indexRedirectNext && i<=10) {
+          console.log(`try again #${i} redirect`);
+          this.props.dispatch(actionsQuestions.updateQuestion(
+            nextState.indexRedirect, 
+            nextState.indexRedirectNext));
+          i++;
+        }
+        if(i>10) console.log('ERROR DID NOT UPDATE REDIRECT')
+      }
+      if(this.props.questions[nextState.indexInsertAfter].indexNext !== nextState.indexCurrent) {
+        let i = 1;
+        while(this.props.questions[nextState.indexInsertAfter].indexNext !== nextState.indexCurrent && i<=10) {
+          console.log(`try again #${i} insert after`);
+          this.props.dispatch(actionsQuestions.updateQuestion(
+            nextState.indexInsertAfter, 
+            nextState.indexCurrent));
+          i++;
+          if(i>10) console.log('ERROR DID NOT UPDATE INSERT AFTER')
+        }
+      }
+      this.updateScoringObject(this.props.questions, indexNext, this.props.questions[indexNext]);
+    })
+    .catch(err=>{
+      console.log('error', err);
+    })
+  }
+
   render() {
-    const results = this.state.showingAnswer ? <Results/> : null ;
-    const typeAnswer = this.state.question.typeAnswer;
-    const options = Array.isArray(this.state.question.answers) ? 
-      this.state.question.answers.map((answer,index)=>{
+    const results = this.props.quiz.showingAnswers ? <Results/> : null ;
+    const question = typeof this.props.quiz.indexCurrent === 'number' ? 
+      this.props.questions[this.props.quiz.indexCurrent] : 
+      {answers: null, question: null, typeAnswer: null, typeQuestion: null} ;
+    const typeAnswer = question.typeAnswer;
+    const options = Array.isArray(question.answers) ? 
+      question.answers.map((answer,index)=>{
         const optionName = typeAnswer === 'radio' ? 'option' : `${answer.id}`;
         return (
           <div key={index}>
@@ -204,19 +263,24 @@ export class Quiz extends React.Component {
     : null ;
 
     const submitButtonClass = this.state.formIsEmpty   ? 'submitButton inactive' : 'submitButton' ;
-    const nextButtonClass   = this.state.showingAnswer ? 'submitButton inactive' : 'submitButton' ;
-    const button = this.state.showingAnswer ? 
-      <button className={nextButtonClass} type="button" onClick={()=>this.handleNextButton(this.state.indexNext)}>Next</button>
-      : <button className={submitButtonClass} type="submit">Submit</button> ;
+    const nextButtonClass   = this.props.quiz.showingAnswers ? 'submitButton inactive' : 'submitButton' ;
+    const button = this.props.quiz.showingAnswers ? 
+      <button className={nextButtonClass} 
+        type="button" 
+        onClick={()=>this.handleNextButton(this.props.questions[this.props.quiz.indexCurrent].indexNext)}>
+          Next
+        </button> :
+      <button className={submitButtonClass} 
+        type="submit">
+          Submit
+      </button> ;
     const spacedRepGraphic = this.state.scoringObject ?
       <SpacedRepGraphic
-      scoringObject={this.state.scoringObject}
-      quiz={this.state.quiz}
-      questions={this.state.questions}/> : null ;
+      scoringObject={this.state.scoringObject}/> : null ;
 
     return (
     <div className="quiz">
-      <p className="questionAsked">{this.state.question.question}</p>
+      <p className="questionAsked">{this.props.questions[this.props.quiz.indexCurrent].question}</p>
       <form className="questionForm" onSubmit={this.props.handleSubmit(values =>
         this.handleSubmitButton(values, this.state.scoringObject)
       )}>
@@ -225,8 +289,8 @@ export class Quiz extends React.Component {
          {button}
         </div>
       </form>
-      {results}
       {spacedRepGraphic}
+      {results}
     </div>
   );
   }

@@ -11,10 +11,22 @@ export const reducer = ( state = initialQuiz, action ) => {
     return { ...state, score: score };
   }
   if ( action.type === actions.UPDATE_QUIZ_INDEX_CURRENT ) {
-    // console.log('UPDATE_QUIZ_INDEX_CURRENT', action)
+    console.log('UPDATE_QUIZ_INDEX_CURRENT', action)
     return {
       ...state, 
       indexCurrent: action.indexCurrent
+    };
+  }
+  if ( action.type === actions.UPDATE_NEXT_STATE ) {
+    return {
+      ...state, 
+      nextState: action.nextState
+    };
+  }
+  if ( action.type === actions.TOGGLE_SHOW_ANSWERS ) {
+    return {
+      ...state, 
+      showingAnswers: action.showingAnswers
     };
   }
   return state;

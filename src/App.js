@@ -7,6 +7,7 @@ import User from './components/user/user';
 import Lists from './components/lists/lists';
 import Quiz from  './components/quiz/quiz';
 import Modal from  './components/display/modal';
+import Loading from  './components/display/loading';
 import NoMatch from  './components/display/nomatch';
 
 // REFACTOR: instead of this long switch, 
@@ -16,6 +17,7 @@ import NoMatch from  './components/display/nomatch';
 export function App(props) {
 
   const modal = props.display.modal ? <Modal /> : '' ;
+  const loading = props.display.loading ? <Loading /> : '' ;
 
   return (
     <BrowserRouter>
@@ -31,6 +33,7 @@ export function App(props) {
         </main>
         <Route path = '*'                 component={Header}/>
       {modal}
+      {loading}
     </div>
     </BrowserRouter>
   );

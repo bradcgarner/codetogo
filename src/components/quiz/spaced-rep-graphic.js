@@ -17,7 +17,7 @@ export function SpacedRepGraphic(props) {
     indexInsertBeforeIfTrue,
     indexInsertBeforeIfFalse
   } = props.scoringObject;
-  console.log('spacedRepGraphic indexCurrent', indexCurrent)
+  // console.log('spacedRepGraphic indexCurrent', indexCurrent)
 
   const questionObjectArray = props.questions.map((question, index)=>{
     const falseScore     = question.index === indexCurrent ? 'false' : 'transparent' ;
@@ -49,19 +49,10 @@ export function SpacedRepGraphic(props) {
         {questionObjectArray}
       </div>
       <div className='spacedRepStats'>
-        <div>quiz score now {props.quiz.score}</div>
-        <div>question score = {scorePrior}</div>
-        {/* <br/>
-        <div>indexCurrent = {indexCurrent}</div>
-        <div>indexNext = {indexNextPrior}</div> */}
-        <br/>
-        <div>scoreIfTrue {scoreIfTrue}</div>
-        <div>indexInsertAfterIfTrue = {indexInsertAfterIfTrue}: {indexInsertAfterIfTrueLabel}</div>
-        <div>indexInsertBeforeIfTrue = {indexInsertBeforeIfTrue}</div>
-        <br/>
-        <div>scoreIfFalse = {scoreIfFalse}</div>
-        <div>indexInsertAfterIfFalse = {indexInsertAfterIfFalse}: {indexInsertAfterIfFalseLabel}</div>
-        <div>indexInsertBeforeIfFalse = {indexInsertBeforeIfFalse}</div>
+        <div>indexNext = {indexNextPrior}</div>
+        <div>quiz score now = {props.quiz.score}</div>
+        <div>if true: {indexCurrent} + {indexInsertAfterIfTrueLabel} = {indexInsertAfterIfTrue} ... {indexInsertBeforeIfTrue} &amp; score: {scorePrior} -> {scoreIfTrue} </div>
+        <div>if false: {indexCurrent} + {indexInsertAfterIfFalseLabel} = {indexInsertAfterIfFalse} ... {indexInsertBeforeIfFalse} &amp; score: {scorePrior} -> {scoreIfFalse} </div>
       </div>
     </div>
     );

@@ -26,6 +26,19 @@ export const updateQuizIndexCurrent = indexCurrent => ({
   indexCurrent,
 });
 
+export const TOGGLE_SHOW_ANSWERS = 'TOGGLE_SHOW_ANSWERS';
+export const toggleShowAnswers = value => ({
+  type: TOGGLE_SHOW_ANSWERS,
+  showingAnswers: value,
+});
+
+// redundant of single quiz update, but this affects the list, so user sees updated score in the list as well
+export const UPDATE_NEXT_STATE = 'UPDATE_NEXT_STATE';
+export const updateNextState = nextState => ({
+  type: UPDATE_NEXT_STATE,
+  nextState, 
+});
+
 // @@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@
 
 // get list of all quizzes; only once at load

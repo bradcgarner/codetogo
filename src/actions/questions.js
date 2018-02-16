@@ -19,20 +19,17 @@ export const loadQuestions = questions => ({
 // update a single question in the array
 // reducer uses default values if none passed, so we can pass only indexNext
 export const UPDATE_QUESTION = 'UPDATE_QUESTION';
-export const updateQuestion = (index, indexNext, answers, correct, score) => ({
+export const updateQuestion = (index, indexNext, score) => ({
   type: UPDATE_QUESTION,
   index, 
   indexNext,
-  answers,
-  correct,
   score, 
 });
 
 // @@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@
 
 export const answerQuestion = (answerObject, authToken) => dispatch => {
-  // console.log('in answerQuestion questions', questions);
-  // console.log('indexCurrent', indexCurrent, choices, 'choices', 'idUser', idUser);
+  console.log('answerQuestion', answerObject);
   dispatch(actionsDisplay.showLoading());
   
   const url = `${REACT_APP_BASE_URL}/api/questions/${answerObject.idQuestion}`;
@@ -57,28 +54,9 @@ export const answerQuestion = (answerObject, authToken) => dispatch => {
     })
     .then(answerReturned=>{
       console.log('answerReturned',answerReturned);
-      const {
-        answers,
-        correct,
-        indexInsertBefore, // not used; FYI; this should match indexNextNew
-        indexInsertAfter,
-        indexRedirect, // this used to point at the current question, but now points to the question the current question used to point to
-        scoreNew,
-        indexNextNew,
-        indexRedirectNext
-      } = answerReturned;
-
-      // console.log(' ')
-      // console.log('update current index', answerObject.indexCurrent, 'next new', indexNextNew, 'answers', answers, 'correct', correct, 'scoreNew', scoreNew)
-      dispatch(updateQuestion(answerObject.indexCurrent, indexNextNew, answers, correct, scoreNew));
-      // console.log('update redirect', 'index', indexRedirect, 'next', indexRedirectNext)
-      dispatch(updateQuestion(indexRedirect, indexRedirectNext));
-      // console.log('update after', 'index', indexInsertAfter, 'next', answerObject.indexCurrent)
-      dispatch(updateQuestion(indexInsertAfter, answerObject.indexCurrent));
-      dispatch(actionsQuiz.updateQuizScore(answerObject.scorePrior, scoreNew));
-      dispatch(actionsQuizList.updateQuizListScore(answerObject.idQuiz, answerObject.scorePrior, scoreNew));
+      dispatch(actionsQuiz.updateNextState(answerReturned));
+      dispatch(actionsQuiz.toggleShowAnswers(true));
       return dispatch(actionsDisplay.closeLoading());
-
     })
     .catch(err => {
       const error = typeof err === 'string' ? err :
