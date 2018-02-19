@@ -18,7 +18,7 @@ describe('BurgerIcon component', () => {
   it('should click button', () => {
     expect(renderedComponent.find('.burgerIcon').simulate('click'));
     expect(spy.mock.calls.length).toBe(1);
-  })
+  });
 
   it('Should map state to props', () => {
     const state = {

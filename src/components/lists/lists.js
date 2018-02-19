@@ -44,6 +44,7 @@ export class Lists extends React.Component {
       this.setState({menu: true, dashboard: false})
     }
   }
+  
   render() {
 
     const listHeader = this.state.dashboard ? 'My Quizzes' : 'Select A Quiz' ;

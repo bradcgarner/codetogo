@@ -31,6 +31,18 @@ export const reducer = ( state = initialDisplay, action ) => {
       menu: !state.menu,
     };
   }
+
+  if ( action.type === actions.TOGGLE_SETTINGS ) {
+    return {...state,
+      menu: !state.settings,
+    };
+  }
+
+  if ( action.type === actions.TOGGLE_ABOUT ) {
+    return {...state,
+      menu: !state.about,
+    };
+  }
     
   return state;
 }

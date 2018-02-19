@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import * as actionsDisplay from '../../actions/display';
 import * as actionsUser from '../../actions/user';
+import { initialUser } from '../../reducers/initialState';
 
 export function BurgerMenu(props) {
  // Component function: menu of options. 
@@ -12,58 +14,47 @@ export function BurgerMenu(props) {
   
   const isLoggedIn = props.user.id ? true : false ;
   const loggedInClass = isLoggedIn ? '' : 'inactive' ;
-  
-  const handleLoginButton = option => {
-    if (option === 'Logout') {
-      const userReset = {
-        id: '',
-        firstName: '',
-        lastName: '',
-        username: '',
-        quizzes: [{id: ''}], // resetting to [] doesn't work
-        badges: '',
-        recent: '',
-        authToken: ''
-      };
-      // props.dispatch(actionsDisplay.changeMode('landing', props.quiz));
-      props.dispatch(actionsUser.updateUser(userReset));
-    } else {
-      // props.dispatch(actionsDisplay.changeMode('login', props.quiz));
-    }
-  }
+  const loginClass = `${loggedInClass} loginButton`;
+  const profileClass = `${loggedInClass} profileButton`;
+  const quizListClass = 'quizListButton';
+  const aboutClass = 'aboutButton';
+  const settingsClass = `${loggedInClass} settingsButton`;
 
-  const loginText = isLoggedIn ? 'Logout' : 'Login' ;
-  const login = <li onClick={()=>handleLoginButton(loginText)}>{loginText}</li> ;
-
-  const handleDashboardButton = () => {
+  const handleLoginButton = () => {
     if (isLoggedIn) {
-      // props.dispatch(actionsDisplay.changeMode('dashboard', props.quiz))
+      props.dispatch(actionsUser.updateUser(initialUser));
+      props.history.push('/');
+    } else {
+      props.history.push('/users/login');
     }
   }
-  const dashboard = <li className={loggedInClass} onClick={()=>handleDashboardButton()}>Dashboard</li> ; 
+  const loginText = isLoggedIn ? 'Logout' : 'Login' ;
+  const login = <li className={loginClass} onClick={()=>handleLoginButton(loginText)}>{loginText}</li> ;
 
   const profileText = isLoggedIn ? 'Profile' : 'Create Account' ;  
-  const handleProfileButton = null ; // change this to a link
-  const profile = <li onClick={()=>handleProfileButton()}>{profileText}</li> ;
+  const profile = props.match.url === '/users/profile' ? null : <Link to='/users/profile'>{profileText}</Link>
 
-  const handleQuizListButton = () => {
-    if (isLoggedIn) {
-      // props.dispatch(actionsDisplay.changeMode('quizlist', props.quiz))
-    }
-  };    
-  const quizList = <li className={loggedInClass} onClick={()=>handleQuizListButton()}>List of All Quizzes</li> ;
+  const quizListText = props.match.url === '/lists' ? null : 'Lists of Quizzes' ;
+  const quizList = props.match.url === '/lists' ? null : <Link to='/users/profile'>{quizListText}</Link>;
 
-  const handleAboutButton = null; // change this to a link    
-  const about = <li onClick={()=>handleAboutButton()}>About</li> ;
+  const handleAboutButton = () => {
+    props.dispatch(actionsDisplay.toggleAbout());
+  }; // change this to a link    
+  const about = props.match.url === '/home' ? null : <li className={aboutClass} onClick={()=>handleAboutButton()}>About</li> ;
 
-    return (
+  const handleSettingsButton = () => {
+    props.dispatch(actionsDisplay.toggleSettings());
+  }; // change this to a link    
+  const settings = <li className={settingsClass} onClick={()=>handleSettingsButton()}>Settings</li> ;
+
+  return (
       <div className={burgerMenuClass}>
         <ul>
           {login}
-          {dashboard}
           {profile}
           {quizList}
           {about}
+          {settings}
         </ul>
       </div>
     );
