@@ -7,6 +7,7 @@ import * as actionsUser from '../../actions/user';
 import * as actionsDisplay from '../../actions/display';
 
 export class Login extends React.Component {
+  // Component function: allows user to log in
   
   handleSubmitButton(values) {
     console.log('values submitted at login', values);

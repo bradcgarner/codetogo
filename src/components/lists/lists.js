@@ -55,10 +55,13 @@ export class Lists extends React.Component {
     const quizList = this.state.menu ? this.props.general.menuOfAllQuizzes : this.props.quizList ;
     const quizListArray = Array.isArray(quizList) ? quizList : [] ;
     const listItems = quizListArray.map((quiz, index)=>{
+      const userHas = this.state.dashboard ? true :
+        this.props.quizList[quiz.id] ? true : false ;
       return <ListItem
         key={index} 
         index={index} 
         quiz={quiz} 
+        userHas={userHas}
         dashboard={this.state.dashboard} 
         isLoggedIn={this.state.isLoggedIn}
         history={this.props.history}

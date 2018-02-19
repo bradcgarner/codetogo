@@ -7,7 +7,8 @@ import Profile from './profile';
 import NoMatch from  '../display/nomatch';
 
 export function User(props) { 
-  
+  // Component function: simply a switch to display login or profile or to redirect
+
   return (
 
     <div className='user'>

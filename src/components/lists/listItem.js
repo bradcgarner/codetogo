@@ -11,13 +11,7 @@ export function ListItem(props) {
   const scoreClass = props.dashboard ? 'listItemScore' : 'hidden' ;
   const takeQuizOption = props.dashboard ? 'take' : 'add' ;
   
-  let isListed = false;
-  if (!props.dashboard && Array.isArray(props.quizList)) {
-    props.quizList.forEach(quiz=>{
-      if (quiz.id===thisQuiz.id) { isListed = true }
-    });
-  }
-  // USE ISLISTED FOR FORMATTING!
+  // USE props.userHas FOR FORMATTING!
 
   const handleTakeQuizButton = next => {
     props.dispatch(actionsQuiz.takeQuiz(thisQuiz.id, props.user.id, takeQuizOption, props.user.authToken))

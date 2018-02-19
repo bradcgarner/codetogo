@@ -10,6 +10,11 @@ import Results from './results';
 import SpacedRepGraphic from './spaced-rep-graphic';
 
 export class Quiz extends React.Component {
+  // Component function: workhorse component for app!!
+  // displays current question and handles all front-end spaced repetition logic
+  // logic is here so that logic can be visible to the user, primarily via the subcomponent spaced-rep-graphic, vs semi-concealed in an action
+  // submission of answer processes logic, and sends processed results to server. Server only handles one small piece of logic: find the redirect question
+
   constructor(props){
     super(props);
     this.state = {

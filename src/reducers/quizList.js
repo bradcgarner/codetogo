@@ -8,7 +8,7 @@ export const reducer = ( state = initialQuizList, action ) => {
     return action.quizList;
   }
   if ( action.type === actions.ADD_QUIZ ) {
-    return [...state, action.quiz];
+    return {...state, [action.quiz.id]: action.quiz};
   } 
   return state;
 }

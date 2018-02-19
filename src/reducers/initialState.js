@@ -66,8 +66,8 @@ export const initialQuiz = { // store.quiz - single current quiz, loads when use
   nextState: {},
 };
 
-export const initialQuizList = [
-  { // all quizzes user has ever taken
+export const initialQuizList = {
+  abc123: { // all quizzes user has ever taken
     id: 0,
     idUser: 0,
     name: 'test',
@@ -79,7 +79,7 @@ export const initialQuizList = [
     score: 0,
     indexCurrent: 0,
   }
-];
+};
 
 export const initialUser = { // store.user, single current user, loads at login
   id: null,

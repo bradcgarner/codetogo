@@ -5,7 +5,7 @@ import * as actionsUser from '../../actions/user';
 
 export function BurgerMenu(props) {
  // Component function: menu of options. 
- // Options are: logout, my dashboard, take another/change quiz, future statistical options
+ // Options are: logout, edit my profile, my dashboard, take another/change quiz, future statistical options
  // Settings is an option, that displays the settings modal
 
  const burgerMenuClass = props.burger ? 'burgerMenu burgerShow popover' : 'burgerMenu burgerHide popover' ;  

@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import * as actionsUser from '../../actions/user';
 
 export class Profile extends React.Component {
+  // Component function: allows user to create and edit profile
+  // User profile is basic: does not include quizzes, badges, etc.
 
   handleSubmitButton(values) { // add form validation first
     console.log('values submitted at profile', values);

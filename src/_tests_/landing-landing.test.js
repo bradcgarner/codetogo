@@ -4,15 +4,7 @@ import { Landing, mapStateToProps } from '../components/landing/landing';
 import {initialDisplay, initialQuiz, initialQuestions, initialUser, initialActivity, initialBadges, initialGeneral} from '../reducers/initialState';
 
 describe('Landing component', () => {
-  const renderedComponent = shallow(<Landing 
-    activity={initialActivity} 
-    badges={initialBadges} 
-    display={initialDisplay} 
-    general={initialGeneral}
-    questions={initialQuestions} 
-    quiz={initialQuiz} 
-    user={initialUser} 
-  />);
+  const renderedComponent = shallow(<Landing />);
 
   it('Smoke test - Landing should render', () => {
     renderedComponent

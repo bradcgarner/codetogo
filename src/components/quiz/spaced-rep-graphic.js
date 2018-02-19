@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 export function SpacedRepGraphic(props) {
+  // Component function: graphic display of spaced repetition algorithm, both for development testing AND for programmers curious about the algorithm
+
   const {
     indexCurrent,
     indexNextPrior,

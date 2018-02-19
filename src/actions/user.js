@@ -14,6 +14,16 @@ export const loadUser = user => ({
   user
 });
 
+// @@@@@@@@@@@@@@@@@ HELPERS @@@@@@@@@@@@@@@@@@@
+
+const convertArrayToObject = (array, key) => {
+  const object = {};
+  array.forEach(item=>{
+    object[item[key]] = item;
+  });
+  return object;
+}
+
 // @@@@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@@@@@@
 
 export const login = credentials => dispatch => {
@@ -36,11 +46,12 @@ export const login = credentials => dispatch => {
     return userFound.json();
   })
   .then(userFound=>{
-    console.log('user returned at login', userFound);    
+    console.log('user returned at login', userFound); 
     dispatch(loadUser(userFound.user));
     dispatch(actionsActivity.loadActivity(userFound.activity));
     dispatch(actionsBadges.loadBadges(userFound.badges));
-    dispatch(actionsQuizList.loadQuizList(userFound.quizList));
+    const quizList = convertArrayToObject(userFound.quizList, 'id');
+    dispatch(actionsQuizList.loadQuizList(quizList));
     return dispatch(actionsDisplay.closeLoading());
 
   })
