@@ -59,13 +59,12 @@ export class Login extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+export const mapStateToProps = state => {
   const initialForm = {};
   initialForm.username = state.user.username;
   return {
-    user: state.user,
-    quiz: state.quiz,
     display: state.display,
+    user: state.user,
     initialValues: initialForm,  
   }
 }

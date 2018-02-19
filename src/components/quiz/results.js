@@ -1,20 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Resources from './resources';
 import Reason from './reason';
+import Resources from './resources';
 import Feedback from './feedback';
 
-export function Results(props) {
-  // Component function: after answering question, displays whether user's answer is correct
+
+export default function Results(props) {
+  // Component function: after answering question, displays subcomponents
 
   return (
     <div className="results">
-      Results
-      <Reason/>
-      <Resources/>
-      <Feedback/>
+      <Reason reason={props.reason}/>
+      <Resources resources={props.resources}/>
+      <Feedback />
     </div>
   );
 }
-
-export default connect()(Results);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import { NoMatch } from '../components/display/nomatch';
+import NoMatch from '../components/display/nomatch';
 
 describe('NoMatch component', () => {
   const renderedComponent = shallow(<NoMatch/>);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
-// ADD REDUX FORM!!!
+import { compose } from 'redux';
+import { reduxForm, Field } from 'redux-form';
 
 export function Feedback(props) {
   // Component function: allow user to submit feedback on specific questions
@@ -13,4 +13,13 @@ export function Feedback(props) {
   );
 }
 
-export default connect()(Feedback);
+const mapStateToProps = state => ({
+  questions: state.questions,
+  quiz: state.quiz,
+  user: state.user,
+})
+
+export default compose(
+  connect(mapStateToProps),
+  reduxForm({form:'feedback'})
+)(Feedback);

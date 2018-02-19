@@ -1,17 +1,10 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import { Reason, mapStateToProps } from '../components/quiz/reason';
-import {initialDisplay, initialQuiz, initialQuestions, initialUser, initialActivity, initialBadges, initialGeneral} from '../reducers/initialState';
+import Reason from '../components/quiz/reason';
 
 describe('Reason component', () => {
   const renderedComponent = shallow(<Reason 
-    activity={initialActivity} 
-    badges={initialBadges} 
-    display={initialDisplay} 
-    general={initialGeneral}
-    questions={initialQuestions} 
-    quiz={initialQuiz} 
-    user={initialUser} 
+    reason={''} 
   />);
 
   it('Smoke test - Reason should render', () => {

@@ -61,8 +61,8 @@ export function SpacedRepGraphic(props) {
 }
 
 const mapStateToProps = state => ({
-  quiz: state.quiz,
   questions: state.questions,
+  quiz: state.quiz,
 })
 
 export default connect(mapStateToProps)(SpacedRepGraphic);

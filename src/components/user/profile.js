@@ -99,17 +99,10 @@ export class Profile extends React.Component {
 }
 
 const mapStateToProps = state => {
-  // const initialForm = Object.assign({}, state.user);
-  // delete initialForm.recent;
-  // delete initialForm.quizzes;
-  // delete initialForm.badges;
-  // delete initialForm.authToken;
-  // delete initialForm.id;
   return {
-    user: state.user,
-    quiz: state.quiz,
     display: state.display,
-    // initialValues: initialForm
+    user: state.user,
+    initialValues: initialForm
   }
 }
 

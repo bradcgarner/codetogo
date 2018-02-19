@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { Quiz, mapStateToProps } from '../components/quiz/quiz';
-import {initialDisplay, initialQuiz, initialQuestions, initialUser} from '../reducers/initialState';
+import { initialDisplay, initialQuiz, initialQuestions, initialUser} from '../reducers/initialState';
 
 describe('Quiz component', () => {
   const renderedComponent = shallow(<Quiz
@@ -9,7 +9,7 @@ describe('Quiz component', () => {
     quiz={initialQuiz}
     questions={initialQuestions}
     user={initialUser}
-    handleSubmit={()=>{}}
+    handleSubmit={jest.fn()}
   />);
 
   it('Smoke test - Quiz should render', () => {

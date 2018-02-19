@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { BurgerMenu, mapStateToProps } from '../components/header/burger-menu';
-import {initialDisplay, initialQuiz, initialQuestions, initialUser, initialActivity, initialBadges, initialGeneral} from '../reducers/initialState';
+import { initialDisplay, initialQuiz, initialUser } from '../reducers/initialState';
 
 describe('BurgerMenu component', () => {
   const renderedComponent = shallow(<BurgerMenu 

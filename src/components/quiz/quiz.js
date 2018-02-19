@@ -248,7 +248,6 @@ export class Quiz extends React.Component {
 
   render() {
     const quiz = this.props.quiz ? this.props.quiz : {showingAnswers: false, indexCurrent: 0, nextState: {} };
-    const results = quiz.showingAnswers ? <Results/> : null ;
     const questions = this.props.questions ? this.props.questions : [{question: null, answers: null, question: null, typeAnswer: null, typeQuestion: null, indexNext: 0}] ;
 
     const question = typeof quiz.indexCurrent === 'number' ? 
@@ -285,7 +284,6 @@ export class Quiz extends React.Component {
           onChange={()=>this.markFormAsTouched()} /> :
       <div className="questionOptions">{optionsList}</div> 
 
-
     const submitButtonClass = this.state.formIsEmpty   ? 'submitButton inactive' : 'submitButton' ;
     const nextButtonClass   = quiz.showingAnswers ? 'submitButton' : 'submitButton inactive' ;
     const button = quiz.showingAnswers && this.props.user.id ? 
@@ -305,6 +303,8 @@ export class Quiz extends React.Component {
     const spacedRepGraphic = this.state.scoringObject ?
       <SpacedRepGraphic
       scoringObject={this.state.scoringObject}/> : null ;
+    
+    const results = quiz.showingAnswers ? <Results reason={question.reason} resources={question.resources}/> : null ;
 
     return (
     <div className="quiz">

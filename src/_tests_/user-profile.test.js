@@ -1,17 +1,16 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { Profile, mapStateToProps } from '../components/user/profile';
-import {initialDisplay, initialQuiz, initialQuestions, initialUser, initialActivity, initialBadges, initialGeneral} from '../reducers/initialState';
+import { initialDisplay, initialUser } from '../reducers/initialState';
 
 describe('Profile component', () => {
   const renderedComponent = shallow(<Profile 
-    activity={initialActivity} 
-    badges={initialBadges} 
     display={initialDisplay} 
-    general={initialGeneral}
-    questions={initialQuestions} 
-    quiz={initialQuiz} 
     user={initialUser} 
+    handleSubmit={jest.fn()}
+    initialValues={{}}
+    history={['']}
+
   />);
 
   it('Smoke test - Profile should render', () => {

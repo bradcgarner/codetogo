@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-export function Reason(props) {
+export default function Reason(props) {
   // Component function: after answering question, displays reason correct answer is correct
 
   return (
@@ -10,5 +10,3 @@ export function Reason(props) {
     </div>
   );
 }
-
-export default connect()(Reason);
