@@ -5,6 +5,8 @@ import * as actionsDisplay from '../../actions/display';
 import ListItem from './listItem';
 
 export class Lists extends React.Component {
+  // Component function: all quiz lists are rendered via Lists, varying based on props. Lists set up currently are dashboard (user's quizzes) and menuOfQuizzes (all quizzes)
+
   constructor(props) {
     super(props);
     this.state = {
@@ -30,7 +32,6 @@ export class Lists extends React.Component {
         }
       }
     }
-    
   }
 
   goToDashboard() {
@@ -96,12 +97,10 @@ export class Lists extends React.Component {
   };
 }
 
-const mapStateToProps = state => ({
-  user: state.user,
-  quiz: state.quiz,
-  quizList: state.quizList,
-  display: state.display,
-  general: state.general,
+export const mapStateToProps = state => ({
+  general: state.general, // used for menu of all quizzes
+  quizList: state.quizList, // users list of quizzes
+  user: state.user, // user logged in
 })
 
 export default connect(mapStateToProps)(Lists);

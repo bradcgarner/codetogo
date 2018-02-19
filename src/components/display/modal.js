@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import * as actionsDisplay from '../../actions/display';
 
 export class Modal extends React.Component {
-  
-  
+  // Component function: displays message to user (usually error message)
   
   exit() {
     this.props.dispatch(actionsDisplay.closeModal());

@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as actionsDisplay from '../../actions/display';
 
-export function Burger(props) {
+export function BurgerIcon(props) {
+  // Component function: Just an icon that renders a burger, on click displays menu
   
   const handleBurgerButton = () => {
     // props.dispatch(actionsDisplay.toggleBurger(props.display.burger))
@@ -15,9 +16,8 @@ export function Burger(props) {
 }
 
 const mapStateToProps = state => ({
+  display: state.display,
   user: state.user,
-  quiz: state.quiz,
-  display: state.display
 })
 
-export default connect(mapStateToProps)(Burger);
+export default connect(mapStateToProps)(BurgerIcon);

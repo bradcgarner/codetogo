@@ -1,11 +1,19 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { Quiz, mapStateToProps } from '../components/quiz/quiz';
+import {initialDisplay, initialQuiz, initialQuestions, initialUser} from '../reducers/initialState';
 
 describe('Quiz component', () => {
+  const renderedComponent = shallow(<Quiz
+    display={initialDisplay}
+    quiz={initialQuiz}
+    questions={initialQuestions}
+    user={initialUser}
+    handleSubmit={()=>{}}
+  />);
 
-  it('Smoke test - quiz should render', () => {
-    shallow(<Quiz/>);
+  it('Smoke test - Quiz should render', () => {
+    renderedComponent;
   });
   // it('Should render a messages icon, opportunities icon, search bar, profile icon and settings icon when there is a user', () => {
   //   const wrapper = shallow(<NavBarTop user={user} />);

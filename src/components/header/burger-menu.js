@@ -4,8 +4,11 @@ import * as actionsDisplay from '../../actions/display';
 import * as actionsUser from '../../actions/user';
 
 export function BurgerMenu(props) {
+ // Component function: menu of options. 
+ // Options are: logout, my dashboard, take another/change quiz, future statistical options
+ // Settings is an option, that displays the settings modal
 
-  const burgerMenuClass = props.burger ? 'burgerMenu burgerShow popover' : 'burgerMenu burgerHide popover' ;  
+ const burgerMenuClass = props.burger ? 'burgerMenu burgerShow popover' : 'burgerMenu burgerHide popover' ;  
   
   const isLoggedIn = props.user.id ? true : false ;
   const loggedInClass = isLoggedIn ? '' : 'inactive' ;
@@ -67,9 +70,9 @@ export function BurgerMenu(props) {
 }
 
 const mapStateToProps = state => ({
-  user: state.user,
+  display: state.display,
   quiz: state.quiz,
-  display: state.display
+  user: state.user,
 })
 
 export default connect(mapStateToProps)(BurgerMenu);

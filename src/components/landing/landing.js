@@ -4,7 +4,10 @@ import * as actionsDisplay from '../../actions/display';
 import { Link } from 'react-router-dom';
 import About from './about';
 
-export default class Home extends React.Component {
+export default class Landing extends React.Component {
+  // Component function: landing page. Click to log in, create account, show about. Receives most 404 redirects.
+  // Bypass this and go to dashboard if token is in local storage.
+
   constructor(props){
     super(props);
     this.state = {

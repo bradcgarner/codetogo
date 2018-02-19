@@ -2,12 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as actionsQuiz from '../../actions/quiz';
 import * as actionsGeneral from '../../actions/general';
-import Burger from './burger';
+import BurgerIcon from './burger-icon';
 import BurgerMenu from './burger-menu';
-import Back from './back';
 import SettingsModal from './settings-modal';
 
 export class Header extends React.Component {
+  // Component function: header across top of screen. Permanently displayed.
+
   componentDidMount() {
     this.props.dispatch(actionsGeneral.initialize());
   }
@@ -31,7 +32,7 @@ export class Header extends React.Component {
           <BurgerMenu />
           <div className="header">
             <h1 className="headerLabel">{headerLabel}</h1>
-            <Burger />
+            <BurgerIcon />
           </div>
         </header>
       );
@@ -40,9 +41,8 @@ export class Header extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.user,
   quiz: state.quiz,
-  display: state.display
+  user: state.user,
 })
 
 export default connect(mapStateToProps)(Header);

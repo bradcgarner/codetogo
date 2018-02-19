@@ -10,10 +10,6 @@ import Modal from  './components/display/modal';
 import Loading from  './components/display/loading';
 import NoMatch from  './components/display/nomatch';
 
-// REFACTOR: instead of this long switch, 
-// create an object Component[props.mode.view]
-// with all components keyed to view
-
 export function App(props) {
 
   const modal = props.display.modal ? <Modal /> : '' ;

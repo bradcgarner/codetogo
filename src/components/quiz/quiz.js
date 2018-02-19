@@ -242,12 +242,15 @@ export class Quiz extends React.Component {
   }
 
   render() {
-    const results = this.props.quiz.showingAnswers ? <Results/> : null ;
-    const question = typeof this.props.quiz.indexCurrent === 'number' ? 
-      this.props.questions[this.props.quiz.indexCurrent] : 
-      {answers: null, question: null, typeAnswer: null, typeQuestion: null} ;
-    const typeAnswer = question.typeAnswer;
-    
+    const quiz = this.props.quiz ? this.props.quiz : {showingAnswers: false, indexCurrent: 0, nextState: {} };
+    const results = quiz.showingAnswers ? <Results/> : null ;
+    const questions = this.props.questions ? this.props.questions : [{question: null, answers: null, question: null, typeAnswer: null, typeQuestion: null, indexNext: 0}] ;
+
+    const question = typeof quiz.indexCurrent === 'number' ? 
+        questions[quiz.indexCurrent] : 
+        {answers: null, question: null, typeAnswer: null, typeQuestion: null} ;
+    const typeAnswer = question.typeAnswer;  
+
     const optionsList = Array.isArray(question.answers) ? 
       question.answers.map((answer,index)=>{
         const optionName = typeAnswer === 'radio' ? 'option' : `${answer.id}`;
@@ -279,11 +282,11 @@ export class Quiz extends React.Component {
 
 
     const submitButtonClass = this.state.formIsEmpty   ? 'submitButton inactive' : 'submitButton' ;
-    const nextButtonClass   = this.props.quiz.showingAnswers ? 'submitButton' : 'submitButton inactive' ;
-    const button = this.props.quiz.showingAnswers && this.props.user.id ? 
+    const nextButtonClass   = quiz.showingAnswers ? 'submitButton' : 'submitButton inactive' ;
+    const button = quiz.showingAnswers && this.props.user.id ? 
       <button className={nextButtonClass} 
         type="button" 
-        onClick={()=>this.handleNextButton(this.props.questions[this.props.quiz.indexCurrent].indexNext)}>
+        onClick={()=>this.handleNextButton(this.props.questions[quiz.indexCurrent].indexNext)}>
           Next
         </button> :
       <button className={submitButtonClass} 
@@ -291,8 +294,8 @@ export class Quiz extends React.Component {
           Submit
       </button> ;
 
-    const status = !this.props.quiz.showingAnswers ? null :
-      this.props.quiz.nextState.correct ? "Yay!" : "Boo..." ;
+    const status = !quiz.showingAnswers ? null :
+      quiz.nextState.correct ? "Yay!" : "Boo..." ;
 
     const spacedRepGraphic = this.state.scoringObject ?
       <SpacedRepGraphic
@@ -300,7 +303,7 @@ export class Quiz extends React.Component {
 
     return (
     <div className="quiz">
-      <p className="questionAsked">{this.props.questions[this.props.quiz.indexCurrent].question}</p>
+      <p className="questionAsked">{questions[quiz.indexCurrent].question}</p>
       <form className="questionForm" onSubmit={this.props.handleSubmit(values =>
         this.handleSubmitButton(values, this.state.scoringObject, question.typeAnswer)
       )}>

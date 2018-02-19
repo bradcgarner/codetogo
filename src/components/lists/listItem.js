@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import * as actionsQuiz from '../../actions/quiz';
 
 export function ListItem(props) {
+  // Component function: each ListItem represents 1 quiz. Appears in either dashboard or list of quizzes, with different props. 
+  // Entry point for all quizzes.
   
   const thisQuiz = props.quiz; // props.li is one of user.quizzes or menuOfAllQuizzes
   const difficultyClass = `listItemDifficulty diff${thisQuiz.difficulty}`
@@ -52,9 +54,8 @@ export function ListItem(props) {
 }
 
 const mapStateToProps = state => ({
-  user: state.user,
   quizList: state.quizList,
-  display: state.display
+  user: state.user,
 })
 
 export default connect(mapStateToProps)(ListItem);
