@@ -20,6 +20,7 @@ export const initialBadges = [
 ];
 
 export const initialDisplay = {  // store.mode
+  menu: false,
   loading: false,
   modal: false,    // userSettings, quizSettings
   modalMessage: '',

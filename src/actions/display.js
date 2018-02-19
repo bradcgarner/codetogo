@@ -28,4 +28,9 @@ export const closeLoading = () => ({
   type: CLOSE_LOADING,
 })
 
+export const TOGGLE_MENU = 'TOGGLE_MENU';
+export const toggleMenu = () => ({
+  type: TOGGLE_MENU,
+})
+
 // @@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@

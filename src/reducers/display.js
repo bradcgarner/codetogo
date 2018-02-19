@@ -25,6 +25,12 @@ export const reducer = ( state = initialDisplay, action ) => {
       loading: false,
     };
   }
+
+  if ( action.type === actions.TOGGLE_MENU ) {
+    return {...state,
+      menu: !state.menu,
+    };
+  }
     
   return state;
 }

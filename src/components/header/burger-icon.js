@@ -6,8 +6,7 @@ export function BurgerIcon(props) {
   // Component function: Just an icon that renders a burger, on click displays menu
   
   const handleBurgerButton = () => {
-    // props.dispatch(actionsDisplay.toggleBurger(props.display.burger))
-    // change this to state
+    props.dispatch(actionsDisplay.toggleMenu())
   }
   
     return (

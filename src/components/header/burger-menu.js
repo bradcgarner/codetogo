@@ -8,7 +8,7 @@ export function BurgerMenu(props) {
  // Options are: logout, edit my profile, my dashboard, take another/change quiz, future statistical options
  // Settings is an option, that displays the settings modal
 
- const burgerMenuClass = props.burger ? 'burgerMenu burgerShow popover' : 'burgerMenu burgerHide popover' ;  
+ const burgerMenuClass = props.display.menu ? 'burgerMenu burgerShow popover' : 'burgerMenu burgerHide popover' ;  
   
   const isLoggedIn = props.user.id ? true : false ;
   const loggedInClass = isLoggedIn ? '' : 'inactive' ;
