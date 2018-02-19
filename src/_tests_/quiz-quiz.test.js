@@ -6,8 +6,8 @@ import { initialDisplay, initialQuiz, initialQuestions, initialUser} from '../re
 describe('Quiz component', () => {
   const renderedComponent = shallow(<Quiz
     display={initialDisplay}
-    quiz={initialQuiz}
     questions={initialQuestions}
+    quiz={initialQuiz}
     user={initialUser}
     handleSubmit={jest.fn()}
   />);
@@ -85,4 +85,16 @@ describe('Quiz component', () => {
   //   expect(wrapper.find('.editProfileButton i').simulate('click'));
   //   expect(spy.mock.calls.length).toEqual(1);
   // });
+
+  it('Should map state to props', () => {
+    const state = {
+      display: initialDisplay, 
+      questions: initialQuestions, 
+      quiz: initialQuiz, 
+      user: initialUser, 
+    };
+    const mockState = mapStateToProps(state);
+    expect(mockState).toEqual(state);
+  });
+  
 });

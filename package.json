@@ -22,7 +22,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom --coverage",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "setupFiles": ["./src/shim.js", "./src/setupTests.js"]
   },
   "devDependencies": {
     "babel-preset-env": "^1.6.1",

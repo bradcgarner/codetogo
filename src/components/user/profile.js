@@ -98,9 +98,9 @@ export class Profile extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+export const mapStateToProps = state => {
+  const initialForm = {...state.user}
   return {
-    display: state.display,
     user: state.user,
     initialValues: initialForm
   }

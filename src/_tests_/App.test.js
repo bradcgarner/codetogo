@@ -25,5 +25,21 @@ describe('App component', () => {
     // expect().contains is not a function
     expect(renderedComponent).contains(<div className="App"></div>);
   });
+
+  it('Should map state to props', () => {
+    const state = {
+      activity: initialActivity, 
+      badges: initialBadges, 
+      display: initialDisplay, 
+      general: initialGeneral,
+      questions: initialQuestions, 
+      quiz: initialQuiz, 
+      quizList: initialQuizList,
+      user: initialUser, 
+    };
+    const mockState = mapStateToProps(state);
+    expect(mockState).toEqual(state);
+  });
+  
 })
 

@@ -15,7 +15,7 @@ export function BurgerIcon(props) {
     );
 }
 
-const mapStateToProps = state => ({
+export const mapStateToProps = state => ({
   display: state.display,
   user: state.user,
 })

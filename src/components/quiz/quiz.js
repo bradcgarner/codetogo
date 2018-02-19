@@ -326,7 +326,7 @@ export class Quiz extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+export const mapStateToProps = state => ({
   display: state.display,
   quiz: state.quiz,
   questions: state.questions,

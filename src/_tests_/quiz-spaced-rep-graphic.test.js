@@ -27,4 +27,14 @@ describe('SpacedRepGraphic component', () => {
   it('Smoke test - SpacedRepGraphic should render', () => {
     renderedComponent
   });
+
+  it('Should map state to props', () => {
+    const state = {
+      questions: initialQuestions, 
+      quiz: initialQuiz, 
+    };
+    const mockState = mapStateToProps(state);
+    expect(mockState).toEqual(state);
+  });
+  
 });

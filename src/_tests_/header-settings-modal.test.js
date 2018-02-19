@@ -12,4 +12,14 @@ describe('SettingsModal component', () => {
   it('Smoke test - SettingsModal should render', () => {
     renderedComponent
   });
+
+  it('Should map state to props', () => {
+    const state = {
+      quiz: initialQuiz, 
+      user: initialUser, 
+    };
+    const mockState = mapStateToProps(state);
+    expect(mockState).toEqual(state);
+  });
+  
 });

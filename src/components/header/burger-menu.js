@@ -69,7 +69,7 @@ export function BurgerMenu(props) {
     );
 }
 
-const mapStateToProps = state => ({
+export const mapStateToProps = state => ({
   display: state.display,
   quiz: state.quiz,
   user: state.user,

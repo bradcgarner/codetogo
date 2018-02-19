@@ -13,7 +13,7 @@ export function Feedback(props) {
   );
 }
 
-const mapStateToProps = state => ({
+export const mapStateToProps = state => ({
   questions: state.questions,
   quiz: state.quiz,
   user: state.user,

@@ -1,11 +1,10 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { Profile, mapStateToProps } from '../components/user/profile';
-import { initialDisplay, initialUser } from '../reducers/initialState';
+import { initialUser } from '../reducers/initialState';
 
 describe('Profile component', () => {
   const renderedComponent = shallow(<Profile 
-    display={initialDisplay} 
     user={initialUser} 
     handleSubmit={jest.fn()}
     initialValues={{}}
@@ -16,4 +15,14 @@ describe('Profile component', () => {
   it('Smoke test - Profile should render', () => {
     renderedComponent
   });
+
+  it('Should map state to props', () => {
+    const state = {
+      user: initialUser, 
+      initialValues: initialUser
+    };
+    const mockState = mapStateToProps(state);
+    expect(mockState).toEqual(state);
+  });
+  
 });

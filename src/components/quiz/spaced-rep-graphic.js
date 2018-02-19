@@ -60,7 +60,7 @@ export function SpacedRepGraphic(props) {
     );
 }
 
-const mapStateToProps = state => ({
+export const mapStateToProps = state => ({
   questions: state.questions,
   quiz: state.quiz,
 })

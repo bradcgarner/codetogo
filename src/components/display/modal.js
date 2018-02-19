@@ -2,34 +2,32 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as actionsDisplay from '../../actions/display';
 
-export class Modal extends React.Component {
+export function Modal(props) {
   // Component function: displays message to user (usually error message)
   
-  exit() {
-    this.props.dispatch(actionsDisplay.closeModal());
+  const exit = () => {
+    props.dispatch(actionsDisplay.closeModal());
   }
 
-  render() {
-    const message = this.props.display.modalMessage ? this.props.display.modalMessage : 'Sorry... something went wrong...' ;
+  const message = props.display.modalMessage ? props.display.modalMessage : 'Sorry... something went wrong...' ;
 
-    return (
-      <div className='modalContainer'>
-        <div className='modalBackground'
-          onClick={()=>{}}>
-        </div>
-        <div className='modalPanel'>
-          <p className='modalMessage'>
-            {message}
-          </p>
-          <i className="fa fa-times-circle modalExitButton" aria-hidden="true"
-            onClick={()=>this.exit()}></i>
-        </div>
+  return (
+    <div className='modalContainer'>
+      <div className='modalBackground'
+        onClick={props.fn}>
       </div>
-    );
-  }
+      <div className='modalPanel'>
+        <p className='modalMessage'>
+          {message}
+        </p>
+        <i className="fa fa-times-circle modalExitButton" aria-hidden="true"
+          onClick={()=>exit()}></i>
+      </div>
+    </div>
+  );
 }
 
-const mapStateToProps = state => ({
+export const mapStateToProps = state => ({
   display: state.display,
 })
 

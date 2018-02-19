@@ -1,4 +1,8 @@
+import 'core-js/es6/map';
+import 'core-js/es6/set';
+import 'raf/polyfill';
 import React from 'react';
+
 import { connect } from 'react-redux';
 import { BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
 import Header from './components/header/header';
@@ -12,8 +16,8 @@ import NoMatch from  './components/display/nomatch';
 
 export function App(props) {
 
-  const modal = props.display.modal ? <Modal /> : '' ;
-  const loading = props.display.loading ? <Loading /> : '' ;
+  const modal = props.display.modal ? <Modal fn={()=>{}}/> : '' ;
+  const loading = props.display.loading ? <Loading fn={()=>{}}/> : '' ;
 
   return (
     <BrowserRouter>
@@ -36,7 +40,7 @@ export function App(props) {
 }
 
 // remove after testing; this component does not need all these props!
-const mapStateToProps = state => ({
+export const mapStateToProps = state => ({
   activity: state.activity, 
   badges: state.badges,
   display: state.display,

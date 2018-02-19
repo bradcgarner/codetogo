@@ -47,7 +47,7 @@ export function ListItem(props) {
   );
 }
 
-const mapStateToProps = state => ({
+export const mapStateToProps = state => ({
   quizList: state.quizList,
   user: state.user,
 })

@@ -14,4 +14,15 @@ describe('Feedback component', () => {
   it('Smoke test - Feedback should render', () => {
     renderedComponent
   });
+
+  it('Should map state to props', () => {
+    const state = {
+      questions: initialQuestions, 
+      quiz: initialQuiz, 
+      user: initialUser, 
+    };
+    const mockState = mapStateToProps(state);
+    expect(mockState).toEqual(state);
+  });
+  
 });

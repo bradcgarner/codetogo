@@ -13,4 +13,25 @@ describe('BurgerMenu component', () => {
   it('Smoke test - BurgerMenu should render', () => {
     renderedComponent
   });
+
+  it('Should map state to props', () => {
+    const state = {
+      display: initialDisplay,
+      quiz:initialQuiz,
+      user:initialUser,
+    };
+    const mockState = mapStateToProps(state);
+    expect(mockState).toEqual(state);
+  });
+
+  it('Should map state to props', () => {
+    const state = {
+      display: initialDisplay, 
+      quiz: initialQuiz, 
+      user: initialUser, 
+    };
+    const mockState = mapStateToProps(state);
+    expect(mockState).toEqual(state);
+  });
+  
 });

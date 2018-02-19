@@ -63,7 +63,6 @@ export const mapStateToProps = state => {
   const initialForm = {};
   initialForm.username = state.user.username;
   return {
-    display: state.display,
     user: state.user,
     initialValues: initialForm,  
   }

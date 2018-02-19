@@ -1,11 +1,22 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import { BurgerIcon } from '../components/header/burger-icon';
+import { BurgerIcon, mapStateToProps } from '../components/header/burger-icon';
+import { initialDisplay, initialUser} from '../reducers/initialState';
 
 describe('BurgerIcon component', () => {
-  const renderedComponent = shallow(<BurgerIcon />);
+  const renderedComponent = shallow(<BurgerIcon display={initialDisplay} user={initialUser} />);
 
   it('Smoke test - BurgerIcon should render', () => {
     renderedComponent
   });
+
+  it('Should map state to props', () => {
+    const state = {
+      display: initialDisplay, 
+      user: initialUser, 
+    };
+    const mockState = mapStateToProps(state);
+    expect(mockState).toEqual(state);
+  });
+  
 });

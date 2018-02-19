@@ -14,4 +14,15 @@ describe('Lists component', () => {
   it('Smoke test - Lists should render', () => {
     renderedComponent
   });
+
+  it('Should map state to props', () => {
+    const state = {
+      general: initialGeneral,
+      quizList: initialQuizList,
+      user: initialUser, 
+    };
+    const mockState = mapStateToProps(state);
+    expect(mockState).toEqual(state);
+  });
+  
 });
