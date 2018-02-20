@@ -6,7 +6,7 @@ export const reducer = ( state = initialDisplay, action ) => {
     return {...state,
       modal: true,
       message: action.message,
-      loading: action.loading,  
+      loading: false,  
     };
   }
   if ( action.type === actions.CLOSE_MODAL ) {
@@ -34,13 +34,13 @@ export const reducer = ( state = initialDisplay, action ) => {
 
   if ( action.type === actions.TOGGLE_SETTINGS ) {
     return {...state,
-      menu: !state.settings,
+      settings: !state.settings,
     };
   }
 
   if ( action.type === actions.TOGGLE_ABOUT ) {
     return {...state,
-      menu: !state.about,
+      about: !state.about,
     };
   }
     

@@ -2,8 +2,6 @@
 // do not confuse with general.menuOfAllQuizzes, which includes everything
 
 import { REACT_APP_BASE_URL } from '../config';
-import * as actionsDisplay from './display';
-import * as actionsUser from './user';
 import 'whatwg-fetch';
 
 export const LOAD_QUIZ_LIST = 'LOAD_QUIZ_LIST';

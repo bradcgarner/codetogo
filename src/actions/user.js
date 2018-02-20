@@ -16,7 +16,7 @@ export const loadUser = user => ({
 
 // @@@@@@@@@@@@@@@@@ HELPERS @@@@@@@@@@@@@@@@@@@
 
-const convertArrayToObject = (array, key) => {
+export const convertArrayToObject = (array, key) => {
   const object = {};
   array.forEach(item=>{
     object[item[key]] = item;
