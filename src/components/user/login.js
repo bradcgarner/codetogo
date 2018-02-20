@@ -10,7 +10,7 @@ export class Login extends React.Component {
   // Component function: allows user to log in
   
   handleSubmitButton(values) {
-    console.log('values submitted at login', values);
+    // console.log('values submitted at login', values);
     this.props.dispatch(actionsUser.login(values))
     .then(()=>{
       this.props.reset();   

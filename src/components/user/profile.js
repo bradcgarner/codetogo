@@ -10,16 +10,16 @@ export class Profile extends React.Component {
   // User profile is basic: does not include quizzes, badges, etc.
 
   handleSubmitButton(values) { // add form validation first
-    console.log('values submitted at profile', values);
+    // console.log('values submitted at profile', values);
     if (this.props.user.id) {
-      console.log('update, not create');
+      // console.log('update, not create');
       const user = {...values, id: this.props.user.id};
       this.props.dispatch(actionsUser.updateUser(user, this.props.user.authToken))
       .then(()=>{
         this.props.history.push('/lists/dashboard'); // go to quizmenu if nothing on dashboard
       });
     } else {
-      console.log('create');      
+      // console.log('create');      
       this.props.dispatch(actionsUser.createUser(values))
       .then(()=>{
         this.props.history.push('/users/login'); // make this log in automatically, then push to quizmenu
@@ -86,9 +86,9 @@ export class Profile extends React.Component {
             <label className="inputLabel center" htmlFor="password2">Re-Type Password</label>
             
             <div className="loginButtons">
-              <button type="submit" className="createAccountButton">{buttonText}</button>
+              <button type="submit" className="createAccountButton submit">{buttonText}</button>
               <Link to='/users/login'>
-                <button className="createAccountButton">Oops! I Have An Account</button>
+                <button className="createAccountButton create">Oops! I Have An Account</button>
               </Link>
             </div>
 

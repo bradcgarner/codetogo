@@ -19,4 +19,7 @@ export default combineReducers ({
   quizList,
   user,
   form,
-})
+});
+
+// for testing
+export {activity, badges, display, general, questions, quiz, quizList, user, form}
