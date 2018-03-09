@@ -19,16 +19,24 @@ export class Lists extends React.Component {
   }
 
   componentDidMount(){
+    this.setStateToDashboard();
+  }
+
+  setStateToDashboard() {
     if(this.props.user.id) {
       this.setState({ isLoggedIn: true });
-      if(Array.isArray(this.props.quizList)) {
-        if(this.props.quizList.length > 0) {
-          this.setState({
-            dashboard: true,
-            menu: false,
-            goToMenu: true,
-            goToDashboard: false,
-          });
+      if(typeof this.props.quizList === 'object') {
+        let firstQuiz = this.props.quizList[Object.keys(this.props.quizList)[0]];
+        console.log('firstQuiz',firstQuiz)
+        if(typeof  firstQuiz === 'object') {
+          if(typeof firstQuiz.category === 'string') {
+            this.setState({
+              dashboard: true,
+              menu: false,
+              goToMenu: true,
+              goToDashboard: false,
+            });
+          }
         }
       }
     }
@@ -53,8 +61,15 @@ export class Lists extends React.Component {
     const goToMenuClass      = this.state.goToMenu      ? 'goToMenuButton' : 'goToMenuButton inactive' ;
     const goToDashboardClass = this.state.goToDashboard ? 'goToDashboardButton' : 'goToDashboardButton inactive' ;
 
-    const quizList = this.state.menu ? this.props.general.menuOfAllQuizzes : this.props.quizList ;
-    const quizListArray = Array.isArray(quizList) ? quizList : [] ;
+    let quizListArray = [];
+    if(this.state.menu){
+      quizListArray = Array.isArray(this.props.general.menuOfAllQuizzes) ? this.props.general.menuOfAllQuizzes : []
+    } else {
+      console.log('build array from object')
+      for(let key in this.props.quizList) quizListArray.push(this.props.quizList[key]);
+      // should we sort here?
+    }
+
     const listItems = quizListArray.map((quiz, index)=>{
       const userHas = this.state.dashboard ? true :
         this.props.quizList[quiz.id] ? true : false ;

@@ -22,27 +22,45 @@ export class Quiz extends React.Component {
     }
   }
 
-  componentDidMount() {
-    // componentDidMount should run only once
-    // console.log('componentDidMount');
+  componentWillReceiveProps() {
+    console.log('componentDidMount', this.props);
     this.updateScoringObject(this.props.questions, 
       this.props.quiz.indexCurrent, 
       this.props.questions[this.props.quiz.indexCurrent]);
   }
 
   updateScoringObject(questions, indexCurrent, question){
-    // console.log('start updateScoringObject: indexCurrent', indexCurrent, 
-      // 'questions', questions, 'question', question);
+    console.log('updateScoringObject', questions, indexCurrent, question)
+    // console.log('start updateScoringObject: indexCurrent', indexCurrent, 'questions', questions, 'question', question);
     const scoreIfTrue  = this.calcScore(question.score, true);
     const scoreIfFalse = this.calcScore(question.score, false);
 
-    const positionsIfTrue  = this.calcPositions(questions, scoreIfTrue,  true);
-    const positionsIfFalse = this.calcPositions(questions, scoreIfFalse, false);
+    let positionsIfTrue  = this.calcPositions(questions, scoreIfTrue,  true);
+    let indexInsertAfterIfTrue = this.findIndex(questions, indexCurrent, positionsIfTrue).indexNext;
+    console.log('~~~~~indexCurrent',indexCurrent, 'indexInsertAfterIfTrue',indexInsertAfterIfTrue,'questions[indexInsertAfterIfTrue].indexNext',questions[indexInsertAfterIfTrue].indexNext)
+    while (questions[indexInsertAfterIfTrue].indexNext === indexCurrent) {
+      console.log('~~~~~true while')
+      indexInsertAfterIfTrue = questions[questions[indexInsertAfterIfTrue].indexNext].indexNext;
+      console.log('indexCurrent',indexCurrent, 'indexInsertAfterIfTrue',indexInsertAfterIfTrue,'questions[indexInsertAfterIfTrue].indexNext',questions[indexInsertAfterIfTrue].indexNext)
+      console.log('questions[indexInsertAfterIfTrue]',questions[indexInsertAfterIfTrue])
+      positionsIfTrue++;
+      console.log('positionsIfTrue',positionsIfTrue)
 
-    const indexInsertAfterIfTrue  = this.findIndex(questions, indexCurrent, positionsIfTrue).indexNext;
+    }
     const indexInsertAfterIfTrueLabel  = this.findIndex(questions, indexCurrent, positionsIfTrue).label;
 
-    const indexInsertAfterIfFalse = this.findIndex(questions, indexCurrent, positionsIfFalse).indexNext;
+    let positionsIfFalse = this.calcPositions(questions, scoreIfFalse, false);
+    let indexInsertAfterIfFalse = this.findIndex(questions, indexCurrent, positionsIfFalse).indexNext;
+    console.log('-----indexCurrent',indexCurrent,'indexInsertAfterIfFalse',indexInsertAfterIfFalse, 'questions[indexInsertAfterIfFalse].indexNext',questions[indexInsertAfterIfFalse].indexNext)
+    while (questions[indexInsertAfterIfFalse].indexNext === indexCurrent) {
+      console.log('-----false while')
+      console.log('indexCurrent',indexCurrent, 'indexInsertAfterIfFalse',indexInsertAfterIfFalse,'questions[indexInsertAfterIfFalse].indexNext',questions[indexInsertAfterIfFalse].indexNext)
+      console.log('questions[indexInsertAfterIfFalse]',questions[indexInsertAfterIfFalse])
+      indexInsertAfterIfFalse = questions[questions[indexInsertAfterIfFalse].indexNext].indexNext;
+      positionsIfFalse++;
+      console.log('positionsIfFalse',positionsIfFalse)
+
+    }
     const indexInsertAfterIfFalseLabel = this.findIndex(questions, indexCurrent, positionsIfFalse).label;
 
     const indexInsertBeforeIfTrue  = (Array.isArray(questions) && this.props.user.id) ? questions[indexInsertAfterIfTrue ].indexNext : null;
@@ -276,8 +294,8 @@ export class Quiz extends React.Component {
     const options = question.typeAnswer === 'text' ?
         <Field 
           className="questionOptions questionTextInput"
-          name={'textInput'} 
-          id={'textInput'}
+          name='textInput' 
+          id='textInput'
           component='input'
           placeholder='type your answer here'
           // value={answer.id}

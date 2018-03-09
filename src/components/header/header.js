@@ -29,7 +29,7 @@ export class Header extends React.Component {
   
       return (
         <header className="headerContainer">
-          <BurgerMenu />
+          <BurgerMenu match={this.props.match}/>
           <div className="header">
             <h1 className="headerLabel">{headerLabel}</h1>
             <BurgerIcon />

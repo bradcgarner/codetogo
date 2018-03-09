@@ -46,7 +46,7 @@ export const login = credentials => dispatch => {
     return userFound.json();
   })
   .then(userFound=>{
-    console.log('user returned at login', userFound); 
+    console.log('userFound at login', userFound); 
     dispatch(loadUser(userFound.user));
     dispatch(actionsActivity.loadActivity(userFound.activity));
     dispatch(actionsBadges.loadBadges(userFound.badges));

@@ -93,6 +93,7 @@ export const takeQuiz = (idQuiz, idUser, option, authToken) => dispatch => {
         dispatch(actionsQuizList.addQuiz(quizReturned.quiz));
       }
       dispatch(actionsQuestions.loadQuestions(quizReturned.questions));
+      // console.log('questions should be loaded',quizReturned.questions)
       return dispatch(actionsDisplay.closeLoading());
     })
     .catch(err => {
