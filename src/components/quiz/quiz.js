@@ -22,11 +22,22 @@ export class Quiz extends React.Component {
     }
   }
 
-  componentWillReceiveProps() {
+  componentDidMount() {
     console.log('componentDidMount', this.props);
-    this.updateScoringObject(this.props.questions, 
-      this.props.quiz.indexCurrent, 
-      this.props.questions[this.props.quiz.indexCurrent]);
+    if(this.props.user.id){
+      this.updateScoringObject(this.props.questions, 
+        this.props.quiz.indexCurrent, 
+        this.props.questions[this.props.quiz.indexCurrent]);
+    }
+  }
+
+  componentWillReceiveProps() {
+    console.log('componentWillReceiveProps', this.props);
+    if(this.props.user.id){
+        this.updateScoringObject(this.props.questions, 
+        this.props.quiz.indexCurrent, 
+        this.props.questions[this.props.quiz.indexCurrent]);
+    }
   }
 
   updateScoringObject(questions, indexCurrent, question){
@@ -38,28 +49,34 @@ export class Quiz extends React.Component {
     let positionsIfTrue  = this.calcPositions(questions, scoreIfTrue,  true);
     let indexInsertAfterIfTrue = this.findIndex(questions, indexCurrent, positionsIfTrue).indexNext;
     console.log('~~~~~indexCurrent',indexCurrent, 'indexInsertAfterIfTrue',indexInsertAfterIfTrue,'questions[indexInsertAfterIfTrue].indexNext',questions[indexInsertAfterIfTrue].indexNext)
-    while (questions[indexInsertAfterIfTrue].indexNext === indexCurrent) {
+    while (questions[indexInsertAfterIfTrue].indexNext === indexCurrent ||
+      indexInsertAfterIfTrue === indexCurrent ) {
       console.log('~~~~~true while')
-      indexInsertAfterIfTrue = questions[questions[indexInsertAfterIfTrue].indexNext].indexNext;
+      console.log('questions[indexInsertAfterIfTrue].indexNext === indexCurrent', questions[indexInsertAfterIfTrue].indexNext === indexCurrent)
+      console.log('indexInsertAfterIfTrue === indexCurrent',indexInsertAfterIfTrue === indexCurrent)
       console.log('indexCurrent',indexCurrent, 'indexInsertAfterIfTrue',indexInsertAfterIfTrue,'questions[indexInsertAfterIfTrue].indexNext',questions[indexInsertAfterIfTrue].indexNext)
-      console.log('questions[indexInsertAfterIfTrue]',questions[indexInsertAfterIfTrue])
-      positionsIfTrue++;
       console.log('positionsIfTrue',positionsIfTrue)
-
+      indexInsertAfterIfTrue = questions[questions[indexInsertAfterIfTrue].indexNext].indexNext;
+      positionsIfTrue++;
+      console.log(' indexCurrent',indexCurrent, 'indexInsertAfterIfTrue',indexInsertAfterIfTrue,'questions[indexInsertAfterIfTrue].indexNext',questions[indexInsertAfterIfTrue].indexNext)
+      console.log('positionsIfTrue',positionsIfTrue)
     }
     const indexInsertAfterIfTrueLabel  = this.findIndex(questions, indexCurrent, positionsIfTrue).label;
 
     let positionsIfFalse = this.calcPositions(questions, scoreIfFalse, false);
     let indexInsertAfterIfFalse = this.findIndex(questions, indexCurrent, positionsIfFalse).indexNext;
     console.log('-----indexCurrent',indexCurrent,'indexInsertAfterIfFalse',indexInsertAfterIfFalse, 'questions[indexInsertAfterIfFalse].indexNext',questions[indexInsertAfterIfFalse].indexNext)
-    while (questions[indexInsertAfterIfFalse].indexNext === indexCurrent) {
+    while (questions[indexInsertAfterIfFalse].indexNext === indexCurrent || 
+      indexInsertAfterIfFalse === indexCurrent ) {
       console.log('-----false while')
+      console.log('questions[indexInsertAfterIfFalse].indexNext === indexCurrent', questions[indexInsertAfterIfFalse].indexNext === indexCurrent)
+      console.log('indexInsertAfterIfFalse === indexCurrent', indexInsertAfterIfFalse === indexCurrent)
       console.log('indexCurrent',indexCurrent, 'indexInsertAfterIfFalse',indexInsertAfterIfFalse,'questions[indexInsertAfterIfFalse].indexNext',questions[indexInsertAfterIfFalse].indexNext)
-      console.log('questions[indexInsertAfterIfFalse]',questions[indexInsertAfterIfFalse])
+      console.log('positionsIfFalse',positionsIfFalse)
       indexInsertAfterIfFalse = questions[questions[indexInsertAfterIfFalse].indexNext].indexNext;
       positionsIfFalse++;
+      console.log(' indexCurrent',indexCurrent, 'indexInsertAfterIfFalse',indexInsertAfterIfFalse,'questions[indexInsertAfterIfFalse].indexNext',questions[indexInsertAfterIfFalse].indexNext)
       console.log('positionsIfFalse',positionsIfFalse)
-
     }
     const indexInsertAfterIfFalseLabel = this.findIndex(questions, indexCurrent, positionsIfFalse).label;
 
@@ -208,60 +225,9 @@ export class Quiz extends React.Component {
   }
 
   handleNextButton(indexNext) {
-  //   return new Promise((resolve, reject)=>{
       this.advanceQuestion(indexNext);
-    //   resolve();
-    // })
-    // .then(()=>{
       const nextState = {...this.props.quiz.nextState};
-      // console.log('questions after updating', this.props.questions)
-      // console.log('question indices after updating',
-      //   this.props.questions[nextState.indexCurrent].index,
-      //   this.props.questions[nextState.indexCurrent].indexNext, '//',
-      //   this.props.questions[nextState.indexRedirect].index,
-      //   this.props.questions[nextState.indexRedirect].indexNext, '//',
-      //   this.props.questions[nextState.indexInsertAfter].index,
-      //   this.props.questions[nextState.indexInsertAfter].indexNext
-      // );
-      // if(this.props.questions[nextState.indexCurrent].indexNext !== nextState.indexNextNew) {
-      //   let i = 1;
-      //   while(this.props.questions[nextState.indexCurrent].indexNext !== nextState.indexNextNew && i<=10) {
-      //     console.log(`try again #${i} current question`);
-      //     this.props.dispatch(actionsQuestions.updateQuestion(
-      //       nextState.indexCurrent, 
-      //       nextState.indexNextNew, 
-      //       nextState.scoreNew));
-      //     i++;
-      //   }
-      //   if(i>10) console.log('ERROR DID NOT UPDATE CURRENT QUESTION')
-      // }
-      // if(this.props.questions[nextState.indexRedirect].indexNext !== nextState.indexRedirectNext) {
-      //   let i = 1;
-      //   while(this.props.questions[nextState.indexRedirect].indexNext !== nextState.indexRedirectNext && i<=10) {
-      //     console.log(`try again #${i} redirect`);
-      //     this.props.dispatch(actionsQuestions.updateQuestion(
-      //       nextState.indexRedirect, 
-      //       nextState.indexRedirectNext));
-      //     i++;
-      //   }
-      //   if(i>10) console.log('ERROR DID NOT UPDATE REDIRECT')
-      // }
-      // if(this.props.questions[nextState.indexInsertAfter].indexNext !== nextState.indexCurrent) {
-      //   let i = 1;
-      //   while(this.props.questions[nextState.indexInsertAfter].indexNext !== nextState.indexCurrent && i<=10) {
-      //     console.log(`try again #${i} insert after`);
-      //     this.props.dispatch(actionsQuestions.updateQuestion(
-      //       nextState.indexInsertAfter, 
-      //       nextState.indexCurrent));
-      //     i++;
-      //     if(i>10) console.log('ERROR DID NOT UPDATE INSERT AFTER')
-      //   }
-      // }
       this.updateScoringObject(this.props.questions, indexNext, this.props.questions[indexNext]);
-    // })
-    // .catch(err=>{
-    //   console.log('error', err);
-    // })
   }
 
   render() {
@@ -319,8 +285,7 @@ export class Quiz extends React.Component {
       quiz.nextState.correct ? "Yay!" : "Boo..." ;
 
     const spacedRepGraphic = this.state.scoringObject ?
-      <SpacedRepGraphic
-      scoringObject={this.state.scoringObject}/> : null ;
+      <SpacedRepGraphic scoringObject={this.state.scoringObject}/> : null ;
     
     const results = quiz.showingAnswers ? <Results reason={question.reason} resources={question.resources}/> : null ;
 
