@@ -26,17 +26,27 @@ export function SpacedRepGraphic(props) {
 
   } = props.scoringObject;
 
+  const indexRedirectPrior = props.questions[indexRedirect] ? props.questions[indexRedirect].indexNext : '???' ;
+
+
   const questionObjectArray = props.questions.map((question, index)=>{
     
     // top of graphic - shows score (always show, just hide if not current)
-    const falseScore     = question.index === indexCurrent           ? 'false' : 'transparent' ;
-    const trueScore      = question.index === indexCurrent           ? 'true'  : 'transparent' ;
+    const falseScore     = question.index === indexCurrent             ? 'false' : 'transparent' ;
+    const trueScore      = question.index === indexCurrent             ? 'true'  : 'transparent' ;
     
     // middle of graphic - shows current (always show, just change class)
-    const indexClass     = question.index === indexCurrent           ? 'questionConstant currentQuestion priorQuestion' : 
-                           question.index === indexNextPrior         ? 'questionConstant nextQuestion'  : 'questionConstant' ;
-    const indexNextClass = question.indexNext === indexCurrent       ? 'cell currentQuestion nextQuestion' : 
-                           question.indexNext === indexCurrent       ? 'questionConstant priorQuestion' : 'questionConstant' ;
+    const indexClass     = question.index === indexCurrent                 ? 'question-constant index-current' : 
+                           question.index === indexNextPrior               ? 'question-constant index-next'  :
+                           question.index === indexInsertAfterIfTrue       ? 'question-constant insert-after-if-true' : 
+                           question.index === indexInsertAfterIfFalse      ? 'question-constant insert-after-if-false' : 
+                           question.index === indexRedirect                ? 'question-constant index-redirect' : 
+                                                                             'question-constant' ;
+    const indexNextClass = question.indexNext === indexInsertBeforeIfTrue  ? 'question-constant insert-before-if-true' : 
+                           question.indexNext === indexInsertBeforeIfFalse ? 'question-constant insert-before-if-false' : 
+                           question.index     === indexRedirect            ? 'question-constant index-redirect-next' : 
+                           question.indexNext === indexNextPrior           ? 'question-constant index-next'  :
+                                                                             'question-constant' ;
     
     // bottom of graphic - shows future (constant class, value varies)
     const indexNextTrue  = question.index === indexCurrent           ? indexInsertBeforeIfTrue :
@@ -65,6 +75,7 @@ export function SpacedRepGraphic(props) {
         <div>quiz score now = {props.quiz.score}</div>
         <div>if true:  {indexInsertAfterIfTrueLabel}  &amp; score: {scorePrior} -> {scoreIfTrue}  </div>
         <div>if false: {indexInsertAfterIfFalseLabel} &amp; score: {scorePrior} -> {scoreIfFalse} </div>
+        <div>{indexNextPrior} is next regardless; redirect #{indexRedirect}'s next from {indexRedirectPrior} to {indexRedirectNext}</div>
       </div>
     </div>
     );

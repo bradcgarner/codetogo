@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm, Field } from 'redux-form';
+import { Redirect } from 'react-router-dom';
 import * as actionsQuiz from '../../actions/quiz';
 import * as actionsQuizList from '../../actions/quizList';
 import * as actionsQuestions from '../../actions/questions';
@@ -25,21 +26,119 @@ export class Quiz extends React.Component {
   componentDidMount() {
     if(this.props.user.id){
       console.log(' ');
-      this.updateScoringObject(
-        this.props.questions, 
-        this.props.quiz.indexCurrent, 
-        this.props.questions[this.props.quiz.indexCurrent]
-      );
+      this.updateScoringObject( this.props.quiz.indexCurrent );
     }
   }
 
-  updateScoringObject(questions, indexCurrent, question){
+  markFormAsTouched() {
+    this.setState({formIsEmpty: false});
+  }
+
+  calcScore(scorePrior, correct) {
+    // calculates theoretical correct and incorrect scores, then sends both scores to the back end, back end grades (correct/incorrect) and uses one of the scores sent to it
+    const score = (typeof scorePrior === 'number' && scorePrior >=2) ? scorePrior : 2 ;
+    const changeFactor = correct ? Math.ceil(Math.sqrt(scorePrior)) : Math.ceil(scorePrior/2) ;
+    if(correct) return Math.ceil(score + changeFactor);
+    return changeFactor;
+  };
+  
+  calcPositions(questions, score, correct) {
+    // calculates theoretical positions based on prior score correct/incorrect. Only a helper function before findIndexByPositions()
+    if(score < 2) return 2;
+    const variantLo = Math.floor(Math.random() * 2);
+    const variantHi = Math.ceil(questions.length * 0.05); // array of 1-20 = 1; array of 21-40 = 2; array of 40-80 = 4...
+    const randomAdder = correct ?
+      Math.ceil(Math.random() * variantHi) : // array of 1-20 = 1 ; array of 21-40 = 1 or 2 ; array of 41-80 = 1-4
+      Math.ceil(Math.random() * variantLo) ; // 1-2
+    const maxPositions = questions.length - randomAdder - 5; // array of 10=10-1-5=4 ; array of 20=20-1-5=14 || 20=20-2-5=13 
+    if(!correct && score >= questions.length/2) { 
+      return Math.ceil(questions.length/2) + variantLo;
+    }
+    if(!correct) return score + variantLo; // array of 10 = score <= 4; 4+1=5, or 4+2=6; array of 20 = score <= 9; 9+1=10, or 9+2=11; 
+    if(score > maxPositions) return maxPositions;
+    return score;
+  };
+
+  formatChoice(choices, typeAnswer){
+    // converts object with properties into an array with all choices. Used even if only 1 choice made.
+    let formattedChoices = [];
+    for ( let prop in choices ) {
+      if (typeAnswer === 'checkbox') {
+        formattedChoices.push(prop);
+      } else {
+        formattedChoices.push(choices[prop]);
+      }
+    }
+    return formattedChoices;
+  }
+
+  handleSubmitButton(choices, typeAnswer) {
+    if(this.state.formIsEmpty) return;
+    console.log(' ');
+    console.log('SUBMITTING', choices);
+    const formattedChoices = this.formatChoice(choices, typeAnswer);
+    const answerObject = {...this.props.scoringObject, choices: formattedChoices}
+    console.log('answerObject',answerObject)
+    this.props.dispatch(actionsQuestions.answerQuestion(
+      answerObject, 
+      this.props.user.authToken
+    )); 
+  }
+
+  handleNextButton() {
+    const indexNext = this.props.questions[this.props.quiz.indexCurrent].indexNext;
+    console.log(' ');
+    console.log('ADVANCING to #', indexNext);
+    const nextState = {...this.props.quiz.nextState};
+
+    // console.log('handleNext indexNext', indexNext);
+    if(this.props.quiz.showingAnswers && this.props.user.id){
+      return new Promise((resolve, reject)=>{
+          console.log('start promise')
+          // reset to input mode
+          this.props.reset();
+          this.props.dispatch(actionsQuiz.toggleShowAnswers(false));
+          this.setState({ formIsEmpty: true });
+          // advance state
+          this.props.dispatch(actionsQuiz.updateQuizIndexCurrent(indexNext));
+          this.props.dispatch(actionsQuiz.updateQuizScore( nextState.scoreQuizNew ));
+          this.props.dispatch(actionsQuizList.updateQuizListScore( 
+            this.props.quiz.id,
+            nextState.scoreQuizNew 
+          ));
+          this.props.dispatch(actionsQuestions.updateQuestion( nextState.indexCurrent,     nextState.indexNextNew,     nextState.scoreNew));
+          this.props.dispatch(actionsQuestions.updateQuestion( nextState.indexRedirect,    nextState.indexRedirectNext ));
+          this.props.dispatch(actionsQuestions.updateQuestion( nextState.indexInsertAfter, nextState.indexCurrent      ));
+          console.log('end interior of promise')
+          resolve(()=>{
+            console.log('resolving')
+          })
+      }).then(()=>{
+        console.log('post resolve')
+        // queue up how we'll score the question that we just displayed
+        this.updateScoringObject( indexNext );
+        return;
+      })
+    } else {
+      console.log('not showing answer', this.props.quiz.showingAnswers)
+    }
+  }
+
+  updateScoringObject(indexCurrent){
+    console.log('indexCurrent in updateScoringObject', indexCurrent);
+    const questions = this.props.questions;
+    console.log('questions in updateScoringObject', questions);
+    const question  = this.props.questions[indexCurrent];
+    console.log('question in updateScoringObject', question);
+
     const scoreIfTrue  = this.calcScore(question.score, true);
     const scoreIfFalse = this.calcScore(question.score, false);
 
     // this is always the same. Question that points to current question points to current question's next.
-    const indexRedirect = questions.findIndex(item=>item.indexNext === indexCurrent);
-    const indexRedirectNext = questions[indexCurrent].indexNext;
+    console.log('this.props.questions in updateScoringObject', this.props.questions);
+    const indexRedirect = this.props.questions.findIndex(item=>item.indexNext === indexCurrent);
+    const indexRedirectNext = this.props.questions[indexCurrent].indexNext;
+    console.log('indexRedirect & .indexNext, in updateScoringObject', indexRedirect, indexRedirectNext);
 
     // these positions are only a starting point; final positions are set by ifTrue and ifFalse
     const positionsIfTrue  = this.calcPositions(questions, scoreIfTrue,  true);
@@ -87,103 +186,10 @@ export class Quiz extends React.Component {
     }
   }
 
-  markFormAsTouched() {
-    this.setState({formIsEmpty: false});
-  }
-
-  calcScore(scorePrior, correct) {
-    // calculates theoretical correct and incorrect scores, then sends both scores to the back end, back end grades (correct/incorrect) and uses one of the scores sent to it
-    const score = (typeof scorePrior === 'number' && scorePrior >=2) ? scorePrior : 2 ;
-    const changeFactor = correct ? Math.ceil(Math.sqrt(scorePrior)) : Math.ceil(scorePrior/2) ;
-    if(correct) return Math.ceil(score + changeFactor);
-    return changeFactor;
-  };
-  
-  calcPositions(questions, score, correct) {
-    // calculates theoretical positions based on prior score correct/incorrect. Only a helper function before findIndexByPositions()
-    if(score < 2) return 2;
-    const variantLo = Math.floor(Math.random() * 2);
-    const variantHi = Math.ceil(questions.length * 0.05); // array of 1-20 = 1; array of 21-40 = 2; array of 40-80 = 4...
-    const randomAdder = correct ?
-      Math.ceil(Math.random() * variantHi) : // array of 1-20 = 1 ; array of 21-40 = 1 or 2 ; array of 41-80 = 1-4
-      Math.ceil(Math.random() * variantLo) ; // 1-2
-    const maxPositions = questions.length - randomAdder - 5; // array of 10=10-1-5=4 ; array of 20=20-1-5=14 || 20=20-2-5=13 
-    if(!correct && score >= questions.length/2) { 
-      return Math.ceil(questions.length/2) + variantLo;
-    }
-    if(!correct) return score + variantLo; // array of 10 = score <= 4; 4+1=5, or 4+2=6; array of 20 = score <= 9; 9+1=10, or 9+2=11; 
-    if(score > maxPositions) return maxPositions;
-    return score;
-  };
-
-  formatChoice(choices, typeAnswer){
-    // converts object with properties into an array with all choices. Used even if only 1 choice made.
-    let formattedChoices = [];
-    for ( let prop in choices ) {
-      if (typeAnswer === 'checkbox') {
-        formattedChoices.push(prop);
-      } else {
-        formattedChoices.push(choices[prop]);
-      }
-    }
-    return formattedChoices;
-  }
-
-  handleSubmitButton(choices, typeAnswer) {
-    console.log(' ');
-    console.log('SUBMITTING', choices);
-    if(this.state.formIsEmpty) return;
-    const formattedChoices = this.formatChoice(choices, typeAnswer);
-    const answerObject = {...this.props.scoringObject, choices: formattedChoices}
-    this.props.dispatch(actionsQuestions.answerQuestion(
-      answerObject, 
-      this.props.user.authToken)); 
-  }
-
-  handleNextButton(indexNext) {
-    console.log(' ');
-    console.log('ADVANCING', indexNext);
-    const nextState = {...this.props.quiz.nextState};
-
-    // console.log('handleNext indexNext', indexNext);
-    if(this.props.quiz.showingAnswers && this.props.user.id){
-      this.props.reset();
-
-      this.props.dispatch(actionsQuiz.toggleShowAnswers(false));
-      this.props.dispatch(actionsQuiz.updateQuizIndexCurrent(indexNext));
-      this.props.dispatch(actionsQuiz.updateQuizScore(
-        nextState.scorePrior, 
-        nextState.scoreNew));
-      this.props.dispatch(actionsQuizList.updateQuizListScore(
-        nextState.idQuiz, 
-        nextState.scorePrior, 
-        nextState.scoreNew));
-        
-      this.props.dispatch(actionsQuestions.updateQuestion(
-        nextState.indexCurrent, 
-        nextState.indexNextNew, 
-        nextState.scoreNew));
-      this.props.dispatch(actionsQuestions.updateQuestion(
-        nextState.indexRedirect, 
-        nextState.indexRedirectNext));
-      this.props.dispatch(actionsQuestions.updateQuestion(
-        nextState.indexInsertAfter, 
-        nextState.indexCurrent));
-
-      this.setState({ formIsEmpty: true });
-
-      this.updateScoringObject(
-        this.props.questions, 
-        this.props.quiz.indexCurrent, 
-        this.props.questions[this.props.quiz.indexCurrent]
-      );
-
-    } else {
-      console.log('not showing answer', this.props.quiz.showingAnswers)
-    }
-  }
-
   render() {
+
+    const redirect = this.props.user.id ? null : <Redirect to='/' /> ;
+
     const quiz = this.props.quiz ? this.props.quiz : {showingAnswers: false, indexCurrent: 0, nextState: {} };
     const questions = this.props.questions ? this.props.questions : [{question: null, answers: null, typeAnswer: null, typeQuestion: null, indexNext: 0}] ;
 
@@ -197,6 +203,7 @@ export class Quiz extends React.Component {
         const optionName = typeAnswer === 'radio' ? 'option' : `${answer.id}`;
         return (
           <div key={index}>
+            {redirect}
             <Field 
               name={optionName} 
               id={answer.id}
@@ -226,7 +233,7 @@ export class Quiz extends React.Component {
     const button = quiz.showingAnswers && this.props.user.id ? 
       <button className={nextButtonClass} 
         type="button" 
-        onClick={()=>this.handleNextButton(this.props.questions[quiz.indexCurrent].indexNext)}>
+        onClick={()=>this.handleNextButton()}>
           Next
         </button> :
       <button className={submitButtonClass} 

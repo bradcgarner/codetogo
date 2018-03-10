@@ -480,22 +480,39 @@ button {
     align-items: center;
     margin: 2px;
     width: 2em; }
-    .quiz .spacedRepObject .questionConstant, .quiz .spacedRepObject .currentQuestion, .quiz .spacedRepObject .priorQuestion, .quiz .spacedRepObject .nextQuestion, .quiz .spacedRepObject .false, .quiz .spacedRepObject .true, .quiz .spacedRepObject .transparent {
+    .quiz .spacedRepObject .question-constant,
+    .quiz .spacedRepObject .currentQuestion,
+    .quiz .spacedRepObject .priorQuestion,
+    .quiz .spacedRepObject .nextQuestion,
+    .quiz .spacedRepObject .false,
+    .quiz .spacedRepObject .true,
+    .quiz .spacedRepObject .transparent {
       width: 100%;
       height: 20px;
       text-align: center;
       flex-direction: row;
       justify-content: center;
       align-items: center; }
-    .quiz .spacedRepObject .questionConstant {
+    .quiz .spacedRepObject .question-constant {
       border: 1px solid #333;
       text-align: center; }
-    .quiz .spacedRepObject .currentQuestion {
-      border: 2px solid black; }
-    .quiz .spacedRepObject .priorQuestion {
-      background-color: #ccc; }
-    .quiz .spacedRepObject .nextQuestion {
-      background-color: #4d4; }
+    .quiz .spacedRepObject .index-current {
+      border: 2px solid black;
+      background-color: yellow; }
+    .quiz .spacedRepObject .index-next {
+      background-color: #91c3e0; }
+    .quiz .spacedRepObject .insert-after-if-true {
+      background-color: #aef3ae; }
+    .quiz .spacedRepObject .insert-before-if-true {
+      background-color: #64a05e; }
+    .quiz .spacedRepObject .insert-after-if-false {
+      background-color: #e47857; }
+    .quiz .spacedRepObject .insert-before-if-false {
+      background-color: #8a5b46; }
+    .quiz .spacedRepObject .index-redirect {
+      background-color: #a9b6a0; }
+    .quiz .spacedRepObject .index-redirect-next {
+      background-color: #7aafce; }
     .quiz .spacedRepObject .false {
       color: red; }
     .quiz .spacedRepObject .true {

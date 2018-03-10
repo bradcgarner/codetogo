@@ -1,0 +1,42 @@
+state.quiz.indexCurrent
+0
+
+state.questions[0].idQuiz
+5aa42af3ff317d6cd656bd0a
+
+state.questions[0].id    // Question
+5aa42af3ff317d6cd656bd0b
+
+correct answer
+5aa42abf94ac286ccf0c78cd
+
+incorrect answer
+5aa42abf94ac286ccf0c78ce
+
+
+##############
+
+state.quiz.indexCurrent
+1
+
+state.questions[1].idQuiz
+5aa42af3ff317d6cd656bd0a
+submitted
+5aa42af3ff317d6cd656bd0a
+
+state.questions[0].id    // Question
+5aa42af3ff317d6cd656bd0c
+submitted
+5aa42af3ff317d6cd656bd0b
+
+correct answer in state
+5aa42abf94ac286ccf0c78cf
+in dom
+5aa42abf94ac286ccf0c78cf
+submitted
+5aa42abf94ac286ccf0c78cf  as  ["5aa42abf94ac286ccf0c78cf"]
+
+incorrect answer
+5aa42abf94ac286ccf0c78d0
+in dom
+5aa42abf94ac286ccf0c78d0

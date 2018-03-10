@@ -41,7 +41,6 @@ export const answerQuestion = (answerObject, authToken) => dispatch => {
     headers,
     body: JSON.stringify(answerObject)
   };
-  // GET ALL QUESTIONS FOR THIS QUIZ FROM DATABASE
   return fetch(url, init)
     .then(answerReturned => {
       if (!answerReturned.ok) {

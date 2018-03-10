@@ -7,8 +7,7 @@ export const reducer = ( state = initialQuiz, action ) => {
     return action.quiz;
   }
   if ( action.type === actions.UPDATE_QUIZ_SCORE ) {
-    const score = state.score - action.scorePrior + action.scoreNew;
-    return { ...state, score: score };
+    return { ...state, score: action.score };
   }
   if ( action.type === actions.UPDATE_QUIZ_INDEX_CURRENT ) {
     // console.log('UPDATE_QUIZ_INDEX_CURRENT', action)

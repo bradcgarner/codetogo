@@ -15,11 +15,10 @@ export const addQuiz = quiz => ({
 
 // redundant of single quiz update, but this affects the list, so user sees updated score in the list as well
 export const UPDATE_QUIZLIST_SCORE = 'UPDATE_QUIZLIST_SCORE';
-export const updateQuizListScore = (idQuiz, scorePrior, scoreNew) => ({
+export const updateQuizListScore = (idQuiz, score) => ({
   type: UPDATE_QUIZLIST_SCORE,
   idQuiz,
-  scorePrior, 
-  scoreNew, 
+  score, 
 });
 
 // @@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@

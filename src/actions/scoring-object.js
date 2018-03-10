@@ -42,11 +42,11 @@ export const findIndexByPositions = (questions, indexCurrent, positions, indexRe
   let actualPositions = 1;
   let recalcNeeded = true;
   do {
-    console.log('actualPositions',actualPositions)
     indexAfter = questions[indexAfter].indexNext;
     label += `->${indexAfter}`;
     indexBefore = questions[indexAfter].indexNext;
     actualPositions += 1;
+    console.log('act pos',actualPositions, 'of' , positions,': ', label)
     if(indexAfter <0 || indexBefore <0) return errorObject ('Sorry, invalid index found along the way');
 
     if(actualPositions >= positions) {
