@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import * as actionsDisplay from '../../actions/display';
+// import { Link } from 'react-router-dom';
 import ListItem from './listItem';
 
 export class Lists extends React.Component {
@@ -27,7 +26,6 @@ export class Lists extends React.Component {
       this.setState({ isLoggedIn: true });
       if(typeof this.props.quizList === 'object') {
         let firstQuiz = this.props.quizList[Object.keys(this.props.quizList)[0]];
-        console.log('firstQuiz',firstQuiz)
         if(typeof  firstQuiz === 'object') {
           if(typeof firstQuiz.category === 'string') {
             this.setState({
@@ -65,7 +63,6 @@ export class Lists extends React.Component {
     if(this.state.menu){
       quizListArray = Array.isArray(this.props.general.menuOfAllQuizzes) ? this.props.general.menuOfAllQuizzes : []
     } else {
-      console.log('build array from object')
       for(let key in this.props.quizList) quizListArray.push(this.props.quizList[key]);
       // should we sort here?
     }

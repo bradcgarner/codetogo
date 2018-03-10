@@ -1,10 +1,5 @@
 // display is not data; it is display status of screen (modal, loading, etc.)
 
-import { REACT_APP_BASE_URL } from '../config';
-import * as actionsDisplay from './display';
-import * as actionsUser from './user';
-import 'whatwg-fetch';
-
 export const SHOW_MODAL = 'SHOW_MODAL';
 export const showModal = message => ({
   type: SHOW_MODAL,

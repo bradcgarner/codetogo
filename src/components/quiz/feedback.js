@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { reduxForm, Field } from 'redux-form';
+import { reduxForm } from 'redux-form'; // Field
 
 export function Feedback(props) {
   // Component function: allow user to submit feedback on specific questions

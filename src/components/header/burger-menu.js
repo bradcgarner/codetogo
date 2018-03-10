@@ -15,8 +15,8 @@ export function BurgerMenu(props) {
   const isLoggedIn = props.user.id ? true : false ;
   const loggedInClass = isLoggedIn ? '' : 'inactive' ;
   const loginClass = `${loggedInClass} loginButton`;
-  const profileClass = `${loggedInClass} profileButton`;
-  const quizListClass = 'quizListButton';
+  // const profileClass = `${loggedInClass} profileButton`;
+  // const quizListClass = 'quizListButton';
   const aboutClass = 'aboutButton';
   const settingsClass = `${loggedInClass} settingsButton`;
 

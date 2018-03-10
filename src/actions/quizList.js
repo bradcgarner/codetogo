@@ -1,9 +1,6 @@
 // quizList is the list of the USER's quizzes
 // do not confuse with general.menuOfAllQuizzes, which includes everything
 
-import { REACT_APP_BASE_URL } from '../config';
-import 'whatwg-fetch';
-
 export const LOAD_QUIZ_LIST = 'LOAD_QUIZ_LIST';
 export const loadQuizList = quizList => ({
   type: LOAD_QUIZ_LIST,

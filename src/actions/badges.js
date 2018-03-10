@@ -33,7 +33,6 @@ export const postBadge = (badge, authToken) => dispatch => {
     body: JSON.stringify(badge),
     headers
   };
-  // console.log('url', url, 'init', init);
 
   return fetch(url, init)
     .then(badgeAdded => {

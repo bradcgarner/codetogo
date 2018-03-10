@@ -4,16 +4,14 @@ import { compose } from 'redux';
 import { reduxForm, Field } from 'redux-form';
 import { Link } from 'react-router-dom';
 import * as actionsUser from '../../actions/user';
-import * as actionsDisplay from '../../actions/display';
 
 export class Login extends React.Component {
   // Component function: allows user to log in
   
   handleSubmitButton(values) {
-    // console.log('values submitted at login', values);
     this.props.dispatch(actionsUser.login(values))
     .then(()=>{
-      this.props.reset();   
+      this.props.reset();  
       this.props.history.push('/lists'); // make conditional to take to menu if nothing on dashboard
     })
   }

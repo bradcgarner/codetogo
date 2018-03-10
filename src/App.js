@@ -4,7 +4,7 @@ import 'raf/polyfill';
 import React from 'react';
 
 import { connect } from 'react-redux';
-import { BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Header from './components/header/header';
 import Landing from './components/landing/landing';
 import User from './components/user/user';
@@ -48,6 +48,7 @@ export const mapStateToProps = state => ({
   questions: state.questions,
   quiz: state.quiz,
   quizList: state.quizList,
+  scoringObject: state.scoringObject,
   user: state.user,
 })
 

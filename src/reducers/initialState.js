@@ -84,6 +84,27 @@ export const initialQuizList = {
   }
 };
 
+export const initialScoringObject = {
+  idQuestion: null,
+  idUser: null,
+  idQuiz: null,
+  indexCurrent: null,
+  scorePrior: null,
+  indexNextPrior: null,
+  scoreIfTrue: null,
+  positionsIfTrue:  null,
+  indexInsertAfterIfTrue: null,
+  indexInsertBeforeIfTrue: null,
+  indexInsertAfterIfTrueLabel: null,
+  scoreIfFalse: null,
+  positionsIfFalse: null,
+  indexInsertAfterIfFalse: null,
+  indexInsertBeforeIfFalse: null,
+  indexInsertAfterIfFalseLabel: null,
+  indexRedirect: null,
+  indexRedirectNext:null,
+};
+
 export const initialUser = { // store.user, single current user, loads at login
   id: null,
   firstName: '',

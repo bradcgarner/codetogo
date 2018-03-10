@@ -1,10 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as actionsQuiz from '../../actions/quiz';
 import * as actionsGeneral from '../../actions/general';
 import BurgerIcon from './burger-icon';
 import BurgerMenu from './burger-menu';
-import SettingsModal from './settings-modal';
 
 export class Header extends React.Component {
   // Component function: header across top of screen. Permanently displayed.

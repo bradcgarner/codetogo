@@ -1,6 +1,5 @@
 import * as actions from '../actions/questions';
 import { initialQuestions } from './initialState';
-import { updateQuestion } from '../actions/questions';
 
 export const reducer = ( state = initialQuestions, action ) => {
 

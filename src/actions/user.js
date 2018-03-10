@@ -37,7 +37,6 @@ export const login = credentials => dispatch => {
     body: JSON.stringify(credentials),
     headers
   };
-  console.log('init', init);
   return fetch(url, init) 
   .then(userFound=>{
     if (!userFound.ok) { 
@@ -46,7 +45,7 @@ export const login = credentials => dispatch => {
     return userFound.json();
   })
   .then(userFound=>{
-    console.log('userFound at login', userFound); 
+    // console.log('userFound at login', userFound); 
     dispatch(loadUser(userFound.user));
     dispatch(actionsActivity.loadActivity(userFound.activity));
     dispatch(actionsBadges.loadBadges(userFound.badges));
@@ -75,7 +74,6 @@ export const createUser = newUser => dispatch => { //credential should include  
     body: JSON.stringify(newUser),
     headers
   };
-  console.log('init', init);
   return fetch(url, init)
   .then(userFound=>{ 
     if (!userFound.ok) { 
@@ -84,7 +82,6 @@ export const createUser = newUser => dispatch => { //credential should include  
     return userFound.json();
   }) 
   .then(userFound => { 
-    console.log('userFound', userFound);
     dispatch(loadUser(userFound.user));
     dispatch(actionsActivity.loadActivity([]));
     dispatch(actionsBadges.loadBadges([]));
@@ -114,10 +111,9 @@ export const updateUser = (userToUpdate, authToken) => dispatch => { //credentia
     body: JSON.stringify(userToUpdate),
     headers
   };
-  console.log('url', url, 'init', init);
   return fetch(url, init)
   .then(userUpdated=>{   //response user api repr (no need to do anything with it) 
-    console.log(userUpdated);
+    // console.log('userUpdated by server',userUpdated);
     if (!userUpdated.ok) { 
       return Promise.reject(userUpdated.statusText);
     }

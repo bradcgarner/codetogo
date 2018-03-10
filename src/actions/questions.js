@@ -3,9 +3,9 @@
 
 import { REACT_APP_BASE_URL } from '../config';
 import * as actionsDisplay from './display';
-import * as actionsUser from './user';
+// import * as actionsUser from './user';
 import * as actionsQuiz from './quiz';
-import * as actionsQuizList from './quizList';
+// import * as actionsQuizList from './quizList';
 import 'whatwg-fetch';
 
 
@@ -29,7 +29,6 @@ export const updateQuestion = (index, indexNext, score) => ({
 // @@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@
 
 export const answerQuestion = (answerObject, authToken) => dispatch => {
-  console.log('answerQuestion', answerObject);
   dispatch(actionsDisplay.showLoading());
   
   const url = `${REACT_APP_BASE_URL}/api/questions/${answerObject.idQuestion}`;
@@ -42,18 +41,17 @@ export const answerQuestion = (answerObject, authToken) => dispatch => {
     headers,
     body: JSON.stringify(answerObject)
   };
-  // console.log('answerQuestion init', init)
   // GET ALL QUESTIONS FOR THIS QUIZ FROM DATABASE
   return fetch(url, init)
     .then(answerReturned => {
-      // console.log('answerReturned',answerReturned);
       if (!answerReturned.ok) {
         return Promise.reject(answerReturned.statusText);
       }
       return answerReturned.json();
     })
     .then(answerReturned=>{
-      console.log('answerReturned',answerReturned);
+      console.log('answerReturned from server',answerReturned);
+      // nextState pauses update momentarily so user can see results, then updates on advance button
       dispatch(actionsQuiz.updateNextState(answerReturned));
       dispatch(actionsQuiz.toggleShowAnswers(true));
       return dispatch(actionsDisplay.closeLoading());

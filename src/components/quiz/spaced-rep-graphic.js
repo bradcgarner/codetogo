@@ -8,32 +8,43 @@ export function SpacedRepGraphic(props) {
     indexCurrent,
     indexNextPrior,
     scorePrior,
+
     scoreIfTrue,
-    scoreIfFalse,
-    positionsIfTrue,
-    positionsIfFalse,
-    indexInsertAfterIfTrue,
-    indexInsertAfterIfTrueLabel,
-    indexInsertAfterIfFalse,
-    indexInsertAfterIfFalseLabel,
+    // positionsIfTrue,
+    indexInsertAfterIfTrue,    
     indexInsertBeforeIfTrue,
-    indexInsertBeforeIfFalse
+    indexInsertAfterIfTrueLabel,
+    
+    scoreIfFalse,
+    // positionsIfFalse,
+    indexInsertAfterIfFalse,
+    indexInsertBeforeIfFalse,
+    indexInsertAfterIfFalseLabel,
+
+    indexRedirect,
+    indexRedirectNext,
+
   } = props.scoringObject;
-  // console.log('spacedRepGraphic indexCurrent', indexCurrent)
 
   const questionObjectArray = props.questions.map((question, index)=>{
-    const falseScore     = question.index === indexCurrent ? 'false' : 'transparent' ;
-    const trueScore      = question.index === indexCurrent ? 'true' : 'transparent' ;
-    const indexClass     = question.index === indexCurrent ? 'questionConstant currentQuestion priorQuestion' : 
-                           question.index === indexNextPrior ? 'questionConstant nextQuestion' : 'questionConstant' ;
-    const indexNextClass = question.index === indexCurrent ? 'cell currentQuestion nextQuestion' : 
-                           question.indexNext === indexCurrent ? 'questionConstant priorQuestion' : 'questionConstant' ;
-    const indexNextTrue  = question.index === indexCurrent ? indexInsertBeforeIfTrue :
+    
+    // top of graphic - shows score (always show, just hide if not current)
+    const falseScore     = question.index === indexCurrent           ? 'false' : 'transparent' ;
+    const trueScore      = question.index === indexCurrent           ? 'true'  : 'transparent' ;
+    
+    // middle of graphic - shows current (always show, just change class)
+    const indexClass     = question.index === indexCurrent           ? 'questionConstant currentQuestion priorQuestion' : 
+                           question.index === indexNextPrior         ? 'questionConstant nextQuestion'  : 'questionConstant' ;
+    const indexNextClass = question.indexNext === indexCurrent       ? 'cell currentQuestion nextQuestion' : 
+                           question.indexNext === indexCurrent       ? 'questionConstant priorQuestion' : 'questionConstant' ;
+    
+    // bottom of graphic - shows future (constant class, value varies)
+    const indexNextTrue  = question.index === indexCurrent           ? indexInsertBeforeIfTrue :
                            question.index === indexInsertAfterIfTrue ? indexCurrent : 
-                           question.indexNext === indexCurrent ? indexNextPrior : null ;
-    const indexNextFalse = question.index === indexCurrent ? indexInsertBeforeIfFalse :
-                           question.index === indexInsertAfterIfFalse ? indexCurrent : 
-                           question.indexNext === indexCurrent ? indexNextPrior : null ;
+                           question.index === indexRedirect          ? indexRedirectNext : null ;
+    const indexNextFalse = question.index === indexCurrent           ? indexInsertBeforeIfFalse :
+                           question.index === indexInsertAfterIfFalse? indexCurrent : 
+                           question.index === indexRedirect          ? indexRedirectNext : null ;
     
     return <div key={index} className='spacedRepObject'>
       <div className={falseScore}    >{scoreIfFalse}</div>
@@ -51,10 +62,9 @@ export function SpacedRepGraphic(props) {
         {questionObjectArray}
       </div>
       <div className='spacedRepStats'>
-        <div>indexNext = {indexNextPrior}</div>
         <div>quiz score now = {props.quiz.score}</div>
-        <div>if true: {indexCurrent} + {indexInsertAfterIfTrueLabel} = {indexInsertAfterIfTrue} ... {indexInsertBeforeIfTrue} &amp; score: {scorePrior} -> {scoreIfTrue} </div>
-        <div>if false: {indexCurrent} + {indexInsertAfterIfFalseLabel} = {indexInsertAfterIfFalse} ... {indexInsertBeforeIfFalse} &amp; score: {scorePrior} -> {scoreIfFalse} </div>
+        <div>if true:  {indexInsertAfterIfTrueLabel}  &amp; score: {scorePrior} -> {scoreIfTrue}  </div>
+        <div>if false: {indexInsertAfterIfFalseLabel} &amp; score: {scorePrior} -> {scoreIfFalse} </div>
       </div>
     </div>
     );
@@ -63,6 +73,7 @@ export function SpacedRepGraphic(props) {
 export const mapStateToProps = state => ({
   questions: state.questions,
   quiz: state.quiz,
+  scoringObject: state.scoringObject,
 })
 
 export default connect(mapStateToProps)(SpacedRepGraphic);

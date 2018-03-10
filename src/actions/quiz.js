@@ -2,7 +2,6 @@
 
 import { REACT_APP_BASE_URL } from '../config';
 import * as actionsDisplay from './display';
-import * as actionsUser from './user';
 import * as actionsQuestions from './questions';
 import * as actionsQuizList from './quizList';
 import 'whatwg-fetch';
@@ -62,10 +61,8 @@ export const  getQuiz = idQuiz => dispatch => {
 };
 
 // ~~~~~~~~~~~~ HELPERS TO TAKE QUIZ ~~~~~~~~~~~~
-
 export const takeQuiz = (idQuiz, idUser, option, authToken) => dispatch => {
   // option = 'add' or 'take'.  In either instance, UI assumes user will take quiz right away.
-  
   dispatch(actionsDisplay.showLoading());
   
   const url = `${REACT_APP_BASE_URL}/api/quizzes/${idQuiz}/users/${idUser}`;
@@ -80,7 +77,7 @@ export const takeQuiz = (idQuiz, idUser, option, authToken) => dispatch => {
   // GET EVERYTING FOR THIS QUIZ FROM DATABASE, put b/c modifies user (via subcollection)
   return fetch(url, init)
     .then(quizReturned => {
-      console.log(quizReturned);
+      // console.log('quizReturned from server',quizReturned);
       if (!quizReturned.ok) {
         return Promise.reject(quizReturned.statusText);
       }
