@@ -26,6 +26,8 @@ export const initialDisplay = {  // store.mode
   loading: false,
   modal: false,    // userSettings, quizSettings
   modalMessage: '',
+  spacedRepGraphic: true,
+  resultsModal: false,
 };
 
 export const initialGeneral = {
@@ -67,6 +69,7 @@ export const initialQuiz = { // store.quiz - single current quiz, loads when use
   indexCurrent: 0,
   showingAnswers: false,
   nextState: {},
+  choicesPrior: [],
 };
 
 export const initialQuizList = {

@@ -43,6 +43,18 @@ export const reducer = ( state = initialDisplay, action ) => {
       about: !state.about,
     };
   }
+
+  if ( action.type === actions.TOGGLE_SPACED_REP_GRAPHIC ) {
+    return {...state,
+      spacedRepGraphic: !state.spacedRepGraphic,
+    };
+  }
+
+  if ( action.type === actions.TOGGLE_RESULTS_MODAL ) {
+    return {...state,
+      resultsModal: !state.resultsModal,
+    };
+  }
     
   return state;
 }

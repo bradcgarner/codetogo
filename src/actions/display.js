@@ -38,4 +38,14 @@ export const toggleAbout = () => ({
   type: TOGGLE_ABOUT,
 });
 
+export const TOGGLE_SPACED_REP_GRAPHIC = 'TOGGLE_SPACED_REP_GRAPHIC';
+export const toggleSpacedRepGraphic = () => ({
+  type: TOGGLE_SPACED_REP_GRAPHIC,
+});
+
+export const TOGGLE_RESULTS_MODAL = 'TOGGLE_RESULTS_MODAL';
+export const toggleResultsModal = () => ({
+  type: TOGGLE_RESULTS_MODAL,
+});
+
 // @@@@@@@@@@@@@@@ ASYNC @@@@@@@@@@@@@@

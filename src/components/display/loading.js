@@ -8,7 +8,7 @@ export default function Loading(props) {
       <div className='loadingBackground'
         onClick={props.fn}>
       </div>
-      <i className='fa fa-spinner loadingIcon' aria-hidden="true"></i>
+      <i className='fas fa-wrench loadingIcon' aria-hidden="true"></i>
     </div>
   );
 }

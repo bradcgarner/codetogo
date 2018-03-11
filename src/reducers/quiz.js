@@ -22,6 +22,12 @@ export const reducer = ( state = initialQuiz, action ) => {
       nextState: action.nextState
     };
   }
+  if ( action.type === actions.UPDATE_PRIOR_CHOICES ) {
+    return {
+      ...state, 
+      choicesPrior: action.choicesPrior
+    };
+  }
   if ( action.type === actions.TOGGLE_SHOW_ANSWERS ) {
     return {
       ...state, 

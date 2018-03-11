@@ -30,6 +30,13 @@ export const toggleShowAnswers = value => ({
   showingAnswers: value,
 });
 
+// saved last choices for comparison
+export const UPDATE_PRIOR_CHOICES = 'UPDATE_PRIOR_CHOICES';
+export const updatePriorChoices = choicesPrior => ({
+  type: UPDATE_PRIOR_CHOICES,
+  choicesPrior, 
+});
+
 // redundant of single quiz update, but this affects the list, so user sees updated score in the list as well
 export const UPDATE_NEXT_STATE = 'UPDATE_NEXT_STATE';
 export const updateNextState = nextState => ({
@@ -52,14 +59,15 @@ export const  getQuiz = idQuiz => dispatch => {
         return quizFound.json();
     })
     .then(quizFound => {
-      return dispatch(loadQuiz(quizFound));
+      const quizAppended = {...quizFound, nextState: {}};
+      return dispatch(loadQuiz(quizAppended));
     })
     .catch(error => {
       dispatch(actionsDisplay.showModal(error));        
     });
 };
 
-// ~~~~~~~~~~~~ HELPERS TO TAKE QUIZ ~~~~~~~~~~~~
+
 export const takeQuiz = (idQuiz, idUser, option, authToken) => dispatch => {
   // option = 'add' or 'take'.  In either instance, UI assumes user will take quiz right away.
   dispatch(actionsDisplay.showLoading());
@@ -84,10 +92,51 @@ export const takeQuiz = (idQuiz, idUser, option, authToken) => dispatch => {
     })
     .then(quizReturned=>{
       console.log('quizReturned',quizReturned)
-      dispatch(loadQuiz(quizReturned.quiz));
+      const quizAppended = {...quizReturned.quiz, nextState: {}};
+      dispatch(loadQuiz(quizAppended));
       if(option === 'add') {
         dispatch(actionsQuizList.addQuiz(quizReturned.quiz));
       }
+      dispatch(actionsQuestions.loadQuestions(quizReturned.questions));
+      // console.log('questions should be loaded',quizReturned.questions)
+      return dispatch(actionsDisplay.closeLoading());
+    })
+    .catch(err => {
+      console.log(err);
+      // const errJson = err.json();
+      const error = typeof err === 'string' ? err :
+      typeof err === 'object' && err.message ? err.message :
+      // typeof errJson === 'object' && errJson.message ? errJson.message :
+      'something went wrong';
+      dispatch(actionsDisplay.showModal(error));
+    });
+};
+
+export const resetQuiz = (idQuiz, idUser, authToken) => dispatch => {
+  // option = 'add' or 'take'.  In either instance, UI assumes user will take quiz right away.
+  dispatch(actionsDisplay.showLoading());
+  
+  const url = `${REACT_APP_BASE_URL}/api/quizzes/${idQuiz}/users/${idUser}/reset`;
+  const headers = { 
+    "Authorization": "Bearer " + authToken,
+  };
+  const init = { 
+    method: 'PUT',
+    headers
+  };
+  // GET EVERYTING FOR THIS QUIZ FROM DATABASE, put b/c modifies user (via subcollection)
+  return fetch(url, init)
+    .then(quizReturned => {
+      // console.log('quizReturned from server',quizReturned);
+      if (!quizReturned.ok) {
+        return Promise.reject(quizReturned.statusText);
+      }
+      return quizReturned.json(); 
+    })
+    .then(quizReturned=>{
+      console.log('quizReturned',quizReturned)
+      const quizAppended = {...quizReturned.quiz, nextState: {} };
+      dispatch(loadQuiz(quizAppended));
       dispatch(actionsQuestions.loadQuestions(quizReturned.questions));
       // console.log('questions should be loaded',quizReturned.questions)
       return dispatch(actionsDisplay.closeLoading());

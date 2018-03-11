@@ -33,18 +33,29 @@
   .questionTextInput {
     font-size: 16px;
   }
-  .questionButtons { // SEE ALSO '_buttons.scss'
+  .question-buttons { 
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-end;
-    .smallIcon {
-      font-size: 30px;
-      width: 65px;
-      .faText {
-        margin-top: 10px;
+    .question-status {
+      height: 40px;
+      width: 80px;
+      justify-content: center;
+      align-items: center;
+      img {
+        height: 100%;
+        max-width: 100%;
+        object-fit: contain;
       }
     }
+    // .smallIcon {
+    //   font-size: 30px;
+    //   width: 65px;
+    //   .faText {
+    //     margin-top: 10px;
+    //   }
+    // }
     .submitButton {
       margin-bottom: 0;
     }
@@ -72,6 +83,7 @@
     align-items: center;
     margin: 2px;
     width: 2em;
+    position: relative;
 
     .question-constant, 
     .currentQuestion, 
@@ -105,10 +117,10 @@
       background-color: rgb(100, 160, 94); 
     }
     .insert-after-if-false {
-      background-color: rgb(228, 120, 87); 
+      background-color: rgb(248, 163, 138); 
     }
     .insert-before-if-false {
-      background-color: rgb(138, 91, 70); 
+      background-color: rgb(189, 135, 110); 
     }
     .index-redirect {
       background-color: rgb(169, 182, 160); 
@@ -121,6 +133,22 @@
     }
     .true {
       color: green;
+    }
+    .gray {
+      color: #777;
+    }
+    .current-hightlight {
+      position: absolute;
+      width: 125%;
+      left: -12.5%;
+      top: -5%;
+      border-top: 3px solid black;
+      border-bottom: 3px solid black;
+      height: 110%;
+      border-radius: 50%;
+      z-index: -1;
+      background-color: white;
+      opacity: 0.50;
     }
   }
 
@@ -145,3 +173,23 @@
   }
 }
 
+.result-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .fa-thumbs-up,
+  .fa-thumbs-down {
+    font-size: 200px;
+  }
+  .fa-thumbs-up {
+    color: green;
+  }
+  .fa-thumbs-down {
+    color: red;
+  }
+}

@@ -52,8 +52,15 @@ export const answerQuestion = (answerObject, authToken) => dispatch => {
       console.log('answerReturned from server',answerReturned);
       // nextState pauses update momentarily so user can see results, then updates on advance button
       dispatch(actionsQuiz.updateNextState(answerReturned));
+      dispatch(actionsQuiz.updatePriorChoices(answerObject.choices));
       dispatch(actionsQuiz.toggleShowAnswers(true));
       return dispatch(actionsDisplay.closeLoading());
+    })
+    .then(()=>{
+      dispatch(actionsDisplay.toggleResultsModal())
+      setTimeout(()=>{dispatch(actionsDisplay.toggleResultsModal())},
+        500
+      )
     })
     .catch(err => {
       const error = typeof err === 'string' ? err :

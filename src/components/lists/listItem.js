@@ -20,11 +20,11 @@ export function ListItem(props) {
     })
   }
   const takeQuizButton = props.isLoggedIn ?
-    <i className="fa fa-hand-o-right smallIcon go"
-      aria-hidden="true" 
-      onClick={()=>handleTakeQuizButton('take')}>
-        <span className="faText">Go!</span>
-    </i> : null ;
+    <div className='take-quiz-container'
+      onClick={()=>handleTakeQuizButton('take')} >
+      <i className="fas fa-hand-point-right smallIcon take-quiz"
+        aria-hidden="true"> </i>
+    </div> : null ;
   
   return (
     <tr className="listItem">

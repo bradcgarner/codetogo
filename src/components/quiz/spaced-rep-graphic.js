@@ -32,9 +32,9 @@ export function SpacedRepGraphic(props) {
   const questionObjectArray = props.questions.map((question, index)=>{
     
     // top of graphic - shows score (always show, just hide if not current)
-    const falseScore     = question.index === indexCurrent             ? 'false' : 'transparent' ;
-    const trueScore      = question.index === indexCurrent             ? 'true'  : 'transparent' ;
-    
+    const falseScore     = question.index === indexCurrent ? 'false'  : 'transparent' ;
+    const trueScore      = question.index === indexCurrent ? 'true'   : 'transparent' ;
+    const scoreClass     = question.index === indexCurrent ? 'normal' : 'gray' ;
     // middle of graphic - shows current (always show, just change class)
     const indexClass     = question.index === indexCurrent                 ? 'question-constant index-current' : 
                            question.index === indexNextPrior               ? 'question-constant index-next'  :
@@ -55,16 +55,31 @@ export function SpacedRepGraphic(props) {
     const indexNextFalse = question.index === indexCurrent           ? indexInsertBeforeIfFalse :
                            question.index === indexInsertAfterIfFalse? indexCurrent : 
                            question.index === indexRedirect          ? indexRedirectNext : null ;
-    
+
+    const currentHighlight = question.index === indexCurrent ? <div className='current-hightlight'></div> : null ;
+
     return <div key={index} className='spacedRepObject'>
       <div className={falseScore}    >{scoreIfFalse}</div>
       <div className={trueScore}     >{scoreIfTrue}</div>
+      <div className={scoreClass}    >{question.score}</div>
       <div className={indexClass}    >{question.index}</div>
       <div className={indexNextClass}>{question.indexNext}</div>
       <div className='true'          >{indexNextTrue}</div>
       <div className='false'         >{indexNextFalse}</div>
+      {currentHighlight}
     </div>
   });
+  questionObjectArray.unshift(
+    <div key={'summary'} className='spacedRepObject spacedRepObjectSummary'>
+      <div className='false'    >{props.quiz.score - scorePrior + scoreIfFalse}</div>
+      <div className='true'     >{props.quiz.score - scorePrior + scoreIfTrue}</div>
+      <div className=''    >{props.quiz.score}</div>
+      <div className=''></div>
+      <div className=''></div>
+      <div className=''></div>
+      <div className=''></div>
+    </div>
+  )
  
   return (
     <div className='spacedRepContainer'>

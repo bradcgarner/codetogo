@@ -33,7 +33,10 @@
       } // end listItemScore
   
       .listItemGo {
-        .go { // subclass of .smallIcon
+        .take-quiz-container {
+          
+        }
+        .take-quiz { // subclass of .smallIcon
           // width: $goWidth;
           padding-right: 2%;
           flex-direction: row;

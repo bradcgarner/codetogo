@@ -14,22 +14,25 @@ export class Header extends React.Component {
   render() {
     let username = this.props.user.id ? `${this.props.user.firstName}'s ` : 'New User\'s' ;
     const path = this.props.match.url;
+
+    const score = path === '/quizzes' ? this.props.quiz.score : null ;
+
     const headerLabel = 
-      path === 'landing' ? 'Welcome1' :
+      path === '/' ? 'Welcome!' :
       path === '/users/login' ? 'Login' :
       path === '/users/profile' && this.props.user.id  ?  `${username} Profile` : 
       path === '/users/profile'  ?  'Create Account' :
       path === '/lists/dashboard' ? `${username} Dashboard` :
       path === '/lists/quizmenu' ?  'Menu of Quizzes' : 
-      path === '/quiz' ?  this.props.quiz.name : 
-      path === 'answer' ?  `See Key: ${this.props.quiz.name}` :
+      path === '/quizzes' ?  this.props.quiz.name : 
       'Welcome!';
   
       return (
         <header className="headerContainer">
-          <BurgerMenu match={this.props.match}/>
+          <BurgerMenu match={this.props.match} history={this.props.history}/>
           <div className="header">
-            <h1 className="headerLabel">{headerLabel}</h1>
+            <div className='header-score'>{score}</div>
+            <h1 className="header-label">{headerLabel}</h1>
             <BurgerIcon />
           </div>
         </header>

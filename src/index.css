@@ -133,6 +133,7 @@ table {
   justify-content: center;
   align-items: center; }
   .headerContainer .burgerMenu {
+    width: 200px;
     padding: 20px;
     position: absolute;
     display: flex;
@@ -152,7 +153,19 @@ table {
     border-radius: 0 0 6px 6px; }
     .headerContainer .burgerMenu li {
       margin-bottom: 10px; }
-      .headerContainer .burgerMenu li:hover:not(.inactive) {
+    .headerContainer .burgerMenu .loginMenuItem,
+    .headerContainer .burgerMenu .profileMenuItem,
+    .headerContainer .burgerMenu .quizListMenuItem,
+    .headerContainer .burgerMenu .aboutMenuItem,
+    .headerContainer .burgerMenu .settingsMenuItem,
+    .headerContainer .burgerMenu .spacedrepMenuItem {
+      text-decoration: none; }
+      .headerContainer .burgerMenu .loginMenuItem:hover:not(.inactive),
+      .headerContainer .burgerMenu .profileMenuItem:hover:not(.inactive),
+      .headerContainer .burgerMenu .quizListMenuItem:hover:not(.inactive),
+      .headerContainer .burgerMenu .aboutMenuItem:hover:not(.inactive),
+      .headerContainer .burgerMenu .settingsMenuItem:hover:not(.inactive),
+      .headerContainer .burgerMenu .spacedrepMenuItem:hover:not(.inactive) {
         color: #6172da; }
   .headerContainer .burgerHide {
     top: -400%; }
@@ -182,22 +195,34 @@ table {
     -moz-box-shadow: 0px 4px 4px #999;
     -webkit-box-shadow: 0px 4px 4px #999;
     box-shadow: 0px 4px 4px #999; }
-    .headerContainer .header .headerLabel {
+    .headerContainer .header .header-label {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      flex-grow: 1;
+      flex-shrink: 1;
+      flex-basis: 1;
       font-size: 24px;
       color: #fafcff;
-      width: 100%; }
-    .headerContainer .header .burgerIcon {
-      right: 0;
+      text-align: center; }
+    .headerContainer .header .burger-icon-container {
+      height: 100%;
+      width: 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center; }
+    .headerContainer .header .header-score,
+    .headerContainer .header .burger-icon {
       display: flex;
       flex-direction: column;
       color: #fafcff;
-      height: 50px;
+      height: 60%;
       width: 50px;
       justify-content: center;
-      align-items: center;
-      position: absolute;
-      top: 0; }
-      .headerContainer .header .burgerIcon:hover {
+      align-items: center; }
+      .headerContainer .header .header-score:hover,
+      .headerContainer .header .burger-icon:hover {
         color: #6172da; }
 
 button {
@@ -211,19 +236,28 @@ button {
     color: #6172da;
     background-color: #bfd4f7; }
 
-.enterButton, .loginButton, .submitButton {
+.enterButton,
+.loginButton,
+.submitButton {
   font-size: 35px; }
 
-.enterButton, .aboutButton, .loginButton, .createAccountButton {
+.enterButton,
+.aboutButton,
+.loginButton,
+.createAccountButton {
   width: 250px; }
 
-.aboutButton, .createAccountButton, .gotoQuizListButton,
+.aboutButton,
+.createAccountButton,
+.gotoQuizListButton,
 .showNextOptionButton {
   font-size: 20px;
   min-height: 40px; }
 
 .gotoQuizListButton,
-.checkAccuracyButton, .takeAnotherQuizButton, .submitButton {
+.checkAccuracyButton,
+.takeAnotherQuizButton,
+.submitButton {
   min-width: 100px;
   max-width: 200px; }
 
@@ -255,20 +289,20 @@ button {
   .lists .quizList .listItem .listItemScore {
     font-size: 80%;
     color: #797973; }
-  .lists .quizList .listItem .listItemGo .go {
+  .lists .quizList .listItem .listItemGo .take-quiz {
     padding-right: 2%;
     flex-direction: row;
     align-items: center;
     font-size: 24px; }
-    .lists .quizList .listItem .listItemGo .go:hover {
+    .lists .quizList .listItem .listItemGo .take-quiz:hover {
       color: #6172da; }
-    .lists .quizList .listItem .listItemGo .go .faText {
+    .lists .quizList .listItem .listItemGo .take-quiz .faText {
       display: none;
       font-size: 12px; }
       @media screen and (min-width: 576px) {
-        .lists .quizList .listItem .listItemGo .go .faText {
+        .lists .quizList .listItem .listItemGo .take-quiz .faText {
           display: flex; } }
-      .lists .quizList .listItem .listItemGo .go .faText:hover {
+      .lists .quizList .listItem .listItemGo .take-quiz .faText:hover {
         color: #6172da; }
 .lists .listSelectionButtons {
   flex-direction: row;
@@ -452,17 +486,21 @@ button {
     box-shadow: inset 5px 5px 5px -4px #9c9ac6; }
   .quiz .questionTextInput {
     font-size: 16px; }
-  .quiz .questionButtons {
+  .quiz .question-buttons {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-end; }
-    .quiz .questionButtons .smallIcon {
-      font-size: 30px;
-      width: 65px; }
-      .quiz .questionButtons .smallIcon .faText {
-        margin-top: 10px; }
-    .quiz .questionButtons .submitButton {
+    .quiz .question-buttons .question-status {
+      height: 40px;
+      width: 80px;
+      justify-content: center;
+      align-items: center; }
+      .quiz .question-buttons .question-status img {
+        height: 100%;
+        max-width: 100%;
+        object-fit: contain; }
+    .quiz .question-buttons .submitButton {
       margin-bottom: 0; }
   .quiz .spacedRepContainer {
     flex-direction: column;
@@ -479,7 +517,8 @@ button {
     justify-content: flex-start;
     align-items: center;
     margin: 2px;
-    width: 2em; }
+    width: 2em;
+    position: relative; }
     .quiz .spacedRepObject .question-constant,
     .quiz .spacedRepObject .currentQuestion,
     .quiz .spacedRepObject .priorQuestion,
@@ -506,9 +545,9 @@ button {
     .quiz .spacedRepObject .insert-before-if-true {
       background-color: #64a05e; }
     .quiz .spacedRepObject .insert-after-if-false {
-      background-color: #e47857; }
+      background-color: #f8a38a; }
     .quiz .spacedRepObject .insert-before-if-false {
-      background-color: #8a5b46; }
+      background-color: #bd876e; }
     .quiz .spacedRepObject .index-redirect {
       background-color: #a9b6a0; }
     .quiz .spacedRepObject .index-redirect-next {
@@ -517,6 +556,20 @@ button {
       color: red; }
     .quiz .spacedRepObject .true {
       color: green; }
+    .quiz .spacedRepObject .gray {
+      color: #777; }
+    .quiz .spacedRepObject .current-hightlight {
+      position: absolute;
+      width: 125%;
+      left: -12.5%;
+      top: -5%;
+      border-top: 3px solid black;
+      border-bottom: 3px solid black;
+      height: 110%;
+      border-radius: 50%;
+      z-index: -1;
+      background-color: white;
+      opacity: 0.50; }
   .quiz .results {
     display: flex;
     flex-direction: column;
@@ -525,6 +578,23 @@ button {
     width: 100%; }
     .quiz .results .nextButton {
       width: 250px; }
+
+.result-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; }
+  .result-modal .fa-thumbs-up,
+  .result-modal .fa-thumbs-down {
+    font-size: 200px; }
+  .result-modal .fa-thumbs-up {
+    color: green; }
+  .result-modal .fa-thumbs-down {
+    color: red; }
 
 .modalContainer, .loadingContainer {
   position: fixed;

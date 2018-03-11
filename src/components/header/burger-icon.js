@@ -6,11 +6,17 @@ export function BurgerIcon(props) {
   // Component function: Just an icon that renders a burger, on click displays menu
   
   const handleBurgerButton = () => {
+    console.log('clicked')
     props.dispatch(actionsDisplay.toggleMenu())
   }
   
     return (
-      <i onClick={()=>handleBurgerButton()} className="fa fa-ellipsis-v burgerIcon" aria-hidden="true"></i>
+      <div className='burger-icon-container' 
+        onClick={()=>handleBurgerButton()} >
+      <i 
+        className="fas fa-ellipsis-v burger-icon" aria-hidden="true">
+      </i>
+      </div>
     );
 }
 
