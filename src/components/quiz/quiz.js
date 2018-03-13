@@ -153,6 +153,7 @@ export class Quiz extends React.Component {
 
     return (
     <div className="quiz">
+      <p className="question-topic">{questions[quiz.indexCurrent].topic}</p>
       <p className="questionAsked">{questions[quiz.indexCurrent].question}</p>
       <form className="questionForm" onSubmit={this.props.handleSubmit(values =>
         this.handleSubmitButton(values, question.typeAnswer)
