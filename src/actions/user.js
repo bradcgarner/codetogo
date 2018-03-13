@@ -45,7 +45,6 @@ export const login = credentials => dispatch => {
     return userFound.json();
   })
   .then(userFound=>{
-    // console.log('userFound at login', userFound); 
     dispatch(loadUser(userFound.user));
     dispatch(actionsActivity.loadActivity(userFound.activity));
     dispatch(actionsBadges.loadBadges(userFound.badges));
@@ -113,7 +112,6 @@ export const updateUser = (userToUpdate, authToken) => dispatch => { //credentia
   };
   return fetch(url, init)
   .then(userUpdated=>{   //response user api repr (no need to do anything with it) 
-    // console.log('userUpdated by server',userUpdated);
     if (!userUpdated.ok) { 
       return Promise.reject(userUpdated.statusText);
     }

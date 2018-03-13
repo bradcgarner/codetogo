@@ -5,6 +5,7 @@ export const initialActivity = [
     actions: 'quiz',
     name: 'JS Basic',
     category: 'cat',
+    topic: 'topic',
   }
 ];
 
@@ -14,6 +15,7 @@ export const initialBadges = [
     idUser: 0,
     name: 'bad',
     category: 'cat',
+    topic: 'topic',
     score: 88,
     label: 'expert',
   }
@@ -49,6 +51,7 @@ export const initialQuestions = [ // all questions this quiz, parsed out individ
     typeAnswer: 'checkbox', // radio || text
     source: 'google',
     reason: 'because',
+    topic: 'topic',
     difficulty: 5,
     score: 2,
     index: 1,
@@ -63,6 +66,7 @@ export const initialQuiz = { // store.quiz - single current quiz, loads when use
   version: 'version',
   notes: 'notes',
   category: 'cat',
+  topic: 'topic',
   difficulty: 3,
   total: 3,
   score: 0,
@@ -80,6 +84,7 @@ export const initialQuizList = {
     version: 'version',
     notes: 'notes',
     category: 'cat',
+    topic: 'topic',
     difficulty: 3,
     total: 3,
     score: 0,

@@ -91,22 +91,18 @@ export const takeQuiz = (idQuiz, idUser, option, authToken) => dispatch => {
       return quizReturned.json(); 
     })
     .then(quizReturned=>{
-      console.log('quizReturned',quizReturned)
       const quizAppended = {...quizReturned.quiz, nextState: {}};
       dispatch(loadQuiz(quizAppended));
       if(option === 'add') {
         dispatch(actionsQuizList.addQuiz(quizReturned.quiz));
       }
       dispatch(actionsQuestions.loadQuestions(quizReturned.questions));
-      // console.log('questions should be loaded',quizReturned.questions)
       return dispatch(actionsDisplay.closeLoading());
     })
     .catch(err => {
       console.log(err);
-      // const errJson = err.json();
       const error = typeof err === 'string' ? err :
       typeof err === 'object' && err.message ? err.message :
-      // typeof errJson === 'object' && errJson.message ? errJson.message :
       'something went wrong';
       dispatch(actionsDisplay.showModal(error));
     });
@@ -127,23 +123,19 @@ export const resetQuiz = (idQuiz, idUser, authToken) => dispatch => {
   // GET EVERYTING FOR THIS QUIZ FROM DATABASE, put b/c modifies user (via subcollection)
   return fetch(url, init)
     .then(quizReturned => {
-      // console.log('quizReturned from server',quizReturned);
       if (!quizReturned.ok) {
         return Promise.reject(quizReturned.statusText);
       }
       return quizReturned.json(); 
     })
     .then(quizReturned=>{
-      console.log('quizReturned',quizReturned)
       const quizAppended = {...quizReturned.quiz, nextState: {} };
       dispatch(loadQuiz(quizAppended));
       dispatch(actionsQuestions.loadQuestions(quizReturned.questions));
-      // console.log('questions should be loaded',quizReturned.questions)
       return dispatch(actionsDisplay.closeLoading());
     })
     .catch(err => {
       console.log(err);
-      // const errJson = err.json();
       const error = typeof err === 'string' ? err :
       typeof err === 'object' && err.message ? err.message :
       // typeof errJson === 'object' && errJson.message ? errJson.message :

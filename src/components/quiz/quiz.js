@@ -137,10 +137,11 @@ export class Quiz extends React.Component {
           Submit
       </button> ;
 
-    const status = quiz.showingAnswers && quiz.nextState.correct ? 
-      <img src={'http://res.freestockphotos.biz/pictures/15/15873-illustration-of-an-orange-smiley-face-pv.png'} alt='correct'/> :
+    const status = 
+      quiz.showingAnswers && quiz.nextState.correct ? 
+        <img src={'http://res.freestockphotos.biz/pictures/15/15873-illustration-of-an-orange-smiley-face-pv.png'} alt='correct'/> :
       quiz.showingAnswers && !quiz.nextState.correct ?
-      <img src={'http://qige87.com/data/out/199/wp-image-142591094.png'} alt='incorrect'/> :
+        <img src={'http://qige87.com/data/out/199/wp-image-142591094.png'} alt='incorrect'/> :
       '' ; 
     
 

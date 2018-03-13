@@ -32,6 +32,9 @@ export function ListItem(props) {
       <td>
         {thisQuiz.category}
       </td>
+      <td>
+        {thisQuiz.topic}
+      </td>
       <td style={{textAlign: "center"}}>
         <div className={difficultyClass}>
           {thisQuiz.difficulty}

@@ -3,9 +3,7 @@
 
 import { REACT_APP_BASE_URL } from '../config';
 import * as actionsDisplay from './display';
-// import * as actionsUser from './user';
 import * as actionsQuiz from './quiz';
-// import * as actionsQuizList from './quizList';
 import 'whatwg-fetch';
 
 

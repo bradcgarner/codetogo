@@ -181,7 +181,6 @@ export const updateScoringObject = (indexCurrent, questions, question, indexRedi
       indexRedirect,
       indexRedirectNext,
     };
-    console.log('scoringObject',scoringObject)
     dispatch(loadScoringObject(scoringObject));
   }
 }

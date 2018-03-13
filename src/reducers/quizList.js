@@ -11,10 +11,8 @@ export const reducer = ( state = initialQuizList, action ) => {
     return {...state, [action.quiz.id]: action.quiz};
   } 
   if ( action.type === actions.UPDATE_QUIZLIST_SCORE ) {
-    console.log('action in reducer', action)
     const quiz = {...state[action.idQuiz]};
     quiz.score = action.score;
-    console.log('quiz in reducer', quiz)
     return {...state, [action.idQuiz]: quiz};
   } 
   
